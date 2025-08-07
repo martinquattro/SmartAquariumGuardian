@@ -1,5 +1,15 @@
-.pio
-.vscode
+# PlatformIO
 CMakeLists.txt
-platformio.ini
-sdkconfig.esp32dev
+*.ini
+.pio/
+.vscode/
+*.elf
+*.bin
+*.map
+*.d
+*.o
+
+# SDK config (si lo generás automáticamente)
+sdkconfig
+sdkconfig.old
+build/
