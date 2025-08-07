@@ -1,6 +1,11 @@
-#include<stdio.h>
+#include "smart_aquarium_guardian.h"
 
 extern "C" void app_main(void) 
 {
-    printf("helloooo \n");
+    SmartAquariumGuardian::Init();
+
+    while (true) 
+    {
+        SmartAquariumGuardian::GetInstance()->Update();
+    }
 }
