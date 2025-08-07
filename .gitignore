@@ -13,3 +13,7 @@ CMakeLists.txt
 sdkconfig
 sdkconfig.old
 build/
+sdkconfig.esp32dev
+
+# Other
+.gitattributes
