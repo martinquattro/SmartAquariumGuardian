@@ -8,17 +8,15 @@
 #ifndef SMART_AQUARIUM_GUARDIAN_H
 #define SMART_AQUARIUM_GUARDIAN_H
 
-#define SYSTEM_TIME_INCREMENT_MS   1000
-
 class SmartAquariumGuardian
 {
     public:
 
-        //! Initializes the SmartAquariumGuardian system.
-        static void Init();
-
         //! Returns the singleton instance of SmartAquariumGuardian.
         static SmartAquariumGuardian* GetInstance();
+
+        //! Initializes the SmartAquariumGuardian system.
+        static void Init();
 
         //! Updates the system by calling the update methods of all subsystems.
         void Update();
@@ -30,7 +28,7 @@ class SmartAquariumGuardian
         SmartAquariumGuardian(const SmartAquariumGuardian&) = delete;
         SmartAquariumGuardian& operator=(const SmartAquariumGuardian&) = delete;
 
-        static SmartAquariumGuardian* mInstance;
+        static SmartAquariumGuardian* _instance;
 };
 
 #endif // SMART_AQUARIUM_GUARDIAN_H

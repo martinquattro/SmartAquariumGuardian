@@ -1,5 +1,5 @@
 /*!****************************************************************************
- * @file    fish_tank_guardian.cpp
+ * @file    smart_aquarium_guardian.cpp
  * @brief   Implementation of the SmartAquariumGuardian class.    
  * @author  Quattrone Martin
  * @date    Aug 2025
@@ -7,21 +7,21 @@
 
 #include "smart_aquarium_guardian.h"
 
-SmartAquariumGuardian* SmartAquariumGuardian::mInstance = nullptr;
-
-//----static-------------------------------------------------------------------
-void SmartAquariumGuardian::Init()
-{
-    if (mInstance == nullptr)
-    {
-        mInstance = new SmartAquariumGuardian();
-    }
-}
+SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
 
 //----static-------------------------------------------------------------------
 SmartAquariumGuardian* SmartAquariumGuardian::GetInstance()
 {
-    return mInstance;
+    return _instance;
+}
+
+//----static-------------------------------------------------------------------
+void SmartAquariumGuardian::Init()
+{
+    if (_instance == nullptr)
+    {
+        _instance = new SmartAquariumGuardian();
+    }
 }
 
 //-----------------------------------------------------------------------------
