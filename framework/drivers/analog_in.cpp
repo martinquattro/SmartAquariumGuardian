@@ -19,6 +19,8 @@ AnalogIn::AnalogIn(PinName pin, float vref, adc_atten_t atten)
         adc_oneshot_unit_init_cfg_t init_cfg = 
         {
             .unit_id = ADC_UNIT_1,
+            .clk_src = ADC_RTC_CLK_SRC_DEFAULT,
+            .ulp_mode = ADC_ULP_MODE_DISABLE
         };
 
         if (adc_oneshot_new_unit(&init_cfg, &_handle) == ESP_OK) 

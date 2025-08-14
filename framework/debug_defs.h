@@ -11,7 +11,7 @@
 #include <cstdio>
 
 // Debugging macro for formatted outpu
-#define CORE_TRACE(format, ...)         printf(format "\n", ##__VA_ARGS__)   
+#define CORE_TRACE(format, ...)     printf(format "\n", ##__VA_ARGS__)   
 
 // Asserts macros for runtime checks
 #define ASSERT(cond)                assert(cond)
