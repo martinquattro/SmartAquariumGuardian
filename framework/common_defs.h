@@ -10,7 +10,7 @@
 #define COMMON_DEFS_H
 
 #include "drivers/analog_in.h"
-#include "drivers/digital_out.h"
+#include "drivers/digital_in_out.h"
 #include "pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

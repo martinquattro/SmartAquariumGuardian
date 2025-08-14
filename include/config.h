@@ -14,4 +14,6 @@
 
 #define TDS_SENSOR_ADC_PIN  A6
 
+#define BUILTIN_LED P2
+
 #endif // CONFIG_H

@@ -1,5 +1,5 @@
 /*!****************************************************************************
- * @file    digital_out.h
+ * @file    digital_in_out.h
  * @brief   GPIO output control class for ESP32 (ESP-IDF framework).
  * @author  Quattrone Martin
  * @date    Aug 2025
@@ -10,16 +10,24 @@
 #include "driver/gpio.h"
 #include "pin_names.h"
 
-class DigitalOut 
+class DigitalInOut 
 {
     public:
+
+        enum PinMode
+        {
+            INPUT_MODE,
+            OUTPUT_MODE,
+            INPUT_OUTPUT_MODE
+        };
 
         /**
          * @brief Construct a DigitalOut instance and configure the pin as output.
          * @param pin   PinName from pin_names.h.
+         * @param mode  Pin mode (INPUT_MODE, OUTPUT_MODE, INPUT_OUTPUT_MODE).
          * @param value Initial output state (0 or 1).
          */
-        DigitalOut(PinName pin, int value = 0);
+        DigitalInOut(PinName pin, PinMode mode, int value = 0);
 
         /**
          * @brief Set the output pin logic level.
@@ -33,7 +41,13 @@ class DigitalOut
          */
         int Read() const;
 
+        /**
+         * @brief Toggle the output pin logic level.
+         */
+        void Toggle();
+
     private:
 
         gpio_num_t _pin;
+        PinMode _mode;
 };
