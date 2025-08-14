@@ -1,11 +1,12 @@
 /*!****************************************************************************
- * @file    DigitalOut.cpp
+ * @file    digital_out.cpp
  * @brief   Implementation of the DigitalOut class for GPIO output control.
  * @author  Quattrone Martin
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "DigitalOut.h"
+#include "digital_out.h"
+#include "common_defs.h"
 
 //-----------------------------------------------------------------------------
 DigitalOut::DigitalOut(PinName pin, int value)
@@ -26,10 +27,4 @@ void DigitalOut::Write(int value)
 int DigitalOut::Read() const
 {
     return gpio_get_level(_pin);
-}
-
-//-----------------------------------------------------------------------------
-void DigitalOut::Toggle()
-{
-    Write(!Read());
 }

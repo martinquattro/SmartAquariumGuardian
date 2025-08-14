@@ -8,7 +8,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "framework/drivers/PinNames.h"
+#include "framework/pin_names.h"
 
 #define SYSTEM_TIME_INCREMENT_MS   1000
 

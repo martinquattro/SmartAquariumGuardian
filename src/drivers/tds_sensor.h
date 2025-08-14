@@ -9,7 +9,7 @@
 #define TDS_SENSOR_H
 
 #include <vector>
-#include "framework/commondefs.h"
+#include "framework/common_defs.h"
 
 #define TDS_SENSOR_NUM_AVG_SAMPLES 20
 #define MIN_TDS_VALUE  0.0

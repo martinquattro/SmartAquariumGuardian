@@ -6,14 +6,15 @@
  * @date    Aug 2025
  ******************************************************************************/
 
-#ifndef COMMONDEFS_H
-#define COMMONDEFS_H
+#ifndef COMMON_DEFS_H
+#define COMMON_DEFS_H
 
-#include "drivers/AnalogIn.h"
-#include "drivers/DigitalOut.h"
-#include "drivers/PinNames.h"
+#include "drivers/analog_in.h"
+#include "drivers/digital_out.h"
+#include "pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "debug_defs.h"
 
 // Functional states
 #ifndef OFF
@@ -34,7 +35,5 @@
 #endif
 
 #define delay(ms)                  vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
-#define CORE_TRACE(format, ...)    printf(format, ##__VA_ARGS__)        // Debugging macro
-#define CORE_TRACELN(format, ...)  printf(format "\n", ##__VA_ARGS__)   // Debugging macro with newline
 
-#endif // COMMONDEFS_H
+#endif // COMMON_DEFS_H

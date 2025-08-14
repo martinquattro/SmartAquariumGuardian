@@ -1,5 +1,5 @@
 /*!****************************************************************************
- * @file    PinNames.h
+ * @file    pin_names.h
  * @brief   Logical names for GPIO pins on ESP32 DevKit boards.
  * @author  Quattrone Martin
  * @date    Aug 2025

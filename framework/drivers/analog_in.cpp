@@ -1,11 +1,11 @@
 /*!****************************************************************************
- * @file    AnalogIn.cpp
+ * @file    analog_in.cpp
  * @brief   Implementation of AnalogIn using ESP-IDF adc_oneshot driver.
  * @author  Quattrone Martin
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "AnalogIn.h"
+#include "analog_in.h"
 #include "esp_err.h"
 
 //-----------------------------------------------------------------------------

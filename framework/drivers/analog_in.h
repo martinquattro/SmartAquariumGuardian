@@ -1,6 +1,5 @@
-#pragma once
 /*!****************************************************************************
- * @file    AnalogIn.h
+ * @file    analog_in.h
  * @brief   GPIO analog input class for ESP32 (ESP-IDF framework).
  * @author  Quattrone Martin
  * @date    Aug 2025
@@ -10,7 +9,7 @@
 
 #include <cstdint>
 #include "esp_adc/adc_oneshot.h"
-#include "PinNames.h"
+#include "pin_names.h"
 
 class AnalogIn 
 {
