@@ -5,7 +5,7 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "app/smart_aquarium_guardian.h"
+#include "src/app/smart_aquarium_guardian.h"
 
 extern "C" void app_main(void) 
 {

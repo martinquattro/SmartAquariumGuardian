@@ -5,7 +5,8 @@
  * @date    Aug 2025
  ******************************************************************************/
 
-#include "drivers/tds_sensor.h"
+#include "src/drivers/tds_sensor.h"
+
 #include "include/config.h"
 
 namespace Drivers {

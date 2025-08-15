@@ -8,7 +8,7 @@
 #pragma once
 
 #include "driver/gpio.h"
-#include "pin_names.h"
+#include "framework/pin_names.h"
 
 class DigitalInOut 
 {

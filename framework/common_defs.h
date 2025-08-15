@@ -9,12 +9,12 @@
 #ifndef COMMON_DEFS_H
 #define COMMON_DEFS_H
 
-#include "drivers/analog_in.h"
-#include "drivers/digital_in_out.h"
-#include "pin_names.h"
+#include "framework/debug_defs.h"
+#include "framework/drivers/analog_in.h"
+#include "framework/drivers/digital_in_out.h"
+#include "framework/pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "debug_defs.h"
 
 // Functional states
 #ifndef OFF

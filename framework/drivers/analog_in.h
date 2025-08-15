@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <cstdint>
 #include "esp_adc/adc_oneshot.h"
-#include "pin_names.h"
+#include "framework/pin_names.h"
+#include <cstdint>
 
 class AnalogIn 
 {

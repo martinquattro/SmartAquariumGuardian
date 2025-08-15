@@ -5,9 +5,9 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "smart_aquarium_guardian.h"
+#include "src/app/smart_aquarium_guardian.h"
 
-#include "config.h"
+#include "include/config.h"
 #include "framework/common_defs.h"
 
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;

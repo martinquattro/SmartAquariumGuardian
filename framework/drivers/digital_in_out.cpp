@@ -5,8 +5,8 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "digital_in_out.h"
-#include "common_defs.h"
+#include "framework/drivers/digital_in_out.h"
+#include "framework/common_defs.h"
 
 //-----------------------------------------------------------------------------
 DigitalInOut::DigitalInOut(PinName pin, PinMode mode, int value)
