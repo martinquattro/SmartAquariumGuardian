@@ -8,6 +8,8 @@
 #ifndef SMART_AQUARIUM_GUARDIAN_H
 #define SMART_AQUARIUM_GUARDIAN_H
 
+#include "framework/util/delay.h"
+
 class SmartAquariumGuardian
 {
     public:
@@ -29,6 +31,7 @@ class SmartAquariumGuardian
         SmartAquariumGuardian& operator=(const SmartAquariumGuardian&) = delete;
 
         static SmartAquariumGuardian* _instance;
+        Delay _delay;
 };
 
 #endif // SMART_AQUARIUM_GUARDIAN_H

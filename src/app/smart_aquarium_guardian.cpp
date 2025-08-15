@@ -1,11 +1,14 @@
 /*!****************************************************************************
  * @file    smart_aquarium_guardian.cpp
- * @brief   Implementation of the SmartAquariumGuardian class.    
+ * @brief   Implementation of the SmartAquariumGuardian class.
  * @author  Quattrone Martin
  * @date    Aug 2025
  *******************************************************************************/
 
 #include "smart_aquarium_guardian.h"
+
+#include "config.h"
+#include "framework/common_defs.h"
 
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
 
@@ -27,9 +30,16 @@ void SmartAquariumGuardian::Init()
 //-----------------------------------------------------------------------------
 void SmartAquariumGuardian::Update()
 {
+    if (_delay.HasFinished())
+    {
+        // Update subsystems here
 
+        // Debounce delay to prevent flickering. See if it can be avoid
+        delay(10);
+    }
 }
 
 //----private------------------------------------------------------------------
-SmartAquariumGuardian::SmartAquariumGuardian() 
+SmartAquariumGuardian::SmartAquariumGuardian()
+    : _delay(SYSTEM_TIME_INCREMENT_MS)
 {}
