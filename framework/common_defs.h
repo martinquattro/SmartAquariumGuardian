@@ -34,6 +34,6 @@
     #define HIGH   (!LOW)
 #endif
 
-#define delay(ms)                  vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
+#define TaskDelay(ms)                  vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
 
 #endif // COMMON_DEFS_H

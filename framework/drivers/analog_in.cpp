@@ -14,7 +14,7 @@ AnalogIn::AnalogIn(PinName pin, float vref, adc_atten_t atten)
     , _width(ADC_BITWIDTH_12)
     , _valid(false)
 {
-    if (pin_to_adc1_channel(pin, _channel)) 
+    if (PinToAdcChannel(pin, _channel)) 
     {
         adc_oneshot_unit_init_cfg_t init_cfg = 
         {
@@ -33,43 +33,27 @@ AnalogIn::AnalogIn(PinName pin, float vref, adc_atten_t atten)
 
             if (adc_oneshot_config_channel(_handle, _channel, &chan_cfg) == ESP_OK)
             {
-                _valid = true;
+                adc_cali_line_fitting_config_t cal_cfg = 
+                {
+                    .unit_id = ADC_UNIT_1,
+                    .atten = atten,
+                    .bitwidth = ADC_BITWIDTH_12,
+                    .default_vref = static_cast<uint32_t>(_vref * 1000.0f)
+                };
+
+                if (adc_cali_create_scheme_line_fitting(&cal_cfg, &_cali) == ESP_OK)
+                {
+                    _valid = true;
+                }
             }
         }
     }
 }
 
 //-----------------------------------------------------------------------------
-float AnalogIn::Read() const
-{
-    if (!_valid) return 0.0f;
-
-    int raw = 0;
-
-    if (adc_oneshot_read(_handle, _channel, &raw) != ESP_OK) 
-    {
-        return 0.0f;
-    }
-
-    const int max_raw = (1 << _width) - 1;
-    float x = static_cast<float>(raw) / static_cast<float>(max_raw);
-
-    return (x < 0.0f) ? 0.0f : (x > 1.0f ? 1.0f : x);
-}
-
-//-----------------------------------------------------------------------------
-uint16_t AnalogIn::Read_u16() const
-{
-    float norm = Read();
-    uint32_t u = static_cast<uint32_t>(norm * 65535.0f + 0.5f);
-
-    return (u > 65535) ? 65535 : static_cast<uint16_t>(u);
-}
-
-//-----------------------------------------------------------------------------
 float AnalogIn::ReadVoltage() const
 {
-    return Read() * _vref;
+    return ReadCalibrated() * 0.001f;
 }
 
 //-----------------------------------------------------------------------------
@@ -79,7 +63,30 @@ bool AnalogIn::IsValid() const
 }
 
 //----private------------------------------------------------------------------
-bool AnalogIn::pin_to_adc1_channel(PinName pin, adc_channel_t& out)
+int AnalogIn::ReadCalibrated() const
+{
+    if (!_valid) return 0;
+
+    int raw = 0;
+    if (adc_oneshot_read(_handle, _channel, &raw) != ESP_OK) 
+    {
+        return 0.0f;
+    }
+
+    int mv = 0;
+    if (adc_cali_raw_to_voltage(_cali, raw, &mv) == ESP_OK)
+    {
+        return mv;
+    }
+
+    const int max_raw = (1 << _width) - 1;
+    float volts = (static_cast<float>(raw) / static_cast<float>(max_raw)) * _vref;
+
+    return static_cast<int>(volts * 1000.0f + 0.5f);
+}
+
+//----private------------------------------------------------------------------
+bool AnalogIn::PinToAdcChannel(PinName pin, adc_channel_t& out) const
 {
     switch (pin) 
     {

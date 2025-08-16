@@ -10,8 +10,11 @@
 #include <cassert>
 #include <cstdio>
 
-// Debugging macro for formatted outpu
+// Debug macros for logging
 #define CORE_TRACE(format, ...)     printf(format "\n", ##__VA_ARGS__)   
+#define CORE_ERROR(format, ...)     printf("ERROR: " format "\n", ##__VA_ARGS__)
+#define CORE_WARNING(format, ...)   printf("WARNING: " format "\n", ##__VA_ARGS__)
+#define CORE_INFO(format, ...)      printf("INFO: " format "\n", ##__VA_ARGS__)
 
 // Asserts macros for runtime checks
 #define ASSERT(cond)                assert(cond)
