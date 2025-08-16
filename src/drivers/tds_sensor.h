@@ -40,9 +40,9 @@ namespace Drivers {
         private:
 
             /*!
-             * @brief Stores the analog reading in the readings vector.
-             * @param reading Analog reading to store.
-             * @return float The current average value.
+             * @brief Stores an analog reading and returns the average of the stored readings.
+             * @param reading The new analog reading to store.
+             * @return float The average of the stored analog readings.
              */
             float StoreAnalogReading(const float reading);
 
@@ -64,11 +64,7 @@ namespace Drivers {
             
             TdsReadingsVec _analogReadingsVec;
             TdsReadingsVec::iterator _analogReadingsVecIter;
-
-            float _temperature;
-            float _ref;
-            float _adcRange;
-            float _kValue;
+            
             int   _lastTdsReading;
     };
 

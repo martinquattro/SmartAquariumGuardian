@@ -29,10 +29,6 @@ void TdsSensor::Init()
         _instance = new TdsSensor(TDS_SENSOR_ADC_PIN);
     }
 
-    _instance->_temperature = 25.0;
-    _instance->_adcRange = 1024.0;
-    _instance->_ref = 5.0;
-    _instance->_kValue = 1.0;
     _instance->_lastTdsReading = 0;
 }
 
@@ -46,12 +42,12 @@ void TdsSensor::Update(const float temperature /* = 25.0*/)
     // ppm = (133.42 * V³ - 255.86 * V² + 857.39 * V) / factorTemp * 0.5
     // factorTemp ≈ 1.0 + 0.02 * (temp - 25)
     float factorTemp = (1.0 + 0.02 * (temperature - 25.0));
-    
+
     _lastTdsReading = (133.42 * pow(avgAnalogReading, 3) 
                      - 255.86 * pow(avgAnalogReading, 2) 
                      + 857.39 * avgAnalogReading) / factorTemp * 0.5;
 
-    // _lastTdsReading = std::clamp(_lastTdsReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
+    _lastTdsReading = std::clamp(_lastTdsReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
 
     CORE_INFO("TdsSensor::Update - Analog Reading = %.4f V | Average: %.4f V | PPM = %d"
         , analogReading
