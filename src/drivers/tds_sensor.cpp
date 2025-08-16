@@ -8,6 +8,8 @@
 #include "src/drivers/tds_sensor.h"
 
 #include "include/config.h"
+#include <algorithm>
+#include <cmath>
 
 namespace Drivers {
 
@@ -31,43 +33,37 @@ void TdsSensor::Init()
     _instance->_adcRange = 1024.0;
     _instance->_ref = 5.0;
     _instance->_kValue = 1.0;
-    _instance->_lastReading = 0;
+    _instance->_lastTdsReading = 0;
 }
 
 //-----------------------------------------------------------------------------
 void TdsSensor::Update(const float temperature /* = 25.0*/)
 {
     const float analogReading = _pin.ReadVoltage();
+    const float avgAnalogReading = StoreAnalogReading(analogReading);
 
-    float avgAnalogReading = StoreAnalogReading(analogReading);
+    // Logic to transform reading to ppm units
+    // ppm = (133.42 * V³ - 255.86 * V² + 857.39 * V) / factorTemp * 0.5
+    // factorTemp ≈ 1.0 + 0.02 * (temp - 25)
+    float factorTemp = (1.0 + 0.02 * (temperature - 25.0));
+    
+    _lastTdsReading = (133.42 * pow(avgAnalogReading, 3) 
+                     - 255.86 * pow(avgAnalogReading, 2) 
+                     + 857.39 * avgAnalogReading) / factorTemp * 0.5;
 
-    CORE_TRACE("TdsSensor - Average read voltage: %.4f V", avgAnalogReading);
+    // _lastTdsReading = std::clamp(_lastTdsReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
 
-    // // Logic to transform reading to ppm units
-    // const float voltage = avgAnalogReading * mRef;
-    // const float ecValue = ((133.42 * voltage * voltage * voltage) - (255.86 * voltage * voltage) + (857.39 * voltage)) * mKValue;
-    // const float ecValue25 = ecValue / (1.0 + 0.02 * (temperature - 25.0));  // Temperature compensation
-    // const int tdsValue = ecValue25 * 0.5;
-
-    // // check if we are out of boundaries
-    // if (tdsValue < MIN_TDS_VALUE)
-    // {
-    //     mLastReading = MIN_TDS_VALUE;
-    // }
-    // else if (tdsValue > MAX_TDS_VALUE)
-    // {
-    //     mLastReading = MAX_TDS_VALUE;
-    // }
-    // else
-    // {
-    //     mLastReading = tdsValue;
-    // }
+    CORE_INFO("TdsSensor::Update - Analog Reading = %.4f V | Average: %.4f V | PPM = %d"
+        , analogReading
+        , avgAnalogReading
+        , _lastTdsReading
+    );
 }
 
 //-----------------------------------------------------------------------------
 int TdsSensor::GetLastReading()
 {
-    return _lastReading;
+    return _lastTdsReading;
 }
 
 //----private------------------------------------------------------------------
@@ -80,18 +76,18 @@ float TdsSensor::StoreAnalogReading(const float reading)
     }
 
     // Add reading to vector
-    (*_readingsVectorIter) = reading;
+    (*_analogReadingsVecIter) = reading;
 
     // Check if we were at last element of the readings vector
-    if (_readingsVectorIter++ >= _readingsVector.end())
+    if (_analogReadingsVecIter++ >= _analogReadingsVec.end())
     {
-        _readingsVectorIter = _readingsVector.begin();
+        _analogReadingsVecIter = _analogReadingsVec.begin();
     }
 
     // Obtain average
     float tdsReadingSum = 0.0;
     int amountOfReadings = 0;
-    for (auto it = _readingsVector.begin(); it != _readingsVector.end(); ++it) 
+    for (auto it = _analogReadingsVec.begin(); it != _analogReadingsVec.end(); ++it) 
     {
         if ((*it) > 0.0)
         {
@@ -107,8 +103,8 @@ float TdsSensor::StoreAnalogReading(const float reading)
 //----private------------------------------------------------------------------
 TdsSensor::TdsSensor(const PinName pin)
     : _pin(pin)
-    , _readingsVector(NUM_AVG_SAMPLES, -1.0)
-    , _readingsVectorIter(_readingsVector.begin())
+    , _analogReadingsVec(NUM_AVG_SAMPLES, -1.0)
+    , _analogReadingsVecIter(_analogReadingsVec.begin())
 {
 }
 

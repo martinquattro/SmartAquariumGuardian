@@ -39,6 +39,13 @@ namespace Drivers {
 
         private:
 
+            /*!
+             * @brief Stores the analog reading in the readings vector.
+             * @param reading Analog reading to store.
+             * @return float The current average value.
+             */
+            float StoreAnalogReading(const float reading);
+
             using TdsReadingsVec = std::vector<float>;
             
             TdsSensor(const PinName pin);
@@ -55,14 +62,14 @@ namespace Drivers {
             static TdsSensor* _instance;
             AnalogIn _pin;
             
-            TdsReadingsVec _readingsVector;
-            TdsReadingsVec::iterator _readingsVectorIter;
+            TdsReadingsVec _analogReadingsVec;
+            TdsReadingsVec::iterator _analogReadingsVecIter;
 
             float _temperature;
             float _ref;
             float _adcRange;
             float _kValue;
-            int   _lastReading;
+            int   _lastTdsReading;
     };
 
 } // namespace Drivers
