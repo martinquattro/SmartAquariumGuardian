@@ -7,8 +7,9 @@
 
 #include "src/app/smart_aquarium_guardian.h"
 
-#include "include/config.h"
 #include "framework/common_defs.h"
+#include "include/config.h"
+#include "src/app/water_monitor.h"
 
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
 
@@ -25,6 +26,8 @@ void SmartAquariumGuardian::Init()
     {
         _instance = new SmartAquariumGuardian();
     }
+
+    Subsystems::WaterMonitor::Init();
 }
 
 //-----------------------------------------------------------------------------
@@ -32,10 +35,10 @@ void SmartAquariumGuardian::Update()
 {
     if (_delay.HasFinished())
     {
-        // Update subsystems here
-
+        Subsystems::WaterMonitor::GetInstance()->Update();
+        
         // Debounce delay to prevent flickering. See if it can be avoid
-        delay(10);
+        TaskDelay(10);
     }
 }
 

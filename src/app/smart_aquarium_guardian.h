@@ -14,13 +14,22 @@ class SmartAquariumGuardian
 {
     public:
 
-        //! Returns the singleton instance of SmartAquariumGuardian.
+        /*!
+         * @brief Gets the singleton instance of the SmartAquariumGuardian.
+         * @return SmartAquariumGuardian* Pointer to the SmartAquariumGuardian instance.
+         */
         static SmartAquariumGuardian* GetInstance();
 
-        //! Initializes the SmartAquariumGuardian system.
+        /*!
+         * @brief Initializes the SmartAquariumGuardian.
+         *        This method should be called once at the start of the application.
+         */
         static void Init();
 
-        //! Updates the system by calling the update methods of all subsystems.
+        /*!
+         * @brief Updates the SmartAquariumGuardian state.
+         *        This method should be called periodically to update the system state.
+         */
         void Update();
 
     private:

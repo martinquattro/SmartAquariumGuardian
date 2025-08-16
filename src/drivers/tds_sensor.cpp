@@ -37,30 +37,11 @@ void TdsSensor::Init()
 //-----------------------------------------------------------------------------
 void TdsSensor::Update(const float temperature /* = 25.0*/)
 {
-    // const float analogReading = mPin.read_voltage();
+    const float analogReading = _pin.ReadVoltage();
 
-    // // Add reading to vector
-    // (*mReadingsVectorIter) = analogReading;
+    float avgAnalogReading = StoreAnalogReading(analogReading);
 
-    // // Check if we were at last element of the readings vector
-    // if (mReadingsVectorIter++ >= mReadingsVector.end())
-    // {
-    //     mReadingsVectorIter = mReadingsVector.begin();
-    // }
-
-    // // Obtain average
-    // float tdsReadingSum = 0.0;
-    // int amountOfReadings = 0;
-    // for (auto it = mReadingsVector.begin(); it != mReadingsVector.end(); ++it) 
-    // {
-    //     if ((*it) > 0.0)
-    //     {
-    //         tdsReadingSum += (*it);
-    //         ++amountOfReadings;
-    //     }
-    // }
-
-    // float avgAnalogReading = (tdsReadingSum / amountOfReadings);
+    CORE_TRACE("TdsSensor - Average read voltage: %.4f V", avgAnalogReading);
 
     // // Logic to transform reading to ppm units
     // const float voltage = avgAnalogReading * mRef;
@@ -90,9 +71,43 @@ int TdsSensor::GetLastReading()
 }
 
 //----private------------------------------------------------------------------
+float TdsSensor::StoreAnalogReading(const float reading)
+{
+    if (reading < 0.0f || reading > _ref)
+    {
+        CORE_ERROR("TdsSensor::StoreAnalogReading - Invalid analog reading: %.4f", reading);
+        return 0.0f;
+    }
+
+    // Add reading to vector
+    (*_readingsVectorIter) = reading;
+
+    // Check if we were at last element of the readings vector
+    if (_readingsVectorIter++ >= _readingsVector.end())
+    {
+        _readingsVectorIter = _readingsVector.begin();
+    }
+
+    // Obtain average
+    float tdsReadingSum = 0.0;
+    int amountOfReadings = 0;
+    for (auto it = _readingsVector.begin(); it != _readingsVector.end(); ++it) 
+    {
+        if ((*it) > 0.0)
+        {
+            tdsReadingSum += (*it);
+            ++amountOfReadings;
+        }
+    }
+
+    float avgAnalogReading = (tdsReadingSum / amountOfReadings);
+    return avgAnalogReading;
+}
+
+//----private------------------------------------------------------------------
 TdsSensor::TdsSensor(const PinName pin)
     : _pin(pin)
-    , _readingsVector(TDS_SENSOR_NUM_AVG_SAMPLES, -1.0)
+    , _readingsVector(NUM_AVG_SAMPLES, -1.0)
     , _readingsVectorIter(_readingsVector.begin())
 {
 }
