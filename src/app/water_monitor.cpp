@@ -7,6 +7,7 @@
 
 #include "src/app/water_monitor.h"
 
+#include "src/drivers/temperature_sensor.h"
 #include "src/drivers/tds_sensor.h"
 #include "framework/common_defs.h"
 
@@ -29,12 +30,14 @@ void WaterMonitor::Init()
     }
 
     Drivers::TdsSensor::Init();
+    Drivers::TemperatureSensor::Init();
 }
 
 //-----------------------------------------------------------------------------
 void WaterMonitor::Update()
 {
-    Drivers::TdsSensor::GetInstance()->Update();
+    // Drivers::TdsSensor::GetInstance()->Update();
+    Drivers::TemperatureSensor::GetInstance()->Update();
 }
 
 //-----------------------------------------------------------------------------

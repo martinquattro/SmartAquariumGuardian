@@ -12,9 +12,11 @@
 #include "framework/debug_defs.h"
 #include "framework/drivers/analog_in.h"
 #include "framework/drivers/digital_in_out.h"
+#include "framework/drivers/one_wire.h"
 #include "framework/pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_rom_sys.h"
 
 // Functional states
 #ifndef OFF
@@ -35,5 +37,6 @@
 #endif
 
 #define TaskDelay(ms)                  vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
+#define TaskDelayUs(us)                esp_rom_delay_us(us)                 // Delay us
 
 #endif // COMMON_DEFS_H

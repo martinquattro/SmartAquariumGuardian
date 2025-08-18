@@ -65,7 +65,7 @@ int TdsSensor::GetLastReading()
 //----private------------------------------------------------------------------
 float TdsSensor::StoreAnalogReading(const float reading)
 {
-    if (reading < 0.0f || reading > _ref)
+    if (reading < 0.0f || reading > 3.3f)
     {
         CORE_ERROR("TdsSensor::StoreAnalogReading - Invalid analog reading: %.4f", reading);
         return 0.0f;

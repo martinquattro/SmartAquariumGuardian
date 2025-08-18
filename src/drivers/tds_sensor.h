@@ -28,7 +28,10 @@ namespace Drivers {
              */
             static void Init();
 
-            //! TODO
+            /*!
+             * @brief Updates the TDS sensor reading.
+             * @param temperature Temperature in Celsius for calibration (default 25.0).
+             */
             void Update(const float temperature = 25.0);
 
             /*!

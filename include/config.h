@@ -13,7 +13,8 @@
 #define SYSTEM_TIME_INCREMENT_MS   1000
 
 #define TDS_SENSOR_ADC_PIN  A6
+#define TEMP_SENSOR_PIN     P14
 
-#define BUILTIN_LED P2
+#define BUILTIN_LED         P2
 
 #endif // CONFIG_H
