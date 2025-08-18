@@ -25,7 +25,7 @@ void TemperatureSensor::Init()
 {
     if (_instance == nullptr)
     {
-        _instance = new TemperatureSensor(TEMP_SENSOR_PIN);
+        _instance = new TemperatureSensor(Config::TEMP_SENSOR_PIN);
     }
 
     _instance->_lastTempReading = 0.0f;

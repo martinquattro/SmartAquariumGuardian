@@ -30,14 +30,14 @@ void WaterMonitor::Init()
     }
 
     Drivers::TdsSensor::Init();
-    Drivers::TemperatureSensor::Init();
+    //Drivers::TemperatureSensor::Init();
 }
 
 //-----------------------------------------------------------------------------
 void WaterMonitor::Update()
 {
-    // Drivers::TdsSensor::GetInstance()->Update();
-    Drivers::TemperatureSensor::GetInstance()->Update();
+     Drivers::TdsSensor::GetInstance()->Update();
+    //Drivers::TemperatureSensor::GetInstance()->Update();
 }
 
 //-----------------------------------------------------------------------------

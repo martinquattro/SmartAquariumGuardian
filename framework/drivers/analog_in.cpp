@@ -90,12 +90,12 @@ bool AnalogIn::PinToAdcChannel(PinName pin, adc_channel_t& out) const
 {
     switch (pin) 
     {
-        case P36: out = ADC_CHANNEL_0; return true;
-        case P39: out = ADC_CHANNEL_3; return true;
-        case P32: out = ADC_CHANNEL_4; return true;
-        case P33: out = ADC_CHANNEL_5; return true;
-        case P34: out = ADC_CHANNEL_6; return true;
-        case P35: out = ADC_CHANNEL_7; return true;
+        case PinName::P36:      out = ADC_CHANNEL_0;        return true;
+        case PinName::P39:      out = ADC_CHANNEL_3;        return true;
+        case PinName::P32:      out = ADC_CHANNEL_4;        return true;
+        case PinName::P33:      out = ADC_CHANNEL_5;        return true;
+        case PinName::P34:      out = ADC_CHANNEL_6;        return true;
+        case PinName::P35:      out = ADC_CHANNEL_7;        return true;
         default: return false;
     }
 }

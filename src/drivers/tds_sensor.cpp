@@ -26,7 +26,7 @@ void TdsSensor::Init()
 {
     if (_instance == nullptr)
     {
-        _instance = new TdsSensor(TDS_SENSOR_ADC_PIN);
+        _instance = new TdsSensor(Config::TDS_SENSOR_ADC_PIN);
     }
 
     _instance->_lastTdsReading = 0;

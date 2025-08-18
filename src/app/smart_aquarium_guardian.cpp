@@ -37,12 +37,13 @@ void SmartAquariumGuardian::Update()
     {
         Subsystems::WaterMonitor::GetInstance()->Update();
         
-        // Debounce delay to prevent flickering. See if it can be avoid
+        // Debounce delay to prevent flickering. 
+        // TODO - See if it can be avoid
         TaskDelay(10);
     }
 }
 
 //----private------------------------------------------------------------------
 SmartAquariumGuardian::SmartAquariumGuardian()
-    : _delay(SYSTEM_TIME_INCREMENT_MS)
+    : _delay(Config::SYSTEM_TIME_INCREMENT_MS)
 {}

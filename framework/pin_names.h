@@ -9,7 +9,7 @@
 
 #include "driver/gpio.h"
 
-enum PinName 
+enum class PinName 
 {
     // GPIO base
     P0  = GPIO_NUM_0,
