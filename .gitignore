@@ -7,9 +7,7 @@
 *.d
 
 # SDK config (si lo generás automáticamente)
-sdkconfig
-sdkconfig.old
-sdkconfig.esp32dev
+sdkconfig.*
 
 # Other
 .gitattributes

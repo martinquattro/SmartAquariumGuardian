@@ -20,6 +20,7 @@ static constexpr int SYSTEM_TIME_INCREMENT_MS = 1000;
 // These pins are used for various sensors and controls in the aquarium system
 static constexpr PinName TDS_SENSOR_ADC_PIN = PinName::A6;
 static constexpr PinName TEMP_SENSOR_PIN = PinName::P14;
+static constexpr PinName SERVO_FEEDER_PWM_PIN = PinName::P5; 
 
 // Pin for the built-in LED on the ESP32 DevKit board
 // This pin is used to indicate the system status or for debugging purposes

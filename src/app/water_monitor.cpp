@@ -13,20 +13,20 @@
 
 namespace Subsystems {
 
-WaterMonitor* WaterMonitor::mInstance = nullptr;
+WaterMonitor* WaterMonitor::_instance = nullptr;
 
 //----static-------------------------------------------------------------------
 WaterMonitor* WaterMonitor::GetInstance()
 {
-    return mInstance;
+    return _instance;
 }
 
 //----static-------------------------------------------------------------------
 void WaterMonitor::Init()
 {
-    if (mInstance == nullptr)
+    if (_instance == nullptr)
     {
-        mInstance = new WaterMonitor();
+        _instance = new WaterMonitor();
     }
 
     Drivers::TdsSensor::Init();

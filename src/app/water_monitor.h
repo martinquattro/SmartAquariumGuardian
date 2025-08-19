@@ -46,7 +46,7 @@ namespace Subsystems {
             WaterMonitor(const WaterMonitor&) = delete;
             WaterMonitor& operator=(const WaterMonitor&) = delete;
 
-            static WaterMonitor* mInstance;
+            static WaterMonitor* _instance;
         };
 
 } // namespace Subsystems
