@@ -9,12 +9,15 @@
 
 #include <cassert>
 #include <cstdio>
+#include "esp_log.h"
+
+#define CORE_TAG (strrchr("/" __FILE__, '/') + 1)
 
 // Debug macros for logging
-#define CORE_TRACE(format, ...)     printf(format "\n", ##__VA_ARGS__)   
-#define CORE_ERROR(format, ...)     printf("ERROR: " format "\n", ##__VA_ARGS__)
-#define CORE_WARNING(format, ...)   printf("WARNING: " format "\n", ##__VA_ARGS__)
-#define CORE_INFO(format, ...)      printf("INFO: " format "\n", ##__VA_ARGS__)
+#define CORE_TRACE(format, ...)   ESP_LOGD(CORE_TAG, format, ##__VA_ARGS__)
+#define CORE_ERROR(format, ...)   ESP_LOGE(CORE_TAG, format, ##__VA_ARGS__)
+#define CORE_WARNING(format, ...) ESP_LOGW(CORE_TAG, format, ##__VA_ARGS__)
+#define CORE_INFO(format, ...)    ESP_LOGI(CORE_TAG, format, ##__VA_ARGS__)
 
 // Asserts macros for runtime checks
 #define ASSERT(cond)                assert(cond)

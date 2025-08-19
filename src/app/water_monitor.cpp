@@ -24,20 +24,22 @@ WaterMonitor* WaterMonitor::GetInstance()
 //----static-------------------------------------------------------------------
 void WaterMonitor::Init()
 {
+    CORE_INFO("Initializing WaterMonitor...");
+    
     if (_instance == nullptr)
     {
         _instance = new WaterMonitor();
     }
 
     Drivers::TdsSensor::Init();
-    //Drivers::TemperatureSensor::Init();
+    Drivers::TemperatureSensor::Init();
 }
 
 //-----------------------------------------------------------------------------
 void WaterMonitor::Update()
 {
-     Drivers::TdsSensor::GetInstance()->Update();
-    //Drivers::TemperatureSensor::GetInstance()->Update();
+    Drivers::TdsSensor::GetInstance()->Update();
+    Drivers::TemperatureSensor::GetInstance()->Update();
 }
 
 //-----------------------------------------------------------------------------

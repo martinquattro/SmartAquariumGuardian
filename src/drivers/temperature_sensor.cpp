@@ -23,12 +23,14 @@ TemperatureSensor* TemperatureSensor::GetInstance()
 //----static-------------------------------------------------------------------
 void TemperatureSensor::Init()
 {
+    CORE_INFO("Initializing TemperatureSensor...");
+
     if (_instance == nullptr)
     {
         _instance = new TemperatureSensor(Config::TEMP_SENSOR_PIN);
     }
 
-    _instance->_lastTempReading = 0.0f;
+    _instance->_lastReading = 0.0f;
 }
 
 //-----------------------------------------------------------------------------
@@ -38,43 +40,43 @@ void TemperatureSensor::Update()
     float rawReadingAvg = StoreReading(rawReading);
 
     // Convert raw temperature to Celsius
-    _lastTempReading = (rawReadingAvg / 16.0f);
+    _lastReading = (rawReadingAvg / 16.0f);
 
     // _lastTempReading = std::clamp(_lastTempReading, MIN_TEMP_VALUE, MAX_TEMP_VALUE);
 
-    CORE_INFO("TemperatureSensor::Update - Raw Reading = %d | Average: %.4f V | Temp = %.3f °C"
+    CORE_INFO("Raw Reading = %d | Average: %.4f V | Temp = %.3f °C"
         , rawReading
         , rawReadingAvg
-        , _lastTempReading
+        , _lastReading
     );
 }
 
 //----private------------------------------------------------------------------
 int16_t TemperatureSensor::GetRawReading()
 {
-    if (!_oneWire.Reset())
+    if (!_oneWirePin.Reset())
     {
-        CORE_ERROR("TemperatureSensor::GetRawReading - No DS18B20 detected!");
+        CORE_ERROR("No DS18B20 detected!");
         return 0;
     }
 
-    _oneWire.WriteByte(CMD_SKIP_ROM);
-    _oneWire.WriteByte(CMD_CONVERT_T);
+    _oneWirePin.WriteByte(CMD_SKIP_ROM);
+    _oneWirePin.WriteByte(CMD_CONVERT_T);
 
     // Wait for conversion (750 ms for 12-bit resolution)
     TaskDelay(750);
 
-    if (!_oneWire.Reset())
+    if (!_oneWirePin.Reset())
     {
-        CORE_ERROR("TemperatureSensor::GetRawReading - Lost device after conversion!");
+        CORE_ERROR("Lost device after conversion!");
         return 0;
     }
 
-    _oneWire.WriteByte(CMD_SKIP_ROM);
-    _oneWire.WriteByte(CMD_READ_SCRATCH);
+    _oneWirePin.WriteByte(CMD_SKIP_ROM);
+    _oneWirePin.WriteByte(CMD_READ_SCRATCH);
 
-    uint8_t tempLSB = _oneWire.ReadByte();
-    uint8_t tempMSB = _oneWire.ReadByte();
+    uint8_t tempLSB = _oneWirePin.ReadByte();
+    uint8_t tempMSB = _oneWirePin.ReadByte();
 
     int16_t rawTemp = (tempMSB << 8) | tempLSB;
     return rawTemp;
@@ -107,12 +109,12 @@ float TemperatureSensor::StoreReading(float reading)
 //----private------------------------------------------------------------------
 float TemperatureSensor::GetLastReading() const
 {
-    return _lastTempReading;
+    return _lastReading;
 }
 
 //----private------------------------------------------------------------------
 TemperatureSensor::TemperatureSensor(const PinName pin)
-    : _oneWire(pin)
+    : _oneWirePin(pin)
     , _rawReadingsVec(NUM_AVG_SAMPLES, -1.0f)
     , _rawReadingsVecIter(_rawReadingsVec.begin())
 {

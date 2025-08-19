@@ -24,18 +24,20 @@ TdsSensor* TdsSensor::GetInstance()
 //----static-------------------------------------------------------------------
 void TdsSensor::Init()
 {
+    CORE_INFO("Initializing TdsSensor...");
+
     if (_instance == nullptr)
     {
         _instance = new TdsSensor(Config::TDS_SENSOR_ADC_PIN);
     }
 
-    _instance->_lastTdsReading = 0;
+    _instance->_lastReading = 0;
 }
 
 //-----------------------------------------------------------------------------
 void TdsSensor::Update(const float temperature /* = 25.0*/)
 {
-    const float analogReading = _pin.ReadVoltage();
+    const float analogReading = _analogInPin.ReadVoltage();
     const float avgAnalogReading = StoreAnalogReading(analogReading);
 
     // Logic to transform reading to ppm units
@@ -43,23 +45,23 @@ void TdsSensor::Update(const float temperature /* = 25.0*/)
     // factorTemp ≈ 1.0 + 0.02 * (temp - 25)
     float factorTemp = (1.0 + 0.02 * (temperature - 25.0));
 
-    _lastTdsReading = (133.42 * pow(avgAnalogReading, 3) 
+    _lastReading = (133.42 * pow(avgAnalogReading, 3) 
                      - 255.86 * pow(avgAnalogReading, 2) 
                      + 857.39 * avgAnalogReading) / factorTemp * 0.5;
 
-    _lastTdsReading = std::clamp(_lastTdsReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
+    _lastReading = std::clamp(_lastReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
 
-    CORE_INFO("TdsSensor::Update - Analog Reading = %.4f V | Average: %.4f V | PPM = %d"
+    CORE_INFO("Analog Reading = %.4f V | Average: %.4f V | PPM = %d"
         , analogReading
         , avgAnalogReading
-        , _lastTdsReading
+        , _lastReading
     );
 }
 
 //-----------------------------------------------------------------------------
 int TdsSensor::GetLastReading()
 {
-    return _lastTdsReading;
+    return _lastReading;
 }
 
 //----private------------------------------------------------------------------
@@ -67,7 +69,7 @@ float TdsSensor::StoreAnalogReading(const float reading)
 {
     if (reading < 0.0f || reading > 3.3f)
     {
-        CORE_ERROR("TdsSensor::StoreAnalogReading - Invalid analog reading: %.4f", reading);
+        CORE_ERROR("Invalid analog reading: %.4f", reading);
         return 0.0f;
     }
 
@@ -98,7 +100,7 @@ float TdsSensor::StoreAnalogReading(const float reading)
 
 //----private------------------------------------------------------------------
 TdsSensor::TdsSensor(const PinName pin)
-    : _pin(pin)
+    : _analogInPin(pin)
     , _analogReadingsVec(NUM_AVG_SAMPLES, -1.0)
     , _analogReadingsVecIter(_analogReadingsVec.begin())
 {

@@ -5,12 +5,13 @@
  * @date    Aug 2025
  ******************************************************************************/
 
-#pragma once
+#ifndef TEMPERATURE_SENSOR_H
+#define TEMPERATURE_SENSOR_H
 
 #include "framework/common_defs.h"
 #include <vector>
 
-namespace Drivers{
+namespace Drivers {
 
 class TemperatureSensor
 {
@@ -72,12 +73,14 @@ class TemperatureSensor
         //---------------------------------------------
 
         static TemperatureSensor* _instance;
-        OneWire _oneWire;
+        OneWire _oneWirePin;
 
         TempReadingsVec _rawReadingsVec;
         TempReadingsVec::iterator _rawReadingsVecIter;
 
-        float _lastTempReading;
+        float _lastReading;
 };
 
 } // namespace Drivers
+
+#endif // TEMPERATURE_SENSOR_H

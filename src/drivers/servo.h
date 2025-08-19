@@ -1,0 +1,66 @@
+/*!****************************************************************************
+ * @file    servo.h
+ * @brief   Driver class for hobby servo motors using PWM (LEDC).
+ * @author  Quattrone Martin
+ * @date    Aug 2025
+ ******************************************************************************/
+
+#ifndef SERVO_H
+#define SERVO_H
+
+#include "framework/common_defs.h"
+
+namespace Drivers {
+
+    class Servo
+    {
+        public:
+            /**
+             * @brief Get the singleton instance of Servo.
+             * @return Servo& Pointer to the Servo instance.
+             */
+            static Servo* GetInstance();
+
+            /**
+             * @brief Initialize the servo driver.
+             * 
+             * @param pin   GPIO pin connected to servo control input.
+             * @param freq  PWM frequency in Hz (default: 50 Hz).
+             * @param minDuty Minimum duty cycle for 0° (default: 0.05f = 5%).
+             * @param maxDuty Maximum duty cycle for 180° (default: 0.10f = 10%).
+             */
+            static void Init();
+
+            /**
+             * @brief Update servo state (call regularly from main loop).
+             */
+            void Update();
+
+            /**
+             * @brief Smoothly move servo to target angle in given time.
+             * 
+             * @param angle Target angle [0–180°].
+             * @param timeMs Transition duration in milliseconds.
+             */
+            void FadeToAngle(float angle, uint32_t timeMs);
+
+        private:
+
+            Servo(PinName pin, uint32_t freq = 50);
+            ~Servo() = default;
+            Servo(const Servo&) = delete;
+            Servo& operator=(const Servo&) = delete;
+
+            static constexpr float PWM_FREQUENCY    = 50;
+            static constexpr float MIN_SERVO_DUTY   = 0.05f;
+            static constexpr float MAX_SERVO_DUTY   = 0.10f;
+
+            //---------------------------------------------
+
+            static Servo* _instance;
+            PwmOut _pwmOut;
+    };
+
+} // namespace Drivers
+
+#endif // SERVO_H

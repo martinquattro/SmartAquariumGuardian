@@ -9,14 +9,15 @@
 #ifndef COMMON_DEFS_H
 #define COMMON_DEFS_H
 
+#include "esp_rom_sys.h"
 #include "framework/debug_defs.h"
 #include "framework/drivers/analog_in.h"
 #include "framework/drivers/digital_in_out.h"
 #include "framework/drivers/one_wire.h"
+#include "framework/drivers/pwm_out.h"
 #include "framework/pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_rom_sys.h"
 
 // Functional states
 #ifndef OFF

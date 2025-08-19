@@ -8,6 +8,7 @@
 #include "src/app/food_feeder.h"
 
 #include "framework/common_defs.h"
+#include "src/drivers/servo.h"
 
 namespace Subsystems {
 
@@ -22,16 +23,20 @@ FoodFeeder* FoodFeeder::GetInstance()
 //----static-------------------------------------------------------------------
 void FoodFeeder::Init()
 {
+    CORE_INFO("Initializing FoodFeeder...");
+    
     if (_instance == nullptr)
     {
         _instance = new FoodFeeder();
     }
+
+    Drivers::Servo::Init();
 }
 
 //-----------------------------------------------------------------------------
 void FoodFeeder::Update()
 {
-
+    Drivers::Servo::GetInstance()->Update();
 }
 
 } // namespace Subsystems

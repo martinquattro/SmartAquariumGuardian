@@ -63,12 +63,12 @@ namespace Drivers {
             //---------------------------------------------
 
             static TdsSensor* _instance;
-            AnalogIn _pin;
+            AnalogIn _analogInPin;
             
             TdsReadingsVec _analogReadingsVec;
             TdsReadingsVec::iterator _analogReadingsVecIter;
             
-            int   _lastTdsReading;
+            int _lastReading;
     };
 
 } // namespace Drivers
