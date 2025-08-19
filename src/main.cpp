@@ -7,6 +7,7 @@
 
 #include "src/app/smart_aquarium_guardian.h"
 
+//-----------------------------------------------------------------------------
 extern "C" void app_main(void) 
 {
     SmartAquariumGuardian::Init();
