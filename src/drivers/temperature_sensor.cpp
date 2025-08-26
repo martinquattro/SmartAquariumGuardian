@@ -25,11 +25,13 @@ void TemperatureSensor::Init()
 {
     CORE_INFO("Initializing TemperatureSensor...");
 
-    if (_instance == nullptr)
+    if (_instance != nullptr)
     {
-        _instance = new TemperatureSensor(Config::TEMP_SENSOR_PIN);
+        CORE_ERROR("TemperatureSensor already initialized!");
+        return;
     }
 
+    _instance = new TemperatureSensor(Config::TEMP_SENSOR_PIN);
     _instance->_lastReading = 0.0f;
 }
 

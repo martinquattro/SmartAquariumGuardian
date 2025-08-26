@@ -26,10 +26,13 @@ void WaterMonitor::Init()
 {
     CORE_INFO("Initializing WaterMonitor...");
     
-    if (_instance == nullptr)
+    if (_instance != nullptr)
     {
-        _instance = new WaterMonitor();
+        CORE_ERROR("WaterMonitor already initialized!");
+        return;
     }
+
+    _instance = new WaterMonitor();
 
     Drivers::TdsSensor::Init();
     Drivers::TemperatureSensor::Init();
@@ -38,6 +41,8 @@ void WaterMonitor::Init()
 //-----------------------------------------------------------------------------
 void WaterMonitor::Update()
 {
+    CORE_INFO("Updating WaterMonitor...");
+    
     Drivers::TdsSensor::GetInstance()->Update();
     Drivers::TemperatureSensor::GetInstance()->Update();
 }

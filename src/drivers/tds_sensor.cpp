@@ -26,11 +26,13 @@ void TdsSensor::Init()
 {
     CORE_INFO("Initializing TdsSensor...");
 
-    if (_instance == nullptr)
+    if (_instance != nullptr)
     {
-        _instance = new TdsSensor(Config::TDS_SENSOR_ADC_PIN);
+        CORE_ERROR("TdsSensor already initialized!");
+        return;
     }
 
+    _instance = new TdsSensor(Config::TDS_SENSOR_ADC_PIN);
     _instance->_lastReading = 0;
 }
 

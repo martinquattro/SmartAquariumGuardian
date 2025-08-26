@@ -34,7 +34,7 @@ class SmartAquariumGuardian
 
     private:
 
-        SmartAquariumGuardian();
+        SmartAquariumGuardian() {}
         ~SmartAquariumGuardian() = default;
         SmartAquariumGuardian(const SmartAquariumGuardian&) = delete;
         SmartAquariumGuardian& operator=(const SmartAquariumGuardian&) = delete;

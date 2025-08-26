@@ -25,17 +25,21 @@ void FoodFeeder::Init()
 {
     CORE_INFO("Initializing FoodFeeder...");
     
-    if (_instance == nullptr)
+    if (_instance != nullptr)
     {
-        _instance = new FoodFeeder();
+        CORE_ERROR("FoodFeeder already initialized!");
+        return;
     }
 
+    _instance = new FoodFeeder();
     Drivers::Servo::Init();
 }
 
 //-----------------------------------------------------------------------------
 void FoodFeeder::Update()
 {
+    CORE_INFO("Updating FoodFeeder...");
+    
     Drivers::Servo::GetInstance()->Update();
 }
 

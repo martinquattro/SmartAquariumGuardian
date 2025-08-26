@@ -25,11 +25,13 @@ void Servo::Init()
 {
     CORE_INFO("Initializing Servo...");
 
-    if (_instance == nullptr)
+    if (_instance != nullptr)
     {
-        _instance = new Servo(Config::SERVO_FEEDER_PWM_PIN, PWM_FREQUENCY);
+        CORE_ERROR("Servo already initialized!");
+        return;
     }
 
+    _instance = new Servo(Config::SERVO_FEEDER_PWM_PIN, PWM_FREQUENCY);
     _instance->_pwmOut.SetDuty(MIN_SERVO_DUTY);
 }
 

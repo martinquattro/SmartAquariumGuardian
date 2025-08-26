@@ -19,8 +19,17 @@ static constexpr int SYSTEM_TIME_INCREMENT_MS = 1000;
 // Pin definitions for the Smart Aquarium Guardian
 // These pins are used for various sensors and controls in the aquarium system
 static constexpr PinName TDS_SENSOR_ADC_PIN = PinName::A6;
+
 static constexpr PinName TEMP_SENSOR_PIN = PinName::P14;
+
 static constexpr PinName SERVO_FEEDER_PWM_PIN = PinName::P5; 
+
+static constexpr PinName LCD_RS_PIN = PinName::P22;
+static constexpr PinName LCD_EN_PIN = PinName::P23;
+static constexpr PinName LCD_D4_PIN = PinName::P33;
+static constexpr PinName LCD_D5_PIN = PinName::P25;
+static constexpr PinName LCD_D6_PIN = PinName::P26;
+static constexpr PinName LCD_D7_PIN = PinName::P27;
 
 // Pin for the built-in LED on the ESP32 DevKit board
 // This pin is used to indicate the system status or for debugging purposes

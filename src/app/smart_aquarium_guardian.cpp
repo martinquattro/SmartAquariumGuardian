@@ -10,6 +10,7 @@
 #include "framework/common_defs.h"
 #include "include/config.h"
 #include "src/app/food_feeder.h"
+#include "src/app/user_interface.h"
 #include "src/app/water_monitor.h"
 
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
@@ -25,13 +26,20 @@ void SmartAquariumGuardian::Init()
 {
     CORE_INFO("Initializing SmartAquariumGuardian...");
 
-    if (_instance == nullptr)
+    if (_instance != nullptr)
     {
-        _instance = new SmartAquariumGuardian();
+        CORE_ERROR("SmartAquariumGuardian already initialized!");
+        return;
     }
 
+    // Start periodic update delay
+    _instance = new SmartAquariumGuardian();
+    _instance->_delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
+
+    // Initialize subsystems
     Subsystems::WaterMonitor::Init();
     Subsystems::FoodFeeder::Init();
+    Subsystems::UserInterface::Init();
 }
 
 //-----------------------------------------------------------------------------
@@ -42,16 +50,12 @@ void SmartAquariumGuardian::Update()
         CORE_INFO("Starting periodic update...");
 
         // Update subsystems
-        Subsystems::WaterMonitor::GetInstance()->Update();
-        Subsystems::FoodFeeder::GetInstance()->Update();
+        //Subsystems::WaterMonitor::GetInstance()->Update();
+        //Subsystems::FoodFeeder::GetInstance()->Update();
+        Subsystems::UserInterface::GetInstance()->Update();
 
         // Debounce delay to prevent flickering. 
         // TODO - See if it can be avoid
-        TaskDelay(10);
+        TaskDelayMs(10);
     }
 }
-
-//----private------------------------------------------------------------------
-SmartAquariumGuardian::SmartAquariumGuardian()
-    : _delay(Config::SYSTEM_TIME_INCREMENT_MS)
-{}
