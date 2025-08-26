@@ -64,7 +64,7 @@ int16_t TemperatureSensor::GetRawReading()
     _oneWirePin.WriteByte(CMD_CONVERT_T);
 
     // Wait for conversion (750 ms for 12-bit resolution)
-    TaskDelay(750);
+    TaskDelayMs(750);
 
     if (!_oneWirePin.Reset())
     {

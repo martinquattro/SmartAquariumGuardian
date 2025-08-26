@@ -37,7 +37,7 @@
     #define HIGH   (!LOW)
 #endif
 
-#define TaskDelay(ms)                  vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
+#define TaskDelayMs(ms)                vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
 #define TaskDelayUs(us)                esp_rom_delay_us(us)                 // Delay us
 
 #endif // COMMON_DEFS_H

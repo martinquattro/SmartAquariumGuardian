@@ -56,7 +56,10 @@ namespace Drivers {
             TdsSensor(const TdsSensor&) = delete;
             TdsSensor& operator=(const TdsSensor&) = delete;
 
+            //---------------------------------------------
+
             static constexpr int NUM_AVG_SAMPLES = 20;
+            
             static constexpr int MIN_TDS_VALUE   = 0;
             static constexpr int MAX_TDS_VALUE   = 999;
 

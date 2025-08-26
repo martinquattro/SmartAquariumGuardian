@@ -17,17 +17,12 @@ namespace Drivers {
         public:
             /**
              * @brief Get the singleton instance of Servo.
-             * @return Servo& Pointer to the Servo instance.
+             * @return Servo* Pointer to the Servo instance.
              */
             static Servo* GetInstance();
 
             /**
              * @brief Initialize the servo driver.
-             * 
-             * @param pin   GPIO pin connected to servo control input.
-             * @param freq  PWM frequency in Hz (default: 50 Hz).
-             * @param minDuty Minimum duty cycle for 0° (default: 0.05f = 5%).
-             * @param maxDuty Maximum duty cycle for 180° (default: 0.10f = 10%).
              */
             static void Init();
 
@@ -51,7 +46,10 @@ namespace Drivers {
             Servo(const Servo&) = delete;
             Servo& operator=(const Servo&) = delete;
 
+            //---------------------------------------------
+
             static constexpr float PWM_FREQUENCY    = 50;
+            
             static constexpr float MIN_SERVO_DUTY   = 0.05f;
             static constexpr float MAX_SERVO_DUTY   = 0.10f;
 

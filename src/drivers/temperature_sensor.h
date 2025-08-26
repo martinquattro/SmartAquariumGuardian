@@ -61,6 +61,8 @@ class TemperatureSensor
         TemperatureSensor(const TemperatureSensor&) = delete;
         TemperatureSensor& operator=(const TemperatureSensor&) = delete;
 
+        //---------------------------------------------
+
         static constexpr uint8_t CMD_SKIP_ROM     = 0xCC;
         static constexpr uint8_t CMD_CONVERT_T    = 0x44;
         static constexpr uint8_t CMD_READ_SCRATCH = 0xBE;

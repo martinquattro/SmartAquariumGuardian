@@ -12,7 +12,7 @@
 
 namespace Drivers {
 
-    Servo* Servo::_instance = nullptr;
+Servo* Servo::_instance = nullptr;
 
 //----static-------------------------------------------------------------------
 Servo* Servo::GetInstance()
