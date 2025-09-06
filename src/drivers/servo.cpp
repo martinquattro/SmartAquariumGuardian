@@ -40,16 +40,6 @@ void Servo::Update()
 {
     // For now, no periodic logic.
     // In the future, could track Fade completion or add timed sequences.
-    static int angle = angle + 30; // Center position
-    while (true)
-    {
-        // _pwmOut.SetDuty(MIN_SAFE_DUTY);
-        // TaskDelayMs(500);
-        // _pwmOut.SetDuty(MAX_SAFE_DUTY);
-        // TaskDelayMs(500);
-
-        FadeToAngle(90, 500);
-    }
 }
 
 //-----------------------------------------------------------------------------
