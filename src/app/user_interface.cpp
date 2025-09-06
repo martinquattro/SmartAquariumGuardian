@@ -75,7 +75,7 @@ void UserInterface::Update()
         lcdDisplay->Write("TDS: 342 ppm  [OK]  ");
 
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_4);
-        lcdDisplay->Write("Temp: 23.5 C  [HIGH]");
+        lcdDisplay->Write("Temp: 23.5°C [HIGH]");
     }
     else if (_currentDisplayState == STATE_PAGE_2)
     {

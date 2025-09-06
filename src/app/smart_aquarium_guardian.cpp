@@ -50,8 +50,8 @@ void SmartAquariumGuardian::Update()
         CORE_INFO("Starting periodic update...");
 
         // Update subsystems
-        //Subsystems::WaterMonitor::GetInstance()->Update();
-        //Subsystems::FoodFeeder::GetInstance()->Update();
+        Subsystems::WaterMonitor::GetInstance()->Update();
+        Subsystems::FoodFeeder::GetInstance()->Update();
         Subsystems::UserInterface::GetInstance()->Update();
 
         // Debounce delay to prevent flickering. 
