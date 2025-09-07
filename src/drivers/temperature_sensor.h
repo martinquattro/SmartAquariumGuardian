@@ -41,6 +41,11 @@ class TemperatureSensor
 
     private:
 
+        TemperatureSensor(const PinName pin);
+        ~TemperatureSensor() = default;
+        TemperatureSensor(const TemperatureSensor&) = delete;
+        TemperatureSensor& operator=(const TemperatureSensor&) = delete;
+
         /**
          * @brief Get raw temperature reading from the sensor.
          * @return int16_t Raw temperature value.
@@ -55,11 +60,6 @@ class TemperatureSensor
         float StoreReading(float reading);
 
         using TempReadingsVec = std::vector<float>;
-
-        TemperatureSensor(const PinName pin);
-        ~TemperatureSensor() = default;
-        TemperatureSensor(const TemperatureSensor&) = delete;
-        TemperatureSensor& operator=(const TemperatureSensor&) = delete;
 
         //---------------------------------------------
 
