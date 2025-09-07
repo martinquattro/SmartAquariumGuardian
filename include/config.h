@@ -24,12 +24,18 @@ static constexpr PinName TEMP_SENSOR_PIN = PinName::P14;
 
 static constexpr PinName SERVO_FEEDER_PWM_PIN = PinName::P5; 
 
-static constexpr PinName LCD_RS_PIN = PinName::P22;
+static constexpr PinName LCD_RS_PIN = PinName::P4;
 static constexpr PinName LCD_EN_PIN = PinName::P23;
 static constexpr PinName LCD_D4_PIN = PinName::P33;
 static constexpr PinName LCD_D5_PIN = PinName::P25;
 static constexpr PinName LCD_D6_PIN = PinName::P26;
 static constexpr PinName LCD_D7_PIN = PinName::P27;
+
+static constexpr PinName I2C_SDA_PIN = PinName::P21;
+static constexpr PinName I2C_SCL_PIN = PinName::P22;
+
+// I2C address for the external EEPROM (AT24C32)
+static constexpr uint8_t EEPROM_I2C_ADDRESS = 0x50;
 
 // Pin for the built-in LED on the ESP32 DevKit board
 // This pin is used to indicate the system status or for debugging purposes
