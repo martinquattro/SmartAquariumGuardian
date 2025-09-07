@@ -13,6 +13,7 @@
 #include "framework/debug_defs.h"
 #include "framework/drivers/analog_in.h"
 #include "framework/drivers/digital_in_out.h"
+#include "framework/drivers/i2c.h"
 #include "framework/drivers/one_wire.h"
 #include "framework/drivers/pwm_out.h"
 #include "framework/pin_names.h"
