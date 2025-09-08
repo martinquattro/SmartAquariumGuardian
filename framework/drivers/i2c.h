@@ -71,7 +71,8 @@ class I2C
     private:
 
         i2c_port_num_t _port;
-        i2c_master_bus_handle_t _bus{};
         i2c_master_dev_handle_t _dev{};
         bool _valid;
-};
+        
+        static i2c_master_bus_handle_t _busHandles[I2C_NUM_MAX];
+    };

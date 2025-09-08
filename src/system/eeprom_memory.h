@@ -11,7 +11,7 @@
 #include "framework/common_defs.h"
 #include <string>
 
-namespace Drivers {
+namespace System {
 
 class EepromMemory
 {
@@ -57,24 +57,6 @@ class EepromMemory
         static constexpr size_t BYTES_PER_PAGE = 32;      // EEPROM page size in bytes
         static constexpr size_t NUM_PAGES = (EEPROM_SIZE_BYTES / BYTES_PER_PAGE);        // Total number of pages
         static constexpr size_t ENDL_CHAR = 0x00;       // Null terminator for strings
-
-        //---------------------------------------------
-
-        /**
-         * @brief Write a single byte to the EEPROM.
-         * @param memAddress Memory address to write to.
-         * @param data       Data byte to write.
-         * @return true if success, false otherwise.
-         */
-        bool WriteByte(uint16_t memAddress, uint8_t data);
-
-        /**
-         * @brief Read a single byte from the EEPROM.
-         * @param memAddress Memory address to read from.
-         * @param data       Reference to store the read byte.
-         * @return true if success, false otherwise.
-         */
-        bool ReadByte(uint16_t memAddress, uint8_t& data);
 
         //---------------------------------------------
 

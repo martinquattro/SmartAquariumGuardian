@@ -34,8 +34,8 @@ static constexpr PinName LCD_D7_PIN = PinName::P27;
 static constexpr PinName I2C_SDA_PIN = PinName::P21;
 static constexpr PinName I2C_SCL_PIN = PinName::P22;
 
-// I2C address for the external EEPROM (AT24C32)
 static constexpr uint8_t EEPROM_I2C_ADDRESS = 0x50;
+static constexpr uint8_t RTC_I2C_ADDRESS = 0x68; // DS3231 / DS1307
 
 // Pin for the built-in LED on the ESP32 DevKit board
 // This pin is used to indicate the system status or for debugging purposes

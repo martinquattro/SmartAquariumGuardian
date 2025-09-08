@@ -8,38 +8,40 @@
 #include "framework/drivers/i2c.h" 
 #include "framework/common_defs.h"
 
+i2c_master_bus_handle_t I2C::_busHandles[I2C_NUM_MAX] = {nullptr};
+
 //-----------------------------------------------------------------------------
 I2C::I2C(PinName sda, PinName scl, uint8_t addr7bit, i2c_port_num_t port, uint32_t freqHz)
     : _port(port)
-    , _bus(nullptr)
     , _valid(false)
 {
-    i2c_master_bus_config_t bus_config = 
+    // Initialize bus only once
+    if (_busHandles[port] == nullptr) 
     {
-        .i2c_port = port,
-        .sda_io_num = static_cast<gpio_num_t>(sda),
-        .scl_io_num = static_cast<gpio_num_t>(scl),
-        .clk_source = I2C_CLK_SRC_DEFAULT,
-        .glitch_ignore_cnt = 7,
-        .intr_priority = 0,
-        .trans_queue_depth = 0,
-        .flags = 
+        i2c_master_bus_config_t bus_config = 
         {
-            .enable_internal_pullup = 1,
-            .allow_pd = 0
+            .i2c_port = port,
+            .sda_io_num = static_cast<gpio_num_t>(sda),
+            .scl_io_num = static_cast<gpio_num_t>(scl),
+            .clk_source = I2C_CLK_SRC_DEFAULT,
+            .glitch_ignore_cnt = 7,
+            .intr_priority = 0,
+            .trans_queue_depth = 0,
+            .flags = { .enable_internal_pullup = 1, .allow_pd = 0 }
+        };
+
+        if (i2c_new_master_bus(&bus_config, &_busHandles[port]) == ESP_OK)
+        {
+            CORE_INFO("Bus initialized on port %d", port);
         }
-    };
-
-    if (i2c_new_master_bus(&bus_config, &_bus) == ESP_OK) 
-    {
-        _valid = true;
-        CORE_INFO("Bus initialized on port %d", _port);
-    }
-    else
-    {
-        CORE_ERROR("Failed to initialize on port %d", _port);
+        else 
+        {
+            CORE_ERROR("Failed to init bus on port %d", port);
+            return;
+        }
     }
 
+    // Register device
     i2c_device_config_t dev_cfg = 
     {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
@@ -49,11 +51,10 @@ I2C::I2C(PinName sda, PinName scl, uint8_t addr7bit, i2c_port_num_t port, uint32
         .flags = { .disable_ack_check = 0 }
     };
 
-    esp_err_t ret = i2c_master_bus_add_device(_bus, &dev_cfg, &_dev);
-
-    if (ret == ESP_OK) 
+    if (i2c_master_bus_add_device(_busHandles[port], &dev_cfg, &_dev) == ESP_OK)
     {
-        CORE_INFO("Device 0x%02X added", addr7bit);
+        _valid = true;
+        CORE_INFO("Device 0x%02X added on port %d", addr7bit, port);
     }
     else
     {
@@ -64,9 +65,9 @@ I2C::I2C(PinName sda, PinName scl, uint8_t addr7bit, i2c_port_num_t port, uint32
 //-----------------------------------------------------------------------------
 I2C::~I2C()
 {
-    if (_bus) 
+    if (_dev) 
     {
-        i2c_del_master_bus(_bus);
+        i2c_master_bus_rm_device(_dev);
     }
 }
 

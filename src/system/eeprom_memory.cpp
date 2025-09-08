@@ -5,13 +5,13 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "src/drivers/eeprom_memory.h"
+#include "src/system/eeprom_memory.h"
 
 #include "include/config.h"
 #include "framework/common_defs.h"
 #include <vector>
 
-namespace Drivers {
+namespace System {
 
 EepromMemory* EepromMemory::_instance = nullptr;
 
@@ -76,7 +76,7 @@ bool EepromMemory::WritePage(uint16_t page, const std::string str)
     }
 
     // Wait for EEPROM to complete internal write cycle
-    TaskDelayMs(10);
+    TaskDelayMs(20);
 
     return true;
 }
