@@ -9,6 +9,7 @@
 #define REAL_TIME_CLOCK_H
 
 #include "framework/drivers/i2c.h"
+#include "src/utilities/date_time.h"
 #include <string>
 
 namespace System {
@@ -30,19 +31,16 @@ class RealTimeClock
 
         /**
          * @brief Get the current time from the RTC.
-         * @param timeStr    String to store the time in "HH:MM:SS" format.
-         * @return true if success, false otherwise.
+         * @return DateTime object with the current time.
         */
-        bool GetTime(std::string& timeStr);
+        auto GetTime() -> Utilities::DateTime;
 
         /**
          * @brief Set the current time on the RTC.
-         * @param hours     Hours (0-23).
-         * @param minutes   Minutes (0-59).
-         * @param seconds   Seconds (0-59).
+         * @param dateTime   DateTime object with the time to set.
          * @return true if success, false otherwise.
         */
-        bool SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds);
+        bool SetTime(const Utilities::DateTime& dateTime);
 
     private:
 

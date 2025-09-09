@@ -39,7 +39,7 @@ void RealTimeClock::Init()
 }
 
 //-----------------------------------------------------------------------------
-bool RealTimeClock::GetTime(std::string& timeStr)
+auto RealTimeClock::GetTime() -> Utilities::DateTime
 {
     uint8_t startReg = 0x00;
     uint8_t buffer[3] = {0};
@@ -50,20 +50,21 @@ bool RealTimeClock::GetTime(std::string& timeStr)
         return false;
     }
 
-    uint8_t seconds = BcdToDec(buffer[0]) % 60;
-    uint8_t minutes = BcdToDec(buffer[1]) % 60;
-    uint8_t hours   = BcdToDec(buffer[2]) % 24;
+    uint8_t seconds = BcdToDec(buffer[0]);
+    uint8_t minutes = BcdToDec(buffer[1]);
+    uint8_t hours   = BcdToDec(buffer[2]);
 
-    char tmp[9]; // "HH:MM:SS" + '\0' = 9
-    snprintf(tmp, sizeof(tmp), "%02u:%02u:%02u", hours, minutes, seconds);
-    timeStr = tmp;
-
-    return true;
+    return Utilities::DateTime(hours, minutes, seconds);
 }
 
 //-----------------------------------------------------------------------------
-bool RealTimeClock::SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds)
+bool RealTimeClock::SetTime(const Utilities::DateTime& dateTime)
 {
+    uint8_t hours   = dateTime.GetHour();
+    uint8_t minutes = dateTime.GetMinute();
+    uint8_t seconds = dateTime.GetSecond();
+
+
     uint8_t buffer[4];
     buffer[0] = 0x00; // start register
     buffer[1] = DecToBcd(seconds);
@@ -76,6 +77,7 @@ bool RealTimeClock::SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds)
         return false;
     }
 
+    CORE_INFO("Set RTC time to %02u:%02u:%02u", hours, minutes, seconds);
     return true;
 }
 

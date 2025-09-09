@@ -7,8 +7,9 @@
 
 #include "src/app/user_interface.h"
 
-#include "src/drivers/lcd_display.h"
 #include "framework/common_defs.h"
+#include "src/drivers/lcd_display.h"
+#include "src/system/real_time_clock.h"
 
 namespace Subsystems {
 
@@ -64,8 +65,9 @@ void UserInterface::Update()
 
     // Time
     {
-        lcdDisplay->SetCursor(14, DISPLAY_LINE::LINE_2);
-        lcdDisplay->Write("15:30");
+        auto dateTime = System::RealTimeClock::GetInstance()->GetTime();
+        lcdDisplay->SetCursor(12, DISPLAY_LINE::LINE_2);
+        lcdDisplay->Write(dateTime.ToString().c_str());
     }
 
     if (_currentDisplayState == STATE_PAGE_1)
@@ -75,7 +77,7 @@ void UserInterface::Update()
         lcdDisplay->Write("TDS: 342 ppm  [OK]  ");
 
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_4);
-        lcdDisplay->Write("Temp: 23.5°C [HIGH]");
+        lcdDisplay->Write("Temp: 23.5 C  [HIGH]");
     }
     else if (_currentDisplayState == STATE_PAGE_2)
     {
