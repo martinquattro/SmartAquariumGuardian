@@ -8,8 +8,8 @@
 #include "src/app/user_interface.h"
 
 #include "framework/common_defs.h"
+#include "src/components/real_time_clock.h"
 #include "src/drivers/lcd_display.h"
-#include "src/system/real_time_clock.h"
 
 namespace Subsystems {
 
@@ -65,7 +65,7 @@ void UserInterface::Update()
 
     // Time
     {
-        auto dateTime = System::RealTimeClock::GetInstance()->GetTime();
+        auto dateTime = Components::RealTimeClock::GetInstance()->GetTime();
         lcdDisplay->SetCursor(12, DISPLAY_LINE::LINE_2);
         lcdDisplay->Write(dateTime.ToString().c_str());
     }

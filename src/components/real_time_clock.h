@@ -12,7 +12,7 @@
 #include "src/utilities/date_time.h"
 #include <string>
 
-namespace System {
+namespace Components {
 
 class RealTimeClock
 {
@@ -69,6 +69,6 @@ class RealTimeClock
         I2C _i2c;
 };
 
-} // namespace System
+} // namespace Components
 
 #endif // REAL_TIME_CLOCK_H

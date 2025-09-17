@@ -12,8 +12,8 @@
 #include "src/app/food_feeder.h"
 #include "src/app/user_interface.h"
 #include "src/app/water_monitor.h"
-#include "src/system/eeprom_memory.h"
-#include "src/system/real_time_clock.h"
+#include "src/components/eeprom_memory.h"
+#include "src/components/real_time_clock.h"
 
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
 
@@ -38,9 +38,9 @@ void SmartAquariumGuardian::Init()
     _instance = new SmartAquariumGuardian();
     _instance->_delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
 
-    // Initialize system drivers
-    System::EepromMemory::Init();
-    System::RealTimeClock::Init();
+    // Initialize hardware components
+    Components::EepromMemory::Init();
+    Components::RealTimeClock::Init();
 
     // Initialize subsystems
     Subsystems::WaterMonitor::Init();

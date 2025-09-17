@@ -5,12 +5,12 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "src/system/real_time_clock.h"
+#include "src/components/real_time_clock.h"
 
 #include "include/config.h"
 #include "framework/common_defs.h"
 
-namespace System {
+namespace Components {
 
 RealTimeClock* RealTimeClock::_instance = nullptr;
 
@@ -98,4 +98,4 @@ RealTimeClock::RealTimeClock(PinName sda, PinName scl, uint8_t address)
     : _i2c(sda, scl, address)
 {}
 
-} // namespace System
+} // namespace Components
