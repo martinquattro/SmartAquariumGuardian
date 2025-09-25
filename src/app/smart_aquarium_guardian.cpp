@@ -15,6 +15,8 @@
 #include "src/components/eeprom_memory.h"
 #include "src/components/real_time_clock.h"
 
+#include "src/online/wifi_com.h"
+
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
 
 //----static-------------------------------------------------------------------
@@ -46,6 +48,10 @@ void SmartAquariumGuardian::Init()
     Subsystems::WaterMonitor::Init();
     Subsystems::FoodFeeder::Init();
     Subsystems::UserInterface::Init();
+
+    Online::WiFiCom::Init();
+
+    CORE_INFO("SmartAquariumGuardian initialized.");
 }
 
 //-----------------------------------------------------------------------------
@@ -54,19 +60,26 @@ void SmartAquariumGuardian::Update()
     // Periodic update
     // Only proceed if the delay has finished
     // This ensures the update runs at a fixed interval
-    if (_delay.HasFinished())
-    {
-        CORE_INFO("Starting periodic update...");
+    // if (_delay.HasFinished())
+    // {
+    //     CORE_INFO("Starting periodic update...");
 
-        // Update subsystems
-        Subsystems::WaterMonitor::GetInstance()->Update();
-        Subsystems::FoodFeeder::GetInstance()->Update();
-        Subsystems::UserInterface::GetInstance()->Update();
+    //     // Update subsystems
+    //     Subsystems::WaterMonitor::GetInstance()->Update();
+    //     Subsystems::FoodFeeder::GetInstance()->Update();
+    //     Subsystems::UserInterface::GetInstance()->Update();
 
-        // Debounce delay to prevent flickering. 
-        // TODO - See if it can be avoid
-        TaskDelayMs(10);
+    //     // Debounce delay to prevent flickering. 
+    //     // TODO - See if it can be avoid
+    //     TaskDelayMs(10);
 
-        CORE_INFO("Periodic update completed.");
-    }
+    //     CORE_INFO("Periodic update completed.");
+    // }
+
+    // Always update WiFiCom to handle connection state
+    Online::WiFiCom::GetInstance()->Update();
+
+    // Debounce delay to prevent flickering. 
+    // TODO - See if it can be avoid
+    TaskDelayMs(10);
 }
