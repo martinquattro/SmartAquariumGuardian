@@ -5,7 +5,7 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "src/app/food_feeder.h"
+#include "src/modules/food_feeder.h"
 
 #include "framework/common_defs.h"
 #include "src/drivers/servo.h"

@@ -5,12 +5,12 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "src/components/real_time_clock.h"
+#include "src/services/real_time_clock.h"
 
-#include "include/config.h"
 #include "framework/common_defs.h"
+#include "include/config.h"
 
-namespace Components {
+namespace Services {
 
 RealTimeClock* RealTimeClock::_instance = nullptr;
 
@@ -39,7 +39,7 @@ void RealTimeClock::Init()
 }
 
 //-----------------------------------------------------------------------------
-auto RealTimeClock::GetTime() -> Utilities::DateTime
+auto RealTimeClock::GetTime() -> Utils::DateTime
 {
     uint8_t startReg = 0x00;
     uint8_t buffer[3] = {0};
@@ -54,11 +54,11 @@ auto RealTimeClock::GetTime() -> Utilities::DateTime
     uint8_t minutes = BcdToDec(buffer[1]);
     uint8_t hours   = BcdToDec(buffer[2]);
 
-    return Utilities::DateTime(hours, minutes, seconds);
+    return Utils::DateTime(hours, minutes, seconds);
 }
 
 //-----------------------------------------------------------------------------
-bool RealTimeClock::SetTime(const Utilities::DateTime& dateTime)
+bool RealTimeClock::SetTime(const Utils::DateTime& dateTime)
 {
     uint8_t hours   = dateTime.GetHour();
     uint8_t minutes = dateTime.GetMinute();
@@ -98,4 +98,4 @@ RealTimeClock::RealTimeClock(PinName sda, PinName scl, uint8_t address)
     : _i2c(sda, scl, address)
 {}
 
-} // namespace Components
+} // namespace Services

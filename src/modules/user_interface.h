@@ -34,13 +34,6 @@ namespace Subsystems {
 
         private:
 
-            UserInterface() {}
-            ~UserInterface() = default;
-            UserInterface(const UserInterface&) = delete;
-            UserInterface& operator=(const UserInterface&) = delete;
-
-            //---------------------------------------------
-
             static constexpr int STATE_INTERVAL_MS = 4000;
 
             enum DISPLAY_STATE
@@ -57,6 +50,13 @@ namespace Subsystems {
                 LINE_3 = 2,
                 LINE_4 = 3
             };
+
+            //---------------------------------------------
+
+            UserInterface() {}
+            ~UserInterface() = default;
+            UserInterface(const UserInterface&) = delete;
+            UserInterface& operator=(const UserInterface&) = delete;
 
             //---------------------------------------------
 

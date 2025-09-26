@@ -5,7 +5,7 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "online/wifi_com.h"
+#include "connectivity/wifi_com.h"
 #include "include/config.h"
 
 #include "esp_event.h"
@@ -15,7 +15,7 @@
 #include "nvs_flash.h"
 #include "esp_sntp.h"
 
-namespace Online {
+namespace Connectivity {
 
 WiFiCom* WiFiCom::_instance = nullptr;
 
@@ -193,13 +193,13 @@ void WiFiCom::EventHandler(
         {
             case WIFI_EVENT_STA_START:
             {
-                CORE_INFO("WiFiCom: WIFI_EVENT_STA_START");
+                CORE_INFO("WIFI_EVENT_STA_START");
             }
             break;
 
             case WIFI_EVENT_STA_DISCONNECTED:
             {
-                CORE_WARNING("WiFiCom: WIFI_EVENT_STA_DISCONNECTED");
+                CORE_WARNING("WIFI_EVENT_STA_DISCONNECTED");
 
                 if (WiFiCom::_instance)
                 {
@@ -252,4 +252,4 @@ WiFiCom::~WiFiCom()
     _Stop();
 }
 
-} // namespace Online
+} // namespace Connectivity

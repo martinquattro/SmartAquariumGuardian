@@ -11,7 +11,7 @@
 #include <string>
 #include <cstdint>
 
-namespace Utilities {
+namespace Utils {
 
 class DateTime
 {
@@ -42,6 +42,6 @@ class DateTime
         uint8_t _second;
 };
 
-} // namespace Utilities
+} // namespace Utils
 
 #endif // DATE_TIME_H

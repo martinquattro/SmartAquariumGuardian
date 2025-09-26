@@ -39,6 +39,8 @@ class SmartAquariumGuardian
         SmartAquariumGuardian(const SmartAquariumGuardian&) = delete;
         SmartAquariumGuardian& operator=(const SmartAquariumGuardian&) = delete;
 
+        //---------------------------------------------
+
         static SmartAquariumGuardian* _instance;
         Delay _delay;
 };

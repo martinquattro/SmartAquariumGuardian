@@ -9,10 +9,10 @@
 #define REAL_TIME_CLOCK_H
 
 #include "framework/drivers/i2c.h"
-#include "src/utilities/date_time.h"
+#include "src/utils/date_time.h"
 #include <string>
 
-namespace Components {
+namespace Services {
 
 class RealTimeClock
 {
@@ -33,23 +33,16 @@ class RealTimeClock
          * @brief Get the current time from the RTC.
          * @return DateTime object with the current time.
         */
-        auto GetTime() -> Utilities::DateTime;
+        auto GetTime() -> Utils::DateTime;
 
         /**
          * @brief Set the current time on the RTC.
          * @param dateTime   DateTime object with the time to set.
          * @return true if success, false otherwise.
         */
-        bool SetTime(const Utilities::DateTime& dateTime);
+        bool SetTime(const Utils::DateTime& dateTime);
 
     private:
-
-        RealTimeClock(PinName sda, PinName scl, uint8_t address);
-        ~RealTimeClock() = default;
-        RealTimeClock(const RealTimeClock&) = delete;
-        RealTimeClock& operator=(const RealTimeClock&) = delete;
-
-        //---------------------------------------------
 
         /**
          * @brief Convert decimal to BCD format.
@@ -63,12 +56,17 @@ class RealTimeClock
          */
         uint8_t BcdToDec(uint8_t val);
 
+        RealTimeClock(PinName sda, PinName scl, uint8_t address);
+        ~RealTimeClock() = default;
+        RealTimeClock(const RealTimeClock&) = delete;
+        RealTimeClock& operator=(const RealTimeClock&) = delete;
+
         //---------------------------------------------
 
         static RealTimeClock* _instance;
         I2C _i2c;
 };
 
-} // namespace Components
+} // namespace Services
 
 #endif // REAL_TIME_CLOCK_H

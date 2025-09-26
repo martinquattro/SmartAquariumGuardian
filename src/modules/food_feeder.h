@@ -37,6 +37,8 @@ namespace Subsystems {
             FoodFeeder(const FoodFeeder&) = delete;
             FoodFeeder& operator=(const FoodFeeder&) = delete;
 
+            //---------------------------------------------
+
             static FoodFeeder* _instance;
         };
 

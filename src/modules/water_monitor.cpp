@@ -5,11 +5,11 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "src/app/water_monitor.h"
+#include "src/modules/water_monitor.h"
 
-#include "src/drivers/temperature_sensor.h"
-#include "src/drivers/tds_sensor.h"
 #include "framework/common_defs.h"
+#include "src/drivers/tds_sensor.h"
+#include "src/drivers/temperature_sensor.h"
 
 namespace Subsystems {
 

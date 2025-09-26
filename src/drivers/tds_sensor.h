@@ -42,19 +42,19 @@ namespace Drivers {
 
         private:
 
-            TdsSensor(const PinName pin);
-            ~TdsSensor() = default;
-            TdsSensor(const TdsSensor&) = delete;
-            TdsSensor& operator=(const TdsSensor&) = delete;
-
             /*!
-             * @brief Stores an analog reading and returns the average of the stored readings.
-             * @param reading The new analog reading to store.
-             * @return float The average of the stored analog readings.
-             */
-            float StoreAnalogReading(const float reading);
+            * @brief Stores an analog reading and returns the average of the stored readings.
+            * @param reading The new analog reading to store.
+            * @return float The average of the stored analog readings.
+            */
+           float StoreAnalogReading(const float reading);
 
-            using TdsReadingsVec = std::vector<float>;
+           using TdsReadingsVec = std::vector<float>;
+       
+           TdsSensor(const PinName pin);
+           ~TdsSensor() = default;
+           TdsSensor(const TdsSensor&) = delete;
+           TdsSensor& operator=(const TdsSensor&) = delete;
 
             //---------------------------------------------
 

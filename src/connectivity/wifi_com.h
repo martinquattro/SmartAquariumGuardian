@@ -14,7 +14,7 @@
 #include "esp_event.h"
 #include "esp_wifi.h"
 
-namespace Online {
+namespace Connectivity {
 
 class WiFiCom
 {
@@ -41,13 +41,6 @@ class WiFiCom
             ERROR
         };
 
-        //---------------------------------------------
-
-        WiFiCom();
-        ~WiFiCom();
-        WiFiCom(const WiFiCom&) = delete;
-        WiFiCom& operator=(const WiFiCom&) = delete;
-
         void _Start();
         void _Stop();
         
@@ -57,6 +50,14 @@ class WiFiCom
             , int32_t event_id
             , void* event_data
         );
+
+        //---------------------------------------------
+
+        WiFiCom();
+        ~WiFiCom();
+        WiFiCom(const WiFiCom&) = delete;
+        WiFiCom& operator=(const WiFiCom&) = delete;
+
         
         //---------------------------------------------
 
@@ -69,6 +70,6 @@ class WiFiCom
         void* _netif; // forward-declare type to avoid exposing esp-netif here
     };
 
-} // namespace Online
+} // namespace Connectivity
 
 #endif // WIFI_COM_H

@@ -5,11 +5,11 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "src/app/user_interface.h"
+#include "src/modules/user_interface.h"
 
 #include "framework/common_defs.h"
-#include "src/components/real_time_clock.h"
 #include "src/drivers/lcd_display.h"
+#include "src/services/real_time_clock.h"
 
 namespace Subsystems {
 
@@ -54,7 +54,7 @@ void UserInterface::Update()
     // Title
     {
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_1);
-        lcdDisplay->Write(" --Guardian v2.0-- ");
+        lcdDisplay->Write("   Guardian v2.0   ");
     }
     
     // Wi-Fi
@@ -65,7 +65,7 @@ void UserInterface::Update()
 
     // Time
     {
-        auto dateTime = Components::RealTimeClock::GetInstance()->GetTime();
+        auto dateTime = Services::RealTimeClock::GetInstance()->GetTime();
         lcdDisplay->SetCursor(12, DISPLAY_LINE::LINE_2);
         lcdDisplay->Write(dateTime.ToString().c_str());
     }

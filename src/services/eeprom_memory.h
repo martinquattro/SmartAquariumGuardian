@@ -11,7 +11,7 @@
 #include "framework/common_defs.h"
 #include <string>
 
-namespace Components {
+namespace Services {
 
 class EepromMemory
 {
@@ -64,6 +64,6 @@ class EepromMemory
         I2C _i2c;
 };
 
-} // namespace Components
+} // namespace Services
 
 #endif // EEPROM_MEMORY_H

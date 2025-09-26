@@ -5,13 +5,13 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "src/components/eeprom_memory.h"
+#include "src/services/eeprom_memory.h"
 
-#include "include/config.h"
 #include "framework/common_defs.h"
+#include "include/config.h"
 #include <vector>
 
-namespace Components {
+namespace Services {
 
 EepromMemory* EepromMemory::_instance = nullptr;
 
@@ -131,4 +131,4 @@ EepromMemory::EepromMemory(PinName sda, PinName scl, uint8_t address)
     : _i2c(sda, scl, address)
 {}
 
-} // namespace Components
+} // namespace Services

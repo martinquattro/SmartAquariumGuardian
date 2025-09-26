@@ -5,12 +5,12 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "src/utilities/date_time.h"
+#include "src/utils/date_time.h"
 
 #include <sstream>
 #include <iomanip>
 
-namespace Utilities {
+namespace Utils {
 
 //-----------------------------------------------------------------------------
 DateTime::DateTime() 
@@ -70,4 +70,4 @@ bool DateTime::operator<(const DateTime& other) const
     return ToSecondsOfDay() < other.ToSecondsOfDay();
 }
 
-} // namespace Utilities
+} // namespace Utils
