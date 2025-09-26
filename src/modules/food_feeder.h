@@ -8,7 +8,7 @@
 #ifndef FOOD_FEEDER_H
 #define FOOD_FEEDER_H
 
-namespace Subsystems {
+namespace Modules {
 
     class FoodFeeder 
     {
@@ -42,6 +42,6 @@ namespace Subsystems {
             static FoodFeeder* _instance;
         };
 
-} // namespace Subsystems
+} // namespace Modules
 
 #endif // FOOD_FEEDER_H

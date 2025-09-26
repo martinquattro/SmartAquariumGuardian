@@ -10,7 +10,7 @@
 
 #include "framework/util/delay.h"
 
-namespace Subsystems {
+namespace Modules {
 
     class UserInterface 
     {
@@ -65,6 +65,6 @@ namespace Subsystems {
             DISPLAY_STATE _currentDisplayState = STATE_PAGE_1;
     };
 
-} // namespace Subsystems
+} // namespace Modules
 
 #endif // USER_INTERFACE_H

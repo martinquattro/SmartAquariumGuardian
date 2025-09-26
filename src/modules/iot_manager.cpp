@@ -13,7 +13,7 @@
 #include "src/services/real_time_clock.h"
 #include "src/utils/date_time.h"
 
-namespace Subsystems {
+namespace Modules {
 
 IotManager* IotManager::_instance = nullptr;
 
@@ -106,4 +106,4 @@ void IotManager::TimeSyncCallback(struct ::timeval *tv)
     _instance->_isTimeSynced = true;
 }
 
-} // namespace Subsystems
+} // namespace Modules

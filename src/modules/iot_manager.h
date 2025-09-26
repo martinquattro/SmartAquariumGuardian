@@ -10,7 +10,7 @@
 
 #include <sys/time.h>
 
-namespace Subsystems {
+namespace Modules {
 
     class IotManager
     {
@@ -50,6 +50,6 @@ namespace Subsystems {
             bool _isTimeSynced;
     };
 
-} // namespace Subsystems
+} // namespace Modules
 
 #endif // IOT_MANAGER_H

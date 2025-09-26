@@ -39,15 +39,15 @@ void SmartAquariumGuardian::Init()
     _instance = new SmartAquariumGuardian();
     _instance->_delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
 
-    // Initialize hardware components
+    // Initialize services
     Services::EepromMemory::Init();
     Services::RealTimeClock::Init();
 
-    // Initialize subsystems
-    Subsystems::WaterMonitor::Init();
-    Subsystems::FoodFeeder::Init();
-    Subsystems::UserInterface::Init();
-    Subsystems::IotManager::Init();
+    // Initialize modules
+    Modules::WaterMonitor::Init();
+    Modules::FoodFeeder::Init();
+    Modules::UserInterface::Init();
+    Modules::IotManager::Init();
 
     CORE_INFO("SmartAquariumGuardian initialized.");
 }
@@ -73,10 +73,10 @@ void SmartAquariumGuardian::Update()
                     , timeinfo.tm_sec
             );
 
-        // Update subsystems
-        // Subsystems::WaterMonitor::GetInstance()->Update();
-        // Subsystems::FoodFeeder::GetInstance()->Update();
-        Subsystems::UserInterface::GetInstance()->Update();
+        // Update modules
+        Modules::WaterMonitor::GetInstance()->Update();
+        Modules::FoodFeeder::GetInstance()->Update();
+        Modules::UserInterface::GetInstance()->Update();
 
         // CORE_INFO("Periodic update completed.");
 
@@ -86,7 +86,7 @@ void SmartAquariumGuardian::Update()
     }
 
     // Always update IoT manager to handle connectivity and time sync
-    Subsystems::IotManager::GetInstance()->Update();
+    Modules::IotManager::GetInstance()->Update();
 
     // Debounce delay to prevent flickering. 
     // TODO - See if it can be avoid

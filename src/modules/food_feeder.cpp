@@ -10,7 +10,7 @@
 #include "framework/common_defs.h"
 #include "src/drivers/servo.h"
 
-namespace Subsystems {
+namespace Modules {
 
 FoodFeeder* FoodFeeder::_instance = nullptr;
 
@@ -43,4 +43,4 @@ void FoodFeeder::Update()
     Drivers::Servo::GetInstance()->Update();
 }
 
-} // namespace Subsystems
+} // namespace Modules

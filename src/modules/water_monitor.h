@@ -11,7 +11,7 @@
 #define MIN_TEMP 0
 #define MAX_TEMP 85
 
-namespace Subsystems {
+namespace Modules {
 
 class WaterMonitor 
 {
@@ -51,6 +51,6 @@ class WaterMonitor
         static WaterMonitor* _instance;
 };
 
-} // namespace Subsystems
+} // namespace Modules
 
 #endif // WATER_MONITOR_H

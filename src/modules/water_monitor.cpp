@@ -11,7 +11,7 @@
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
 
-namespace Subsystems {
+namespace Modules {
 
 WaterMonitor* WaterMonitor::_instance = nullptr;
 
@@ -53,4 +53,4 @@ int WaterMonitor::GetTdsReading()
     return (Drivers::TdsSensor::GetInstance()->GetLastReading());
 }
 
-} // namespace Subsystems
+} // namespace Modules

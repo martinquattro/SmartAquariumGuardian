@@ -11,7 +11,7 @@
 #include "src/drivers/lcd_display.h"
 #include "src/services/real_time_clock.h"
 
-namespace Subsystems {
+namespace Modules {
 
 UserInterface* UserInterface::_instance = nullptr;
 
@@ -94,4 +94,4 @@ void UserInterface::Update()
     }
 }
 
-} // namespace Subsystems
+} // namespace Modules
