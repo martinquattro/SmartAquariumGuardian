@@ -5,12 +5,12 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "src/modules/food_feeder.h"
+#include "src/managers/food_feeder.h"
 
 #include "framework/common_defs.h"
 #include "src/drivers/servo.h"
 
-namespace Modules {
+namespace Managers {
 
 FoodFeeder* FoodFeeder::_instance = nullptr;
 
@@ -43,4 +43,4 @@ void FoodFeeder::Update()
     Drivers::Servo::GetInstance()->Update();
 }
 
-} // namespace Modules
+} // namespace Managers

@@ -5,13 +5,13 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "src/modules/user_interface.h"
+#include "src/managers/user_interface.h"
 
 #include "framework/common_defs.h"
 #include "src/drivers/lcd_display.h"
 #include "src/services/real_time_clock.h"
 
-namespace Modules {
+namespace Managers {
 
 UserInterface* UserInterface::_instance = nullptr;
 
@@ -60,13 +60,13 @@ void UserInterface::Update()
     // Wi-Fi
     {
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_2);
-        lcdDisplay->Write("Wi-Fi: OK");
+        lcdDisplay->Write("WiFi: OK");
     }
 
     // Time
     {
         auto dateTime = Services::RealTimeClock::GetInstance()->GetTime();
-        lcdDisplay->SetCursor(12, DISPLAY_LINE::LINE_2);
+        lcdDisplay->SetCursor(15, DISPLAY_LINE::LINE_2);
         lcdDisplay->Write(dateTime.ToString().c_str());
     }
 
@@ -94,4 +94,4 @@ void UserInterface::Update()
     }
 }
 
-} // namespace Modules
+} // namespace Managers

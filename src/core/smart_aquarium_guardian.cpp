@@ -9,10 +9,10 @@
 
 #include "framework/common_defs.h"
 #include "include/config.h"
-#include "src/modules/food_feeder.h"
-#include "src/modules/iot_manager.h"
-#include "src/modules/user_interface.h"
-#include "src/modules/water_monitor.h"
+#include "src/managers/food_feeder.h"
+#include "src/managers/network_controller.h"
+#include "src/managers/user_interface.h"
+#include "src/managers/water_monitor.h"
 #include "src/services/eeprom_memory.h"
 #include "src/services/real_time_clock.h"
 
@@ -43,11 +43,11 @@ void SmartAquariumGuardian::Init()
     Services::EepromMemory::Init();
     Services::RealTimeClock::Init();
 
-    // Initialize modules
-    Modules::WaterMonitor::Init();
-    Modules::FoodFeeder::Init();
-    Modules::UserInterface::Init();
-    Modules::IotManager::Init();
+    // Initialize managers
+    Managers::WaterMonitor::Init();
+    Managers::FoodFeeder::Init();
+    Managers::UserInterface::Init();
+    Managers::NetworkController::Init();
 
     CORE_INFO("SmartAquariumGuardian initialized.");
 }
@@ -62,31 +62,20 @@ void SmartAquariumGuardian::Update()
     {
         CORE_INFO("Starting periodic update...");
 
-            time_t now;
-            struct tm timeinfo;
-            time(&now);
-            localtime_r(&now, &timeinfo);
+        // Update managers
+        Managers::WaterMonitor::GetInstance()->Update();
+        Managers::FoodFeeder::GetInstance()->Update();
+        Managers::UserInterface::GetInstance()->Update();
 
-            CORE_INFO("Now: %02d:%02d:%02d",
-                        timeinfo.tm_hour
-                    , timeinfo.tm_min
-                    , timeinfo.tm_sec
-            );
-
-        // Update modules
-        Modules::WaterMonitor::GetInstance()->Update();
-        Modules::FoodFeeder::GetInstance()->Update();
-        Modules::UserInterface::GetInstance()->Update();
-
-        // CORE_INFO("Periodic update completed.");
+        CORE_INFO("Periodic update completed.");
 
         // Debounce delay to prevent flickering. 
         // TODO - See if it can be avoid
         TaskDelayMs(10);
     }
 
-    // Always update IoT manager to handle connectivity and time sync
-    Modules::IotManager::GetInstance()->Update();
+    // Always update Network Controller to handle connectivity and time sync
+    Managers::NetworkController::GetInstance()->Update();
 
     // Debounce delay to prevent flickering. 
     // TODO - See if it can be avoid

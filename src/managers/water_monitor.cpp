@@ -5,13 +5,13 @@
  * @date    Aug 2025
  *******************************************************************************/
 
-#include "src/modules/water_monitor.h"
+#include "src/managers/water_monitor.h"
 
 #include "framework/common_defs.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
 
-namespace Modules {
+namespace Managers {
 
 WaterMonitor* WaterMonitor::_instance = nullptr;
 
@@ -53,4 +53,4 @@ int WaterMonitor::GetTdsReading()
     return (Drivers::TdsSensor::GetInstance()->GetLastReading());
 }
 
-} // namespace Modules
+} // namespace Managers
