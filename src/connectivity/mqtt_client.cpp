@@ -85,13 +85,13 @@ void MqttClient::Update()
     }
 }
 
-//----private------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 bool MqttClient::IsConnected() const
 {
     return _connected.load();
 }
 
-//----private------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 bool MqttClient::Publish(const std::string &topic, const std::string &payload, int qos)
 {
     if (!_client) 
