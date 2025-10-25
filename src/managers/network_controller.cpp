@@ -12,6 +12,7 @@
 #include "include/config.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
+#include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
 #include "src/services/real_time_clock.h"
 #include "src/utils/date_time.h"
@@ -72,6 +73,13 @@ void NetworkController::Update()
         {
             if (Connectivity::WiFiCom::GetInstance()->IsConnected())
             {
+                // Time sync check
+                if (!_isTimeSynced)
+                {
+                    ChangeState(State::INIT_TIME_SYNC);
+                }
+
+                // MQTT Client update
                 Connectivity::MqttClient::GetInstance()->Update();
 
                 if (Connectivity::MqttClient::GetInstance()->IsConnected())
@@ -81,11 +89,6 @@ void NetworkController::Update()
                         ChangeState(State::SEND_TELEMETRY);
                     }
                 }
-
-                // if (!_isTimeSynced)
-                // {
-                //     ChangeState(State::INIT_TIME_SYNC);
-                // }
             }
             else
             {
@@ -144,13 +147,18 @@ void NetworkController::SendTelemtry()
 {
     CORE_INFO("Sending telemetry data...");
 
-    // const float temperature = Drivers::TemperatureSensor::GetInstance()->GetLastReading();
-    const float temperature = rand() % 3000 / 100.0f; // Dummy temperature for testing
+    const float temperature = Drivers::TemperatureSensor::GetInstance()->GetLastReading();
+    const int tds = Drivers::TdsSensor::GetInstance()->GetLastReading();
+
+    std::string payload;
+    payload += "{";
+    payload += "\"temperature\":" + std::to_string(temperature);
+    payload += ",\"tds\":" + std::to_string(tds);
+    payload += "}";
 
     const bool success = Connectivity::MqttClient::GetInstance()->Publish(
-        "v1/devices/me/telemetry"
-      , "{\"temperature\":" + std::to_string(temperature) + "}"
-      , 1
+        TELEMETRY_TOPIC
+      , payload
     );
 
     if (success)

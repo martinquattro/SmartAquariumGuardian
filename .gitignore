@@ -11,3 +11,4 @@ sdkconfig.*
 
 # Other
 .gitattributes
+logs/

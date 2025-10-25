@@ -71,6 +71,10 @@ namespace Managers {
             NetworkController& operator=(const NetworkController&) = delete;
 
             //---------------------------------------------
+            
+            static constexpr const char* TELEMETRY_TOPIC = "v1/devices/me/telemetry";
+
+            //---------------------------------------------
 
             static NetworkController* _instance;
             bool _isTimeSynced;
