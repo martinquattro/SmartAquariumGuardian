@@ -9,8 +9,10 @@
 
 #include "esp_sntp.h"
 #include "framework/common_defs.h"
-#include "src/connectivity/wifi_com.h"
+#include "include/config.h"
 #include "src/connectivity/mqtt_client.h"
+#include "src/connectivity/wifi_com.h"
+#include "src/drivers/temperature_sensor.h"
 #include "src/services/real_time_clock.h"
 #include "src/utils/date_time.h"
 
@@ -38,6 +40,7 @@ void NetworkController::Init()
     _instance = new NetworkController();
     _instance->_isTimeSynced = false;
     _instance->_state = State::INIT;
+    _instance->_telemetrySendDelay.Start(Config::TELEMTRY_SEND_INTERVAL_MS);
 
     Connectivity::WiFiCom::Init();
     Connectivity::MqttClient::Init();
@@ -71,6 +74,14 @@ void NetworkController::Update()
             {
                 Connectivity::MqttClient::GetInstance()->Update();
 
+                if (Connectivity::MqttClient::GetInstance()->IsConnected())
+                {
+                    if (_telemetrySendDelay.HasFinished())
+                    {
+                        ChangeState(State::SEND_TELEMETRY);
+                    }
+                }
+
                 // if (!_isTimeSynced)
                 // {
                 //     ChangeState(State::INIT_TIME_SYNC);
@@ -80,6 +91,13 @@ void NetworkController::Update()
             {
                 // TODO - Try Reconnect;
             }
+        }
+        break;
+
+        case State::SEND_TELEMETRY:
+        {
+            SendTelemtry();
+            ChangeState(State::IDLE);
         }
         break;
 
@@ -122,9 +140,32 @@ void NetworkController::ChangeState(const State newState)
 }
 
 //----private------------------------------------------------------------------
+void NetworkController::SendTelemtry()
+{
+    CORE_INFO("Sending telemetry data...");
+
+    // const float temperature = Drivers::TemperatureSensor::GetInstance()->GetLastReading();
+    const float temperature = rand() % 3000 / 100.0f; // Dummy temperature for testing
+
+    const bool success = Connectivity::MqttClient::GetInstance()->Publish(
+        "v1/devices/me/telemetry"
+      , "{\"temperature\":" + std::to_string(temperature) + "}"
+      , 1
+    );
+
+    if (success)
+    {
+        CORE_INFO("Telemetry data sent successfully");
+    }
+    else
+    {
+        CORE_ERROR("Failed to send telemetry data");
+    }
+}
+
+//----private------------------------------------------------------------------
 void NetworkController::TimeSyncInit()
 {
-
     // TODO - This should be set by the user
     setenv("TZ", "ART3", 1);
     tzset();

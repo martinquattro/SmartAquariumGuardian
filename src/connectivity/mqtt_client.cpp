@@ -100,7 +100,8 @@ bool MqttClient::Publish(const std::string &topic, const std::string &payload, i
     }
 
     int msg_id = esp_mqtt_client_publish(
-        _client, topic.c_str(),
+        _client, 
+        topic.c_str(),
         payload.c_str(),
         payload.size(),
         qos,

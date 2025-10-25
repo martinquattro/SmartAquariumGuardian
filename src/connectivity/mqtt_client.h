@@ -36,20 +36,6 @@ class MqttClient
         */
         void Update();
 
-    private:
-
-        enum class State 
-        {
-            INIT,
-            CONNECTING,
-            CONNECTED,
-            ERROR
-        };
-
-        using MessageCallback = std::function<void(const std::string &topic, const std::string &payload)>;
-        
-        //---------------------------------------------
-
         /*!
         * @brief Check if connected to the MQTT broker
         * @return true if connected, false otherwise
@@ -64,6 +50,20 @@ class MqttClient
         * @return true if publish was successful, false otherwise
         */
         bool Publish(const std::string &topic, const std::string &payload, int qos = 1);
+
+    private:
+
+        enum class State 
+        {
+            INIT,
+            CONNECTING,
+            CONNECTED,
+            ERROR
+        };
+
+        using MessageCallback = std::function<void(const std::string &topic, const std::string &payload)>;
+        
+        //---------------------------------------------
 
         /*!
         * @brief Subscribe to a topic with an optional message callback

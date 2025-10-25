@@ -9,6 +9,7 @@
 #define NETWORK_CONTROLLER_H
 
 #include <sys/time.h>
+#include "framework/util/delay.h"
 
 namespace Managers {
 
@@ -39,6 +40,7 @@ namespace Managers {
                 INIT,
                 WAITING_FOR_WIFI,
                 IDLE,
+                SEND_TELEMETRY,
                 INIT_TIME_SYNC,
                 WAITING_FOR_TIME_SYNC,
                 ERROR
@@ -49,7 +51,10 @@ namespace Managers {
             * @param newState  The new state to transition to.
             */
             void ChangeState(const State newState);
-             
+
+            // TODO
+            void SendTelemtry();
+
             /*
             * @brief Initializes the time synchronization process.
             */
@@ -70,6 +75,7 @@ namespace Managers {
             static NetworkController* _instance;
             bool _isTimeSynced;
             State _state;
+            Delay _telemetrySendDelay;
     };
 
 } // namespace Managers
