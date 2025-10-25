@@ -8,4 +8,6 @@ idf_component_register(
     INCLUDE_DIRS
         ${PROJECT_DIR}
         ${PROJECT_DIR}/include
+    REQUIRES
+        mqtt
 )

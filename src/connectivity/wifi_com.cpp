@@ -49,7 +49,7 @@ void WiFiCom::Update()
     {
         case State::INIT:
         {
-            _Start();
+            _state = _Start();
         }
         break;
 
@@ -102,7 +102,7 @@ void WiFiCom::Disconnect()
 }
 
 //----private------------------------------------------------------------------
-void WiFiCom::_Start()
+auto WiFiCom::_Start() -> State
 {
     CORE_INFO("Starting wifi stack");
 
@@ -134,8 +134,7 @@ void WiFiCom::_Start()
     if (err != ESP_OK)
     {
         CORE_ERROR("WiFi init failed: %d", err);
-        _state = State::ERROR;
-        return;
+        return State::ERROR;
     }
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &WiFiCom::EventHandler, nullptr, nullptr));
@@ -155,13 +154,14 @@ void WiFiCom::_Start()
     if (result == ESP_OK) 
     {
         CORE_INFO("esp_wifi_start OK -> connecting...");
-        _state = State::CONNECTING;
         esp_wifi_connect(); // non-blocking
+
+        return State::CONNECTING;
     }
     else 
     {
         CORE_ERROR("esp_wifi_start failed: %d", result);
-        _state = State::ERROR;
+        return State::ERROR;
     }
 }
 

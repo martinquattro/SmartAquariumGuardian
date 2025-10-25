@@ -10,6 +10,7 @@
 #include "esp_sntp.h"
 #include "framework/common_defs.h"
 #include "src/connectivity/wifi_com.h"
+#include "src/connectivity/mqtt_client.h"
 #include "src/services/real_time_clock.h"
 #include "src/utils/date_time.h"
 
@@ -39,6 +40,7 @@ void NetworkController::Init()
     _instance->_state = State::INIT;
 
     Connectivity::WiFiCom::Init();
+    Connectivity::MqttClient::Init();
 }
 
 //-----------------------------------------------------------------------------
@@ -67,10 +69,12 @@ void NetworkController::Update()
         {
             if (Connectivity::WiFiCom::GetInstance()->IsConnected())
             {
-                if (!_isTimeSynced)
-                {
-                    ChangeState(State::INIT_TIME_SYNC);
-                }
+                Connectivity::MqttClient::GetInstance()->Update();
+
+                // if (!_isTimeSynced)
+                // {
+                //     ChangeState(State::INIT_TIME_SYNC);
+                // }
             }
             else
             {
@@ -117,9 +121,11 @@ void NetworkController::ChangeState(const State newState)
     _state = newState;
 }
 
-//-----------------------------------------------------------------------------
+//----private------------------------------------------------------------------
 void NetworkController::TimeSyncInit()
 {
+
+    // TODO - This should be set by the user
     setenv("TZ", "ART3", 1);
     tzset();
 
