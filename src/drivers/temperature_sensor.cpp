@@ -53,6 +53,13 @@ void TemperatureSensor::Update()
     );
 }
 
+//-----------------------------------------------------------------------------
+float TemperatureSensor::GetLastReading() const
+{
+    return rand() % 4000 / 100.0f;
+    // return _lastReading;
+}
+
 //----private------------------------------------------------------------------
 int16_t TemperatureSensor::GetRawReading()
 {
@@ -106,12 +113,6 @@ float TemperatureSensor::StoreReading(float reading)
     }
     
     return (count > 0) ? (sum / count) : reading;
-}
-
-//----private------------------------------------------------------------------
-float TemperatureSensor::GetLastReading() const
-{
-    return _lastReading;
 }
 
 //----private------------------------------------------------------------------

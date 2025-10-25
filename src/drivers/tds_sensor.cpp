@@ -63,7 +63,8 @@ void TdsSensor::Update(const float temperature /* = 25.0*/)
 //-----------------------------------------------------------------------------
 int TdsSensor::GetLastReading()
 {
-    return _lastReading;
+    return rand() % 1000;
+    // return _lastReading;
 }
 
 //----private------------------------------------------------------------------
