@@ -9,6 +9,8 @@
 
 #include "framework/common_defs.h"
 #include "src/drivers/lcd_display.h"
+#include "src/managers/network_controller.h"
+#include "src/managers/water_monitor.h"
 #include "src/services/real_time_clock.h"
 
 namespace Managers {
@@ -54,30 +56,57 @@ void UserInterface::Update()
     // Title
     {
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_1);
-        lcdDisplay->Write("   Guardian v2.0   ");
+        lcdDisplay->Write(" Smart Aquarium v2 ");
     }
     
-    // Wi-Fi
+    // Connection status
     {
+        bool wifiOk = Managers::NetworkController::GetInstance()->IsWiFiConnected();
+        bool cloudOk = Managers::NetworkController::GetInstance()->IsMqttClientConnected();
+
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_2);
-        lcdDisplay->Write("WiFi: OK");
+
+        if (!wifiOk)
+        {
+            lcdDisplay->Write("WiFi: Offline   ");
+        }
+        else if (!cloudOk)
+        {
+            lcdDisplay->Write("Cloud: ERR     ");
+        }
+        else
+        {
+            lcdDisplay->Write("Online         ");
+        }
     }
 
     // Time
     {
         auto dateTime = Services::RealTimeClock::GetInstance()->GetTime();
+
         lcdDisplay->SetCursor(15, DISPLAY_LINE::LINE_2);
         lcdDisplay->Write(dateTime.ToString().c_str());
     }
 
     if (_currentDisplayState == STATE_PAGE_1)
     {
-        // Water quality
+        // Water monitoring
+        char buffer [50];
+
+        // Tds reading
+        const int tdsReading = Managers::WaterMonitor::GetInstance()->GetTdsReading();
+        std::sprintf(buffer, "TDS: %03d ppm  [%s] ", tdsReading, "Ok");
+
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_3);
-        lcdDisplay->Write("TDS: 342 ppm  [OK]  ");
+        lcdDisplay->Write(buffer);
+
+        // Temperature reading
+        const float tempReading = Managers::WaterMonitor::GetInstance()->GetTemperatureReading();
+        std::sprintf(buffer, "Temp: %02.2f C [%s] ", tempReading, "Off");
 
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_4);
-        lcdDisplay->Write("Temp: 23.5 C  [HIGH]");
+        lcdDisplay->Write(buffer);
+
     }
     else if (_currentDisplayState == STATE_PAGE_2)
     {

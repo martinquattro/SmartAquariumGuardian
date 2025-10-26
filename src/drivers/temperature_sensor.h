@@ -70,7 +70,7 @@ namespace Drivers {
             static constexpr int NUM_AVG_SAMPLES      = 10;
     
             static constexpr float MIN_TEMP_VALUE   = 0.0f;
-            static constexpr float MAX_TEMP_VALUE   = 100.0f;
+            static constexpr float MAX_TEMP_VALUE   = 85.0f;
     
             //---------------------------------------------
     

@@ -37,7 +37,13 @@ class WaterMonitor
         * @brief Gets the last TDS reading.
         * @return int Last TDS reading.
         */
-        int GetTdsReading();
+        int GetTdsReading() const;
+
+        /*!
+        * @brief Gets the last Temperature reading.
+        * @return int Last Temperature reading.
+        */
+        float GetTemperatureReading() const;
 
     private:
 

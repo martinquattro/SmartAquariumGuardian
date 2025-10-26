@@ -9,6 +9,7 @@
 
 #include "include/config.h"
 #include <algorithm>
+#include <cmath>
 
 namespace Drivers {
 
@@ -43,8 +44,7 @@ void TemperatureSensor::Update()
 
     // Convert raw temperature to Celsius
     _lastReading = (rawReadingAvg / 16.0f);
-
-    // _lastTempReading = std::clamp(_lastTempReading, MIN_TEMP_VALUE, MAX_TEMP_VALUE);
+    _lastReading = std::clamp(_lastReading, MIN_TEMP_VALUE, MAX_TEMP_VALUE);
 
     CORE_INFO("Raw Reading = %d | Average: %.4f V | Temp = %.3f °C"
         , rawReading
@@ -56,7 +56,7 @@ void TemperatureSensor::Update()
 //-----------------------------------------------------------------------------
 float TemperatureSensor::GetLastReading() const
 {
-    return rand() % 4000 / 100.0f;
+    return (rand() % 4000 / 100.0f);
     // return _lastReading;
 }
 

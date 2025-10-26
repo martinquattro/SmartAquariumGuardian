@@ -33,6 +33,18 @@ namespace Managers {
             */
             void Update();
 
+            /*!
+            * @brief Check if WiFi is connected.
+            * @return true if connected, false otherwise.
+            */
+            bool IsWiFiConnected() const;
+
+            /*!
+            * @brief Check if MQTT client is connected.
+            * @return true if connected, false otherwise.
+            */
+            bool IsMqttClientConnected() const;
+
         private:
 
             enum class State 

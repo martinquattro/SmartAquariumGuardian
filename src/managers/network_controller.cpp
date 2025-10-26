@@ -136,6 +136,18 @@ void NetworkController::Update()
     }
 }
 
+//-----------------------------------------------------------------------------
+bool NetworkController::IsWiFiConnected() const
+{
+    return Connectivity::WiFiCom::GetInstance()->IsConnected();
+}
+
+//-----------------------------------------------------------------------------
+bool NetworkController::IsMqttClientConnected() const
+{
+    return Connectivity::MqttClient::GetInstance()->IsConnected();
+}
+
 //----private------------------------------------------------------------------
 void NetworkController::ChangeState(const State newState)
 {

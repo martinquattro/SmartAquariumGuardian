@@ -8,6 +8,7 @@
 #include "src/managers/water_monitor.h"
 
 #include "framework/common_defs.h"
+#include "services/eeprom_memory.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
 
@@ -33,7 +34,7 @@ void WaterMonitor::Init()
     }
 
     _instance = new WaterMonitor();
-
+    
     Drivers::TdsSensor::Init();
     Drivers::TemperatureSensor::Init();
 }
@@ -48,9 +49,15 @@ void WaterMonitor::Update()
 }
 
 //-----------------------------------------------------------------------------
-int WaterMonitor::GetTdsReading()
+int WaterMonitor::GetTdsReading() const
 {
     return (Drivers::TdsSensor::GetInstance()->GetLastReading());
+}
+
+//-----------------------------------------------------------------------------
+float WaterMonitor::GetTemperatureReading() const
+{
+    return (Drivers::TemperatureSensor::GetInstance()->GetLastReading());
 }
 
 } // namespace Managers
