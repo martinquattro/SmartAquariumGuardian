@@ -41,7 +41,7 @@ void NetworkController::Init()
     _instance = new NetworkController();
     _instance->_isTimeSynced = false;
     _instance->_state = State::INIT;
-    _instance->_telemetrySendDelay.Start(Config::TELEMTRY_SEND_INTERVAL_MS);
+    _instance->_telemetrySendDelay.Start(Config::TELEMETRY_SEND_INTERVAL_MS);
 
     Connectivity::WiFiCom::Init();
     Connectivity::MqttClient::Init();
