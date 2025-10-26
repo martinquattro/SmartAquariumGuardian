@@ -12,9 +12,10 @@
 #include "include/config.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
+#include "src/core/guardian_proxy.h"
+#include "src/core/guardian_public_interfaces.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
-#include "src/services/real_time_clock.h"
 #include "src/utils/date_time.h"
 
 namespace Managers {
@@ -115,7 +116,7 @@ void NetworkController::Update()
                 RPC_REQUEST_TOPIC,
                 [](const std::string& topic, const std::string& payload)
                 {
-                    Managers::NetworkController::GetInstance()->HandleRpcRequest(payload);
+                    _instance->HandleRpcRequest(payload);
                 }
             );
 
@@ -247,7 +248,7 @@ void NetworkController::TimeSyncCallback(struct ::timeval *tv)
               , timeinfo.tm_sec
     );
 
-    Services::RealTimeClock::GetInstance()->SetTime(
+    Core::GuardianProxy::GetInstance()->SetDateTime(
         Utils::DateTime(
               static_cast<uint8_t>(timeinfo.tm_hour)
             , static_cast<uint8_t>(timeinfo.tm_min)

@@ -9,6 +9,7 @@
 
 #include "framework/common_defs.h"
 #include "include/config.h"
+#include "src/core/guardian_proxy.h"
 #include "src/managers/food_feeder.h"
 #include "src/managers/network_controller.h"
 #include "src/managers/user_interface.h"
@@ -38,6 +39,9 @@ void SmartAquariumGuardian::Init()
     // Start periodic update delay
     _instance = new SmartAquariumGuardian();
     _instance->_delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
+
+    // Create and initialize the GuardianProxy
+    Core::GuardianProxy::Init();
 
     // Initialize services
     Services::EepromMemory::Init();

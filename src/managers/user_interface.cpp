@@ -8,9 +8,8 @@
 #include "src/managers/user_interface.h"
 
 #include "framework/common_defs.h"
+#include "src/core/guardian_proxy.h"
 #include "src/drivers/lcd_display.h"
-#include "src/managers/network_controller.h"
-#include "src/managers/water_monitor.h"
 #include "src/services/real_time_clock.h"
 
 namespace Managers {
@@ -45,6 +44,8 @@ void UserInterface::Update()
 {
     CORE_INFO("Updating UserInterface...");
 
+    Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
+
     // Handle state transitions
     if (_stateTransitionDelay.HasFinished())
     {
@@ -61,8 +62,8 @@ void UserInterface::Update()
     
     // Connection status
     {
-        bool wifiOk = Managers::NetworkController::GetInstance()->IsWiFiConnected();
-        bool cloudOk = Managers::NetworkController::GetInstance()->IsMqttClientConnected();
+        bool wifiOk = guardianProxy->IsWifiConnected();
+        bool cloudOk = guardianProxy->IsMqttConnected();
 
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_2);
 
@@ -82,7 +83,7 @@ void UserInterface::Update()
 
     // Time
     {
-        auto dateTime = Services::RealTimeClock::GetInstance()->GetTime();
+        auto dateTime = guardianProxy->GetDateTime();
 
         lcdDisplay->SetCursor(15, DISPLAY_LINE::LINE_2);
         lcdDisplay->Write(dateTime.ToString().c_str());
@@ -94,14 +95,14 @@ void UserInterface::Update()
         char buffer [50];
 
         // Tds reading
-        const int tdsReading = Managers::WaterMonitor::GetInstance()->GetTdsReading();
+        const int tdsReading = guardianProxy->GetTdsReading();
         std::sprintf(buffer, "TDS: %03d ppm  [%s] ", tdsReading, "Ok");
 
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_3);
         lcdDisplay->Write(buffer);
 
         // Temperature reading
-        const float tempReading = Managers::WaterMonitor::GetInstance()->GetTemperatureReading();
+        const float tempReading = guardianProxy->GetTemperatureReading();
         std::sprintf(buffer, "Temp: %02.2f C [%s] ", tempReading, "Off");
 
         lcdDisplay->SetCursor(0, DISPLAY_LINE::LINE_4);
