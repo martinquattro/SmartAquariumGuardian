@@ -36,7 +36,7 @@ void MqttClient::Init()
     _instance = new MqttClient();
     _instance->_brokerUri = "mqtt://192.168.0.51:1883";
     _instance->_username = "Ltew0gHjxRjGTSxYj85t";
-    _instance->_state = State::INIT;
+    _instance->_state = State::IDLE;
     _instance->_connected = false;
 }
 
@@ -45,6 +45,12 @@ void MqttClient::Update()
 {
     switch (_state)
     {
+        case State::IDLE:
+        {
+            // nothing to do
+        }
+        break;
+
         case State::INIT:
         {
             _state = _Start();
@@ -55,7 +61,6 @@ void MqttClient::Update()
         {
             if (IsConnected()) 
             {
-                CORE_INFO("MqttClient connected");
                 _state = State::CONNECTED;
             }
         }
@@ -92,6 +97,15 @@ bool MqttClient::IsConnected() const
 }
 
 //-----------------------------------------------------------------------------
+void MqttClient::Start()
+{
+    if (_state == State::IDLE || _state == State::ERROR)
+    {
+        _state = State::INIT;
+    }
+}
+
+//-----------------------------------------------------------------------------
 bool MqttClient::Publish(const std::string &topic, const std::string &payload, int qos)
 {
     if (!_client) 
@@ -111,7 +125,7 @@ bool MqttClient::Publish(const std::string &topic, const std::string &payload, i
     return (msg_id >= 0);
 }
 
-//----private------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 bool MqttClient::Subscribe(const std::string &topic, MessageCallback cb)
 {
     if (!_client) 
@@ -134,7 +148,7 @@ bool MqttClient::Subscribe(const std::string &topic, MessageCallback cb)
     return false;
 }
 
-//----private------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void MqttClient::SetMessageCallback(MessageCallback cb)
 {
     _globalCallback = cb;
@@ -172,7 +186,7 @@ auto MqttClient::_Start() -> State
         return State::ERROR;
     }
 
-    CORE_INFO("MqttClient started");
+    CORE_INFO("MqttClient connecting to broker at %s", _brokerUri.c_str());
     return State::CONNECTING;
 }
 

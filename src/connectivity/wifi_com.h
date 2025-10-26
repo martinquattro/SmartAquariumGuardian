@@ -43,6 +43,11 @@ class WiFiCom
         bool IsConnected() const;
 
         /*!
+        * @brief Start WiFi connection
+        */
+        void Start();
+
+        /*!
         * @brief Disconnect from WiFi
         */
         void Disconnect();
@@ -51,6 +56,7 @@ class WiFiCom
 
         enum class State 
         {
+            IDLE,
             INIT,
             CONNECTING,
             CONNECTED,
@@ -89,7 +95,7 @@ class WiFiCom
         std::string _ssid;
         std::string _password;
         std::atomic<bool> _got_ip;
-        std::atomic<bool> _connected_flag;
+        std::atomic<bool> _connected;
         void* _netif; // forward-declare type to avoid exposing esp-netif here
     };
 } // namespace Connectivity

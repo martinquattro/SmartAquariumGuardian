@@ -51,60 +51,33 @@ void NetworkController::Init()
 void NetworkController::Update()
 {
     Connectivity::WiFiCom::GetInstance()->Update();
+    Connectivity::MqttClient::GetInstance()->Update();
 
     switch (_instance->_state)
     {
         case State::INIT:
         {
+            ChangeState(State::START_WIFI);
+        }
+        break;
+        
+        case State::START_WIFI:
+        {
+            Connectivity::WiFiCom::GetInstance()->Start();
             ChangeState(State::WAITING_FOR_WIFI);
         }
         break;
 
         case State::WAITING_FOR_WIFI:
         {
-            if (!Connectivity::WiFiCom::GetInstance()->IsConnected())
+            if (IsWiFiConnected())
             {
-                ChangeState(State::IDLE);
+                ChangeState(State::START_TIME_SYNC);
             }
         }
         break;
 
-        case State::IDLE:
-        {
-            if (Connectivity::WiFiCom::GetInstance()->IsConnected())
-            {
-                // Time sync check
-                if (!_isTimeSynced)
-                {
-                    ChangeState(State::INIT_TIME_SYNC);
-                }
-
-                // MQTT Client update
-                Connectivity::MqttClient::GetInstance()->Update();
-
-                if (Connectivity::MqttClient::GetInstance()->IsConnected())
-                {
-                    if (_telemetrySendDelay.HasFinished())
-                    {
-                        ChangeState(State::SEND_TELEMETRY);
-                    }
-                }
-            }
-            else
-            {
-                // TODO - Try Reconnect;
-            }
-        }
-        break;
-
-        case State::SEND_TELEMETRY:
-        {
-            SendTelemtry();
-            ChangeState(State::IDLE);
-        }
-        break;
-
-        case State::INIT_TIME_SYNC:
+        case State::START_TIME_SYNC:
         {
             TimeSyncInit();
             ChangeState(State::WAITING_FOR_TIME_SYNC);
@@ -115,8 +88,62 @@ void NetworkController::Update()
         {
             if (_isTimeSynced)
             {
-                ChangeState(State::IDLE);
+                ChangeState(State::START_MQTT_CLIENT);
             }
+        }
+        break;
+
+        case State::START_MQTT_CLIENT:
+        {
+            Connectivity::MqttClient::GetInstance()->Start();
+            ChangeState(State::WAITING_FOR_MQTT_CLIENT);
+        }
+        break;
+
+        case State::WAITING_FOR_MQTT_CLIENT:
+        {
+            if (IsMqttClientConnected())
+            {
+                ChangeState(State::SETUP_MQTT_CLIENT);
+            }
+        }
+        break;
+
+        case State::SETUP_MQTT_CLIENT:
+        {
+            Connectivity::MqttClient::GetInstance()->Subscribe(
+                RPC_REQUEST_TOPIC,
+                [](const std::string& topic, const std::string& payload)
+                {
+                    Managers::NetworkController::GetInstance()->HandleRpcRequest(payload);
+                }
+            );
+
+            ChangeState(State::IDLE);
+        }
+        break;
+
+        case State::IDLE:
+        {
+            if (IsWiFiConnected() && IsMqttClientConnected())
+            {
+                if (_telemetrySendDelay.HasFinished())
+                {
+                    ChangeState(State::SEND_TELEMETRY);
+                }
+            }
+            else
+            {
+                CORE_WARNING("NetworkController lost connection");
+                ChangeState(State::ERROR);
+            }
+        }
+        break;
+
+        case State::SEND_TELEMETRY:
+        {
+            SendTelemtry();
+            ChangeState(State::IDLE);
         }
         break;
 
@@ -152,6 +179,12 @@ bool NetworkController::IsMqttClientConnected() const
 void NetworkController::ChangeState(const State newState)
 {
     _state = newState;
+}
+
+//----private------------------------------------------------------------------
+void NetworkController::HandleRpcRequest(const std::string& payload)
+{
+    CORE_INFO("Handling RPC payload: %s", payload.c_str());
 }
 
 //----private------------------------------------------------------------------

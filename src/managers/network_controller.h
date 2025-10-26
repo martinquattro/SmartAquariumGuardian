@@ -10,6 +10,7 @@
 
 #include <sys/time.h>
 #include "framework/util/delay.h"
+#include <string>
 
 namespace Managers {
 
@@ -50,21 +51,33 @@ namespace Managers {
             enum class State 
             {
                 INIT,
+                START_WIFI,
                 WAITING_FOR_WIFI,
+                START_TIME_SYNC,
+                WAITING_FOR_TIME_SYNC,
+                START_MQTT_CLIENT,
+                WAITING_FOR_MQTT_CLIENT,
+                SETUP_MQTT_CLIENT,
                 IDLE,
                 SEND_TELEMETRY,
-                INIT_TIME_SYNC,
-                WAITING_FOR_TIME_SYNC,
                 ERROR
             };
 
-            /*
+            /*!
             * @brief Updates the internal state of the NetworkController.
             * @param newState  The new state to transition to.
             */
             void ChangeState(const State newState);
 
-            // TODO
+            /*!
+            * @brief Handle incoming RPC request payload.
+            * @param payload   The RPC request payload.
+            */
+            void HandleRpcRequest(const std::string &payload);
+
+            /*!
+            * @brief Send telemetry data to the MQTT broker.
+            */
             void SendTelemtry();
 
             /*
@@ -85,6 +98,7 @@ namespace Managers {
             //---------------------------------------------
             
             static constexpr const char* TELEMETRY_TOPIC = "v1/devices/me/telemetry";
+            static constexpr const char* RPC_REQUEST_TOPIC = "v1/devices/me/rpc/request/+";
 
             //---------------------------------------------
 

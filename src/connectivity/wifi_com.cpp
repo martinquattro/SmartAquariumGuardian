@@ -37,9 +37,10 @@ void WiFiCom::Init()
     }
 
     _instance = new WiFiCom();
-    _instance->_state = State::INIT;
+    _instance->_state = State::IDLE;
     _instance->_ssid = "Cuchitril 2.4GHz";
     _instance->_password = "Defensa5232022";
+    _instance->_connected = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -47,6 +48,12 @@ void WiFiCom::Update()
 {
     switch (_state)
     {
+        case State::IDLE:
+        {
+            // nothing to do
+        }
+        break;
+
         case State::INIT:
         {
             _state = _Start();
@@ -61,7 +68,12 @@ void WiFiCom::Update()
 
         case State::CONNECTED:
         {
-            // connected; nothing mandatory here
+            if (!IsConnected())
+            {
+                CORE_WARNING("WiFiCom disconnected");
+                _state = State::ERROR;
+            }
+            
         }
         break;
 
@@ -88,7 +100,16 @@ void WiFiCom::Update()
 //-----------------------------------------------------------------------------
 bool WiFiCom::IsConnected() const
 {
-    return _connected_flag.load();
+    return _connected.load();
+}
+
+//-----------------------------------------------------------------------------
+void WiFiCom::Start()
+{
+    if (_state == State::IDLE || _state == State::ERROR)
+    {
+        _state = State::INIT;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -176,7 +197,7 @@ void WiFiCom::_Stop()
 
     _state = State::INIT;
     _got_ip = false;
-    _connected_flag = false;
+    _connected = false;
 }
 
 //----private------------------------------------------------------------------
@@ -203,7 +224,7 @@ void WiFiCom::EventHandler(
 
                 if (WiFiCom::_instance)
                 {
-                    WiFiCom::_instance->_connected_flag = false;
+                    WiFiCom::_instance->_connected = false;
                     WiFiCom::_instance->_got_ip = false;
                     WiFiCom::_instance->_state = State::CONNECTING;
                     // attempt reconnect (non-blocking)
@@ -232,7 +253,7 @@ void WiFiCom::EventHandler(
             if (WiFiCom::_instance) 
             {
                 WiFiCom::_instance->_got_ip = true;
-                WiFiCom::_instance->_connected_flag = true;
+                WiFiCom::_instance->_connected = true;
                 WiFiCom::_instance->_state = State::CONNECTED;
             }
         }
@@ -242,7 +263,7 @@ void WiFiCom::EventHandler(
 //----private------------------------------------------------------------------
 WiFiCom::WiFiCom()
     : _got_ip(false)
-    , _connected_flag(false)
+    , _connected(false)
     , _netif(nullptr)
 {}
 

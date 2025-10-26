@@ -60,14 +60,14 @@ void SmartAquariumGuardian::Update()
     // This ensures the update runs at a fixed interval
     if (_delay.HasFinished())
     {
-        CORE_INFO("Starting periodic update...");
+        // CORE_INFO("Starting periodic update...");
 
-        // Update managers
-        Managers::WaterMonitor::GetInstance()->Update();
-        Managers::FoodFeeder::GetInstance()->Update();
-        Managers::UserInterface::GetInstance()->Update();
+        // // Update managers
+        // Managers::WaterMonitor::GetInstance()->Update();
+        // Managers::FoodFeeder::GetInstance()->Update();
+        // Managers::UserInterface::GetInstance()->Update();
 
-        CORE_INFO("Periodic update completed.");
+        // CORE_INFO("Periodic update completed.");
 
         // Debounce delay to prevent flickering. 
         // TODO - See if it can be avoid

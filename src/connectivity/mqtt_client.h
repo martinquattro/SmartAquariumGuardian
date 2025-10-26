@@ -20,6 +20,8 @@ class MqttClient
 {
     public:
 
+        using MessageCallback = std::function<void(const std::string &topic, const std::string &payload)>;
+
         /*!
         * @brief Get the singleton instance of MqttClient.
         * @return MqttClient* Pointer to the MqttClient instance.
@@ -43,6 +45,11 @@ class MqttClient
         bool IsConnected() const;
 
         /*!
+        * @brief Start MQTT connection
+        */
+       void Start();
+
+        /*!
         * @brief Publish a message to a topic
         * @param topic     Topic to publish to.
         * @param payload   Message payload.
@@ -50,20 +57,6 @@ class MqttClient
         * @return true if publish was successful, false otherwise
         */
         bool Publish(const std::string &topic, const std::string &payload, int qos = 1);
-
-    private:
-
-        enum class State 
-        {
-            INIT,
-            CONNECTING,
-            CONNECTED,
-            ERROR
-        };
-
-        using MessageCallback = std::function<void(const std::string &topic, const std::string &payload)>;
-        
-        //---------------------------------------------
 
         /*!
         * @brief Subscribe to a topic with an optional message callback
@@ -78,7 +71,21 @@ class MqttClient
         * @param cb    Callback function to handle incoming messages.
         */  
         void SetMessageCallback(MessageCallback cb);
-       
+
+    private:
+
+        enum class State 
+        {
+            IDLE,
+            INIT,
+            CONNECTING,
+            CONNECTED,
+            ERROR
+        };
+
+        
+        //---------------------------------------------
+
         /*!
         * @brief Start the MQTT client and connect to the broker
         */
