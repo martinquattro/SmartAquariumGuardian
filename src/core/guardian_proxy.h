@@ -25,33 +25,33 @@ class GuardianProxy : public IFoodFeeder,
         static void Init();
         static GuardianProxy* GetInstance();
 
-        // IFoodFeeder
+    // IFoodFeeder
 
-        // public INetworkController
+    // INetworkController
 
-            //! Check if WiFi is connected
-            auto IsWifiConnected() const -> bool override;
+        //! Check if WiFi is connected
+        auto IsWifiConnected() const -> bool override;
 
-            //! Check if MQTT client is connected
-            auto IsMqttConnected() const -> bool override;
+        //! Check if MQTT client is connected
+        auto IsMqttConnected() const -> bool override;
 
-        // IRealTimeClock
+    // IRealTimeClock
 
-            //! Get current date and time
-            auto GetDateTime() const -> Utils::DateTime override;
-            
-            //! Set date and time
-            auto SetDateTime(const Utils::DateTime& dateTime) -> bool override;
+        //! Get current date and time
+        auto GetDateTime() const -> Utils::DateTime override;
+        
+        //! Set date and time
+        auto SetDateTime(const Utils::DateTime& dateTime) -> bool override;
 
-        // IUserInterface
+    // IUserInterface
 
-        // IWaterMonitor
+    // IWaterMonitor
 
-            //! Get last TDS reading
-            auto GetTdsReading() const -> int override;
+        //! Get last TDS reading
+        auto GetTdsReading() const -> int override;
 
-            //! Get last Temperature reading
-            auto GetTemperatureReading() const -> float override;
+        //! Get last Temperature reading
+        auto GetTemperatureReading() const -> float override;
 
     private:
 
