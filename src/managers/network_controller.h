@@ -8,16 +8,21 @@
 #ifndef NETWORK_CONTROLLER_H
 #define NETWORK_CONTROLLER_H
 
-#include <sys/time.h>
 #include "framework/util/delay.h"
+#include "lib/nlohmann_json/json.hpp"
+#include <functional>
 #include <string>
+#include <sys/time.h>
+#include <unordered_map>
 
 namespace Managers {
 
     class NetworkController
     {
         public:
-        
+
+            using Json = nlohmann::json;
+
             /*!
             * @brief Gets the singleton instance of the NetworkController.
             * @return NetworkController* Pointer to the NetworkController instance.
@@ -64,6 +69,11 @@ namespace Managers {
             };
 
             /*!
+            * @brief Register RPC command handlers.
+            */
+            void RegisterRpcHandlers();
+
+            /*!
             * @brief Updates the internal state of the NetworkController.
             * @param newState  The new state to transition to.
             */
@@ -73,7 +83,7 @@ namespace Managers {
             * @brief Handle incoming RPC request payload.
             * @param payload   The RPC request payload.
             */
-            void HandleRpcRequest(const std::string &payload);
+            void HandleRpcRequestCallback(const std::string &payload);
 
             /*!
             * @brief Send telemetry data to the MQTT broker.
@@ -90,6 +100,10 @@ namespace Managers {
             */
             static void TimeSyncCallback(struct ::timeval *tv);
 
+            // --- RPC Commands ---
+            void FeedNowCallback(const std::string& payload);
+
+
             NetworkController(){}
             ~NetworkController() = default;
             NetworkController(const NetworkController&) = delete;
@@ -100,12 +114,15 @@ namespace Managers {
             static constexpr const char* TELEMETRY_TOPIC = "v1/devices/me/telemetry";
             static constexpr const char* RPC_REQUEST_TOPIC = "v1/devices/me/rpc/request/+";
 
+            using RpcCallback = std::function<void(const nlohmann::json& params)>;
+
             //---------------------------------------------
 
             static NetworkController* _instance;
             bool _isTimeSynced;
             State _state;
             Delay _telemetrySendDelay;
+            std::unordered_map<std::string, RpcCallback> _rpcHandlers;
     };
 
 } // namespace Managers

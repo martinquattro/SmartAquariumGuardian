@@ -10,6 +10,8 @@
 #include "esp_sntp.h"
 #include "framework/common_defs.h"
 #include "include/config.h"
+#include "include/config.h"
+#include "include/network_commands.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
 #include "src/core/guardian_proxy.h"
@@ -43,6 +45,7 @@ void NetworkController::Init()
     _instance->_isTimeSynced = false;
     _instance->_state = State::INIT;
     _instance->_telemetrySendDelay.Start(Config::TELEMETRY_SEND_INTERVAL_MS);
+    _instance->RegisterRpcHandlers();
 
     Connectivity::WiFiCom::Init();
     Connectivity::MqttClient::Init();
@@ -113,10 +116,13 @@ void NetworkController::Update()
         case State::SETUP_MQTT_CLIENT:
         {
             Connectivity::MqttClient::GetInstance()->Subscribe(
-                RPC_REQUEST_TOPIC,
+                RPC_REQUEST_TOPIC
+            );
+
+            Connectivity::MqttClient::GetInstance()->SetMessageCallback(
                 [](const std::string& topic, const std::string& payload)
                 {
-                    _instance->HandleRpcRequest(payload);
+                    _instance->HandleRpcRequestCallback(payload);
                 }
             );
 
@@ -177,15 +183,46 @@ bool NetworkController::IsMqttClientConnected() const
 }
 
 //----private------------------------------------------------------------------
+void NetworkController::RegisterRpcHandlers()
+{
+    _rpcHandlers[NetworkCommands::Rpc::FEED_NOW] = std::bind(&NetworkController::FeedNowCallback, this, std::placeholders::_1);
+}
+
+//----private------------------------------------------------------------------
 void NetworkController::ChangeState(const State newState)
 {
     _state = newState;
 }
 
 //----private------------------------------------------------------------------
-void NetworkController::HandleRpcRequest(const std::string& payload)
+void NetworkController::HandleRpcRequestCallback(const std::string& payload)
 {
-    CORE_INFO("Handling RPC payload: %s", payload.c_str());
+    Json json;
+    if (!Json::accept(payload))
+    {
+        CORE_ERROR("Invalid JSON received in RPC payload: %s", payload.c_str());
+        return;
+    }
+
+    json = Json::parse(payload);
+    if (!json.contains("method"))
+    {
+        CORE_WARNING("RPC payload missing 'method' field");
+        return;
+    }
+
+    std::string method = json["method"];
+
+    auto it = _rpcHandlers.find(method);
+    if (it != _rpcHandlers.end())
+    {
+        // Call the registered handler
+        it->second(payload);
+    }
+    else
+    {
+        CORE_WARNING("Unknown RPC method: %s", method.c_str());
+    }
 }
 
 //----private------------------------------------------------------------------
@@ -215,6 +252,12 @@ void NetworkController::SendTelemtry()
     {
         CORE_ERROR("Failed to send telemetry data");
     }
+}
+
+//----private------------------------------------------------------------------
+void NetworkController::FeedNowCallback(const std::string& payload)
+{
+    CORE_INFO("FeedNow RPC command received with payload: %s", payload.c_str());
 }
 
 //----private------------------------------------------------------------------
