@@ -7,18 +7,15 @@
 
 #include "src/managers/network_controller.h"
 
-#include "esp_sntp.h"
 #include "framework/common_defs.h"
 #include "include/config.h"
-#include "include/network_config.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
-#include "src/core/guardian_proxy.h"
 #include "src/core/guardian_public_interfaces.h"
-#include "src/drivers/tds_sensor.h"
-#include "src/drivers/temperature_sensor.h"
+#include "src/managers/comms/json_parser.h"
+#include "src/managers/comms/network_config.h"
+#include "src/managers/comms/telemetry_data.h"
 #include "src/utils/date_time.h"
-#include "src/utils/json_parser.h"
 
 namespace Managers {
 
@@ -42,7 +39,6 @@ void NetworkController::Init()
     }
 
     _instance = new NetworkController();
-    _instance->_isTimeSynced = false;
     _instance->_state = State::INIT;
     _instance->_telemetrySendDelay.Start(Config::TELEMETRY_SEND_INTERVAL_MS);
     _instance->RegisterRpcHandlers();
@@ -83,14 +79,14 @@ void NetworkController::Update()
 
         case State::START_TIME_SYNC:
         {
-            TimeSyncInit();
+            Core::GuardianProxy::GetInstance()->InitTimeSync();
             ChangeState(State::WAITING_FOR_TIME_SYNC);
         }
         break;
 
         case State::WAITING_FOR_TIME_SYNC:
         {
-            if (_isTimeSynced)
+            if (Core::GuardianProxy::GetInstance()->IsTimeSynced())
             {
                 ChangeState(State::START_MQTT_CLIENT);
             }
@@ -301,15 +297,11 @@ void NetworkController::SendTelemtry()
 {
     CORE_INFO("Sending telemetry data...");
 
-    const float temperature = Drivers::TemperatureSensor::GetInstance()->GetLastReading();
-    const int tds = Drivers::TdsSensor::GetInstance()->GetLastReading();
+    // Get telemetry data
+    Comms::TelemetryData telemetryData;
+    const std::string payload = telemetryData.ToJsonString();
 
-    std::string payload;
-    payload += "{";
-    payload += "\"temperature\":" + std::to_string(temperature);
-    payload += ",\"tds\":" + std::to_string(tds);
-    payload += "}";
-
+    // Publish telemetry data
     const bool success = Connectivity::MqttClient::GetInstance()->Publish(
         TELEMETRY_TOPIC
       , payload
@@ -323,48 +315,6 @@ void NetworkController::SendTelemtry()
     {
         CORE_ERROR("Failed to send telemetry data");
     }
-}
-
-//----private------------------------------------------------------------------
-void NetworkController::TimeSyncInit()
-{
-    // TODO - This should be set by the user
-    setenv("TZ", "ART3", 1);
-    tzset();
-
-    esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);
-    esp_sntp_setservername(0, "pool.ntp.org");
-
-    sntp_set_time_sync_notification_cb(&NetworkController::TimeSyncCallback);
-
-    esp_sntp_init();
-}
-
-//----static-------------------------------------------------------------------
-void NetworkController::TimeSyncCallback(struct ::timeval *tv)
-{
-    CORE_INFO("Time synchronized from NTP server");
-
-    time_t now;
-    struct tm timeinfo;
-    time(&now);
-    localtime_r(&now, &timeinfo);
-
-    CORE_INFO("NTP Time: %02d:%02d:%02d",
-                timeinfo.tm_hour
-              , timeinfo.tm_min
-              , timeinfo.tm_sec
-    );
-
-    Core::GuardianProxy::GetInstance()->SetDateTime(
-        Utils::DateTime(
-              static_cast<uint8_t>(timeinfo.tm_hour)
-            , static_cast<uint8_t>(timeinfo.tm_min)
-            , static_cast<uint8_t>(timeinfo.tm_sec)
-        )
-    );
-
-    _instance->_isTimeSynced = true;
 }
 
 //----private------------------------------------------------------------------

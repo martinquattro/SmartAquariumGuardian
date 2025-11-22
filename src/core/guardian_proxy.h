@@ -40,8 +40,11 @@ class GuardianProxy : public IFoodFeeder,
         //! Get current date and time
         auto GetDateTime() const -> Utils::DateTime override;
         
-        //! Set date and time
-        auto SetDateTime(const Utils::DateTime& dateTime) -> bool override;
+        //! Is time synchronized
+        auto IsTimeSynced() const -> bool override;
+
+        // Init time synchronization
+        auto InitTimeSync() const -> void override;
 
     // IUserInterface
 

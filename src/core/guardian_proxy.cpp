@@ -57,9 +57,15 @@ auto GuardianProxy::GetDateTime() const -> Utils::DateTime
 }
 
 //----IRealTimeClock------------------------------------------------------------
-auto GuardianProxy::SetDateTime(const Utils::DateTime& dateTime) -> bool
+auto GuardianProxy::IsTimeSynced() const -> bool
 {
-    return Services::RealTimeClock::GetInstance()->SetTime(dateTime);
+    return Services::RealTimeClock::GetInstance()->IsTimeSynced();
+}
+
+//----IRealTimeClock------------------------------------------------------------
+auto GuardianProxy::InitTimeSync() const -> void
+{
+    Services::RealTimeClock::GetInstance()->InitTimeSync();
 }
 
 //----IWaterMonitor-------------------------------------------------------------

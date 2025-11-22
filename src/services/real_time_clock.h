@@ -11,6 +11,7 @@
 #include "framework/drivers/i2c.h"
 #include "src/utils/date_time.h"
 #include <string>
+#include <sys/time.h>
 
 namespace Services {
 
@@ -42,6 +43,23 @@ class RealTimeClock
         */
         bool SetTime(const Utils::DateTime& dateTime);
 
+        /**
+        * @brief Check if the time has been synchronized.
+        * @return true if time is synchronized, false otherwise.
+        */
+        bool IsTimeSynced() const { return _isTimeSynced; }
+
+        /*!
+        * @brief Initializes the time synchronization process.
+        */
+        void InitTimeSync() const;
+        
+        /*!
+        * @brief Callback function for time synchronization.
+        * @param tv    Pointer to timeval structure with the synchronized time.
+        */
+        static void TimeSyncCallback(struct ::timeval *tv);
+
     private:
 
         /**
@@ -65,6 +83,7 @@ class RealTimeClock
 
         static RealTimeClock* _instance;
         I2C _i2c;
+        bool _isTimeSynced;
 };
 
 } // namespace Services

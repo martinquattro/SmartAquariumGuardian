@@ -9,6 +9,7 @@
 
 #include "framework/common_defs.h"
 #include "include/config.h"
+#include "esp_sntp.h"
 
 namespace Services {
 
@@ -36,6 +37,7 @@ void RealTimeClock::Init()
         , Config::I2C_SCL_PIN
         , Config::RTC_I2C_ADDRESS
     );
+    _instance->_isTimeSynced = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -79,6 +81,55 @@ bool RealTimeClock::SetTime(const Utils::DateTime& dateTime)
 
     CORE_INFO("Set RTC time to %02u:%02u:%02u", hours, minutes, seconds);
     return true;
+}
+
+//-----------------------------------------------------------------------------
+void RealTimeClock::InitTimeSync() const
+{
+    // TODO - This should be set by the user
+    setenv("TZ", "ART3", 1);
+    tzset();
+
+    esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    esp_sntp_setservername(0, "pool.ntp.org");
+
+    sntp_set_time_sync_notification_cb(&RealTimeClock::TimeSyncCallback);
+
+    esp_sntp_init();
+}
+
+//----static-------------------------------------------------------------------
+void RealTimeClock::TimeSyncCallback(struct ::timeval *tv)
+{
+    CORE_INFO("Time synchronized from NTP server");
+
+    time_t now;
+    struct tm timeinfo;
+    time(&now);
+    localtime_r(&now, &timeinfo);
+
+    CORE_INFO("NTP Time: %02d:%02d:%02d",
+                timeinfo.tm_hour
+              , timeinfo.tm_min
+              , timeinfo.tm_sec
+    );
+
+    if (_instance)
+    {
+        _instance->SetTime(
+            Utils::DateTime(
+                  static_cast<uint8_t>(timeinfo.tm_hour)
+                , static_cast<uint8_t>(timeinfo.tm_min)
+                , static_cast<uint8_t>(timeinfo.tm_sec)
+            )
+        );
+
+        _instance->_isTimeSynced = true;
+    }
+    else
+    {
+        CORE_ERROR("RTC instance not initialized; cannot set time");
+    }
 }
 
 //----private------------------------------------------------------------------

@@ -42,8 +42,11 @@ class IRealTimeClock
         //! Get current date and time
         virtual auto GetDateTime() const -> Utils::DateTime = 0;
 
-        //! Set date and time
-        virtual auto SetDateTime(const Utils::DateTime& dateTime) -> bool = 0;
+        //! Is time synchronized
+        virtual auto IsTimeSynced() const -> bool = 0;
+
+        // Init time synchronization
+        virtual auto InitTimeSync() const -> void = 0;
 };
 
 //-----------------------------------------------------------------------------

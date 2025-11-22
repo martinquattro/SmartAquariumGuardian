@@ -8,10 +8,10 @@
  #pragma once
 
 #include "framework/common_defs.h"
-#include "include/network_config.h"
 #include "lib/nlohmann_json/json.hpp"
 #include "src/core/guardian_proxy.h"
-#include "utils/json_parser.h"
+#include "src/managers/comms/network_config.h"
+#include "src/managers/comms/json_parser.h"
 #include <optional>
 #include <string>
 

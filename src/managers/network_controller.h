@@ -10,13 +10,12 @@
 
 #include "framework/util/delay.h"
 #include "lib/nlohmann_json/json.hpp"
+#include "src/managers/comms/rpc_handler.h"
 #include <functional>
-#include <string>
-#include <sys/time.h>
-#include <unordered_map>
 #include <map>
 #include <memory>
-#include "src/managers/cmd/rpc_handler.h"
+#include <string>
+#include <unordered_map>
 
 namespace Managers {
 
@@ -107,16 +106,6 @@ namespace Managers {
             */
             void SendTelemtry();
 
-            /*
-            * @brief Initializes the time synchronization process.
-            */
-            void TimeSyncInit();
-            
-            /*! @brief Callback function for time synchronization.
-            * @param tv    Pointer to timeval structure with the synchronized time.
-            */
-            static void TimeSyncCallback(struct ::timeval *tv);
-
             NetworkController(){}
             ~NetworkController() = default;
             NetworkController(const NetworkController&) = delete;
@@ -139,7 +128,6 @@ namespace Managers {
             //---------------------------------------------
 
             static NetworkController* _instance;
-            bool _isTimeSynced;
             State _state;
             Delay _telemetrySendDelay;
             std::map<std::string, std::unique_ptr<Handlers::IRpcHandler>> _rpcHandlers;
