@@ -60,4 +60,13 @@ float WaterMonitor::GetTemperatureReading() const
     return (Drivers::TemperatureSensor::GetInstance()->GetLastReading());
 }
 
+//-----------------------------------------------------------------------------
+bool WaterMonitor::SetTemperatureLimits(float minTemp, float maxTemp)
+{
+    // Placeholder implementation
+    CORE_INFO("Setting temperature limits: min=%.2f, max=%.2f", minTemp, maxTemp);
+    
+    return true;
+}
+
 } // namespace Managers

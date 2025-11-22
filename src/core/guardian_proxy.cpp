@@ -74,4 +74,10 @@ auto GuardianProxy::GetTemperatureReading() const -> float
     return Managers::WaterMonitor::GetInstance()->GetTemperatureReading();
 }
 
+//----IWaterMonitor-------------------------------------------------------------
+auto GuardianProxy::SetTemperatureLimits(float minTemp, float maxTemp) -> bool
+{
+    return Managers::WaterMonitor::GetInstance()->SetTemperatureLimits(minTemp, maxTemp);
+}
+
 } // namespace Core

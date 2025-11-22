@@ -53,6 +53,9 @@ class GuardianProxy : public IFoodFeeder,
         //! Get last Temperature reading
         auto GetTemperatureReading() const -> float override;
 
+        //! Set Temperature limits
+        auto SetTemperatureLimits(float minTemp, float maxTemp) -> bool override;
+
     private:
 
         GuardianProxy() = default;

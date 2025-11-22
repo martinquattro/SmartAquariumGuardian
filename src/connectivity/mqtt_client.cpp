@@ -234,8 +234,6 @@ void MqttClient::EventHandler(
             std::string topic(event->topic, event->topic_len);
             std::string payload(event->data, event->data_len);
 
-            CORE_INFO("MqttClient: message topic=%s payload=%s", topic.c_str(), payload.c_str());
-
             if (_instance->_globalCallback) 
             {
                 _instance->_globalCallback(topic, payload);

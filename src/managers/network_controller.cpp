@@ -10,8 +10,7 @@
 #include "esp_sntp.h"
 #include "framework/common_defs.h"
 #include "include/config.h"
-#include "include/config.h"
-#include "include/network_commands.h"
+#include "include/network_config.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
 #include "src/core/guardian_proxy.h"
@@ -119,10 +118,14 @@ void NetworkController::Update()
                 RPC_REQUEST_TOPIC
             );
 
+            // Connectivity::MqttClient::GetInstance()->Subscribe(
+            //     ATTRIBUTES_TOPIC
+            // );
+
             Connectivity::MqttClient::GetInstance()->SetMessageCallback(
                 [](const std::string& topic, const std::string& payload)
                 {
-                    _instance->HandleRpcRequestCallback(payload);
+                    _instance->DispatchMqttMessage(topic, payload);
                 }
             );
 
@@ -185,7 +188,8 @@ bool NetworkController::IsMqttClientConnected() const
 //----private------------------------------------------------------------------
 void NetworkController::RegisterRpcHandlers()
 {
-    _rpcHandlers[NetworkCommands::Rpc::FEED_NOW] = std::bind(&NetworkController::FeedNowCallback, this, std::placeholders::_1);
+    _rpcHandlers[Handlers::SetTempLimitsHandler::NAME] = 
+        std::make_unique<Handlers::SetTempLimitsHandler>();
 }
 
 //----private------------------------------------------------------------------
@@ -195,7 +199,26 @@ void NetworkController::ChangeState(const State newState)
 }
 
 //----private------------------------------------------------------------------
-void NetworkController::HandleRpcRequestCallback(const std::string& payload)
+void NetworkController::DispatchMqttMessage(const std::string& topic, const std::string& payload)
+{
+    CORE_INFO("Received MQTT message on topic: %s\n payload: %s", topic.c_str(), payload.c_str());
+
+    if (topic.find("rpc/request/") != std::string::npos)
+    {
+        DispatchRpcRequest(topic, payload);
+    }
+    else if (topic.find("v1/devices/me/attributes") != std::string::npos)
+    {
+        DispatchAttributesRequest(payload);
+    }
+    else
+    {
+        CORE_WARNING("MQTT message on unknown topic: %s", topic.c_str());
+    }
+}
+
+//----private------------------------------------------------------------------
+void NetworkController::DispatchRpcRequest(const std::string& topic, const std::string& payload)
 {
     Json json;
     if (!Json::accept(payload))
@@ -205,24 +228,76 @@ void NetworkController::HandleRpcRequestCallback(const std::string& payload)
     }
 
     json = Json::parse(payload);
-    if (!json.contains("method"))
+    if (!json.contains(NetworkConfig::Key::METHOD))
     {
         CORE_WARNING("RPC payload missing 'method' field");
         return;
     }
 
-    std::string method = json["method"];
+    std::string method = json[NetworkConfig::Key::METHOD];
 
     auto it = _rpcHandlers.find(method);
     if (it != _rpcHandlers.end())
     {
         // Call the registered handler
-        it->second(payload);
+        const Handlers::RpcResult result = it->second->Handle(payload);
+
+        // Extract request ID from topic and send response
+        const int requestId = ExtractRequestId(topic);
+        const std::string responseTopic = std::string(RPC_RESPONSE_TOPIC) + std::to_string(requestId);
+
+        // Prepare the response JSON
+        Json responseJson;
+
+        responseJson[NetworkConfig::Key::RESULT] =
+            result.success ? NetworkConfig::Value::RESULT_SUCCESS
+                           : NetworkConfig::Value::RESULT_ERROR;
+        
+        if (result.responseMessage.has_value()) 
+        {
+            responseJson[NetworkConfig::Key::RESPONSE_MSG] = result.responseMessage.value();
+        }
+                           
+        if (result.success && result.responseData.has_value()) 
+        {
+            responseJson[NetworkConfig::Key::RESPONSE_DATA] = result.responseData.value();
+        }
+   
+        // Serialize and publish the response
+        const bool publishSuccess = Connectivity::MqttClient::GetInstance()->Publish(
+            responseTopic,
+            responseJson.dump()
+        );
+
+        if (!publishSuccess)
+        {
+            CORE_ERROR("Failed to publish RPC response to topic: %s", responseTopic.c_str());
+        }
+        else
+        {
+            CORE_INFO("Published RPC response to topic: %s with payload: %s", 
+                responseTopic.c_str()
+              , responseJson.dump().c_str()
+            );
+        }
     }
     else
     {
         CORE_WARNING("Unknown RPC method: %s", method.c_str());
     }
+}
+
+//----private------------------------------------------------------------------
+void NetworkController::DispatchAttributesRequest(const std::string& payload)
+{
+    Json json;
+    if (!Json::accept(payload))
+    {
+        CORE_ERROR("Invalid JSON received in RPC payload: %s", payload.c_str());
+        return;
+    }
+
+    json = Json::parse(payload);
 }
 
 //----private------------------------------------------------------------------
@@ -252,12 +327,6 @@ void NetworkController::SendTelemtry()
     {
         CORE_ERROR("Failed to send telemetry data");
     }
-}
-
-//----private------------------------------------------------------------------
-void NetworkController::FeedNowCallback(const std::string& payload)
-{
-    CORE_INFO("FeedNow RPC command received with payload: %s", payload.c_str());
 }
 
 //----private------------------------------------------------------------------
@@ -300,6 +369,23 @@ void NetworkController::TimeSyncCallback(struct ::timeval *tv)
     );
 
     _instance->_isTimeSynced = true;
+}
+
+//----private------------------------------------------------------------------
+int NetworkController::ExtractRequestId(const std::string& url)
+{
+    size_t lastSlashPos = url.find_last_of('/');
+
+    if (lastSlashPos != std::string::npos && lastSlashPos < url.length() - 1) 
+    {
+        std::string idStr = url.substr(lastSlashPos + 1);
+        return std::stoi(idStr);
+    }
+    else
+    {
+        CORE_ERROR("Failed to extract ID from URL: %s", url.c_str());
+        return ::INVALID;
+    }
 }
 
 } // namespace Managers

@@ -12,11 +12,19 @@
 
 namespace NetworkConfig
 {
-    namespace Rpc
+    namespace Key
     {
-        inline constexpr const char* FEED_NOW           = "feedNow";
-        inline constexpr const char* SET_TEMP_LIMITS    = "setTempLimits";
-        inline constexpr const char* SET_TDS_LIMITS     = "setTdsLimits";
+        inline constexpr const char* METHOD         = "method";
+        inline constexpr const char* PARAMS         = "params";
+        inline constexpr const char* RESULT         = "result";
+        inline constexpr const char* RESPONSE_MSG   = "message";
+        inline constexpr const char* RESPONSE_DATA  = "data";
+    }
+
+    namespace Value
+    {
+        inline constexpr const char* RESULT_SUCCESS = "success";
+        inline constexpr const char* RESULT_ERROR   = "error";
     }
 
     namespace SharedAttributes

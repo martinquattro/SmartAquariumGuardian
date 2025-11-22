@@ -45,6 +45,14 @@ class WaterMonitor
         */
         float GetTemperatureReading() const;
 
+        /*!
+        * @brief Sets the temperature limits.
+        * @param minTemp Minimum temperature limit.
+        * @param maxTemp Maximum temperature limit.
+        * @return bool True if limits were set successfully, false otherwise.
+        */
+        bool SetTemperatureLimits(float minTemp, float maxTemp);
+
     private:
 
         WaterMonitor() {}

@@ -14,6 +14,9 @@
 #include <string>
 #include <sys/time.h>
 #include <unordered_map>
+#include <map>
+#include <memory>
+#include "src/managers/cmd/rpc_handler.h"
 
 namespace Managers {
 
@@ -80,10 +83,24 @@ namespace Managers {
             void ChangeState(const State newState);
 
             /*!
+            * @brief Dispatch incoming MQTT messages to appropriate handlers.
+            * @param topic     The topic of the incoming message.
+            * @param payload   The payload of the incoming message.
+            */
+            void DispatchMqttMessage(const std::string& topic, const std::string& payload);
+
+            /*!
             * @brief Handle incoming RPC request payload.
+            * @param topic     The RPC request topic.
             * @param payload   The RPC request payload.
             */
-            void HandleRpcRequestCallback(const std::string &payload);
+            void DispatchRpcRequest(const std::string& topic, const std::string &payload);
+
+            /*!
+            * @brief Handle incoming Attributes request payload.
+            * @param payload   The Attributes request payload.
+            */
+            void DispatchAttributesRequest(const std::string &payload);
 
             /*!
             * @brief Send telemetry data to the MQTT broker.
@@ -100,21 +117,24 @@ namespace Managers {
             */
             static void TimeSyncCallback(struct ::timeval *tv);
 
-            // --- RPC Commands ---
-            void FeedNowCallback(const std::string& payload);
-
-
             NetworkController(){}
             ~NetworkController() = default;
             NetworkController(const NetworkController&) = delete;
             NetworkController& operator=(const NetworkController&) = delete;
 
+            /*!
+            * @brief Extracts the request ID from the RPC request URL.
+            * @param url   The RPC request URL.
+            * @return int  The extracted request ID.
+            */
+            int ExtractRequestId(const std::string& url);
+
             //---------------------------------------------
             
-            static constexpr const char* TELEMETRY_TOPIC = "v1/devices/me/telemetry";
-            static constexpr const char* RPC_REQUEST_TOPIC = "v1/devices/me/rpc/request/+";
-
-            using RpcCallback = std::function<void(const nlohmann::json& params)>;
+            static constexpr const char* TELEMETRY_TOPIC    = "v1/devices/me/telemetry";
+            static constexpr const char* RPC_REQUEST_TOPIC  = "v1/devices/me/rpc/request/+";
+            static constexpr const char* RPC_RESPONSE_TOPIC = "v1/devices/me/rpc/response/";
+            static constexpr const char* ATTRIBUTES_TOPIC   = "v1/devices/me/attributes";
 
             //---------------------------------------------
 
@@ -122,7 +142,7 @@ namespace Managers {
             bool _isTimeSynced;
             State _state;
             Delay _telemetrySendDelay;
-            std::unordered_map<std::string, RpcCallback> _rpcHandlers;
+            std::map<std::string, std::unique_ptr<Handlers::IRpcHandler>> _rpcHandlers;
     };
 
 } // namespace Managers

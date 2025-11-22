@@ -10,6 +10,8 @@
 
 #include "framework/pin_names.h"
 
+static constexpr int INVALID = -1;
+
 namespace Config {
 
 // Definition of time increment used for system delays and updates
