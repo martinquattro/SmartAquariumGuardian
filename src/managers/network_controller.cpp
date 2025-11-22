@@ -189,8 +189,10 @@ bool NetworkController::IsMqttClientConnected() const
 //----private------------------------------------------------------------------
 void NetworkController::RegisterRpcHandlers()
 {
-    _rpcHandlers[Handlers::SetTempLimitsHandler::NAME] = 
-        std::make_unique<Handlers::SetTempLimitsHandler>();
+    _rpcHandlers[Handlers::SetTempLimitsHandler::NAME]          = std::make_unique<Handlers::SetTempLimitsHandler>();
+    _rpcHandlers[Handlers::AddFeedingScheduleHandler::NAME]     = std::make_unique<Handlers::AddFeedingScheduleHandler>();
+    _rpcHandlers[Handlers::DeleteFeedingScheduleHandler::NAME]  = std::make_unique<Handlers::DeleteFeedingScheduleHandler>();
+    _rpcHandlers[Handlers::FeedNowHandler::NAME]                = std::make_unique<Handlers::FeedNowHandler>();
 }
 
 //----private------------------------------------------------------------------

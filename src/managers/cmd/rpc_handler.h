@@ -63,4 +63,46 @@ class SetTempLimitsHandler : public IRpcHandler
         }
 };
 
+//-----------------------------------------------------------------------------
+class AddFeedingScheduleHandler : public IRpcHandler 
+{
+    public:
+
+        static constexpr const char* NAME = "addFeedingSchedule";
+
+        //!
+        Result Handle(const std::string& payload) override 
+        {
+            return Result::Success("Feeding schedule added successfully.");
+        }
+};
+
+//-----------------------------------------------------------------------------
+class DeleteFeedingScheduleHandler : public IRpcHandler 
+{
+    public:
+
+        static constexpr const char* NAME = "deleteFeedingSchedule";
+
+        //!
+        Result Handle(const std::string& payload) override 
+        {
+            return Result::Success("Feeding schedule deleted successfully.");
+        }
+};
+
+//-----------------------------------------------------------------------------
+class FeedNowHandler : public IRpcHandler 
+{
+    public:
+
+        static constexpr const char* NAME = "feedNow";
+
+        //!
+        Result Handle(const std::string& payload) override 
+        {
+            return Result::Success("Feeding executed successfully.");
+        }
+};
+
 } // namespace Handlers
