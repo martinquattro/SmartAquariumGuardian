@@ -8,8 +8,7 @@
 #ifndef WATER_MONITOR_H
 #define WATER_MONITOR_H
 
-#define MIN_TEMP 0
-#define MAX_TEMP 85
+struct Result;
 
 namespace Managers {
 
@@ -49,9 +48,9 @@ class WaterMonitor
         * @brief Sets the temperature limits.
         * @param minTemp Minimum temperature limit.
         * @param maxTemp Maximum temperature limit.
-        * @return bool True if limits were set successfully, false otherwise.
+        * @return Result Result indicating success or failure.
         */
-        bool SetTemperatureLimits(float minTemp, float maxTemp);
+        Result SetTemperatureLimits(float minTemp, float maxTemp);
 
     private:
 

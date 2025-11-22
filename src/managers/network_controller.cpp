@@ -18,6 +18,7 @@
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
 #include "src/utils/date_time.h"
+#include "src/utils/json_parser.h"
 
 namespace Managers {
 
@@ -220,27 +221,25 @@ void NetworkController::DispatchMqttMessage(const std::string& topic, const std:
 //----private------------------------------------------------------------------
 void NetworkController::DispatchRpcRequest(const std::string& topic, const std::string& payload)
 {
-    Json json;
-    if (!Json::accept(payload))
+    Utils::JsonPayloadParser parser(payload);
+    if (!parser.IsValid())
     {
-        CORE_ERROR("Invalid JSON received in RPC payload: %s", payload.c_str());
+        CORE_ERROR("Invalid JSON in RPC payload: %s", parser.GetError().c_str());
         return;
     }
 
-    json = Json::parse(payload);
-    if (!json.contains(NetworkConfig::Key::METHOD))
+    auto method = parser.GetMethod();
+    if (!method.has_value())
     {
-        CORE_WARNING("RPC payload missing 'method' field");
+        CORE_ERROR("RPC payload missing 'method' field");
         return;
     }
 
-    std::string method = json[NetworkConfig::Key::METHOD];
-
-    auto it = _rpcHandlers.find(method);
+    auto it = _rpcHandlers.find(method.value());
     if (it != _rpcHandlers.end())
     {
         // Call the registered handler
-        const Handlers::RpcResult result = it->second->Handle(payload);
+        const Result result = it->second->Handle(payload);
 
         // Extract request ID from topic and send response
         const int requestId = ExtractRequestId(topic);
@@ -256,11 +255,6 @@ void NetworkController::DispatchRpcRequest(const std::string& topic, const std::
         if (result.responseMessage.has_value()) 
         {
             responseJson[NetworkConfig::Key::RESPONSE_MSG] = result.responseMessage.value();
-        }
-                           
-        if (result.success && result.responseData.has_value()) 
-        {
-            responseJson[NetworkConfig::Key::RESPONSE_DATA] = result.responseData.value();
         }
    
         // Serialize and publish the response
@@ -283,7 +277,7 @@ void NetworkController::DispatchRpcRequest(const std::string& topic, const std::
     }
     else
     {
-        CORE_WARNING("Unknown RPC method: %s", method.c_str());
+        CORE_WARNING("Unknown RPC method: %s", method.value().c_str());
     }
 }
 

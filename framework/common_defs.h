@@ -19,6 +19,8 @@
 #include "framework/pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include <optional>
+#include <string>
 
 // Functional states
 #ifndef OFF
@@ -40,5 +42,21 @@
 
 #define TaskDelayMs(ms)                vTaskDelay(pdMS_TO_TICKS(ms))        // Delay
 #define TaskDelayUs(us)                esp_rom_delay_us(us)                 // Delay us
+
+struct Result
+{
+    bool success;
+    std::optional<std::string> responseMessage;
+
+    static Result Success(const std::optional<std::string>& message = std::nullopt)
+    {
+        return { true, message };
+    }
+
+    static Result Error(const std::string& message)
+    {
+        return { false, message };
+    }
+};
 
 #endif // COMMON_DEFS_H

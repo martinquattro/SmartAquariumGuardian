@@ -75,7 +75,7 @@ auto GuardianProxy::GetTemperatureReading() const -> float
 }
 
 //----IWaterMonitor-------------------------------------------------------------
-auto GuardianProxy::SetTemperatureLimits(float minTemp, float maxTemp) -> bool
+auto GuardianProxy::SetTemperatureLimits(float minTemp, float maxTemp) -> Result
 {
     return Managers::WaterMonitor::GetInstance()->SetTemperatureLimits(minTemp, maxTemp);
 }

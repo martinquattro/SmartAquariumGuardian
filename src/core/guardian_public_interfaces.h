@@ -64,7 +64,7 @@ class IWaterMonitor
         virtual auto GetTemperatureReading() const -> float = 0;
 
         //! Set Temperature limits
-        virtual auto SetTemperatureLimits(float minTemp, float maxTemp) -> bool = 0;
+        virtual auto SetTemperatureLimits(float minTemp, float maxTemp) -> Result = 0;
 };
 
 } // namespace Core

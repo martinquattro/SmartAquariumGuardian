@@ -61,12 +61,12 @@ float WaterMonitor::GetTemperatureReading() const
 }
 
 //-----------------------------------------------------------------------------
-bool WaterMonitor::SetTemperatureLimits(float minTemp, float maxTemp)
+Result WaterMonitor::SetTemperatureLimits(float minTemp, float maxTemp)
 {
     // Placeholder implementation
     CORE_INFO("Setting temperature limits: min=%.2f, max=%.2f", minTemp, maxTemp);
     
-    return true;
+    return Result::Success("Temperature limits set successfully.");
 }
 
 } // namespace Managers

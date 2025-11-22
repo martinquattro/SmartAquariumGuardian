@@ -8,8 +8,10 @@
  #pragma once
 
 #include "framework/common_defs.h"
-#include "src/core/guardian_proxy.h"
+#include "include/network_config.h"
 #include "lib/nlohmann_json/json.hpp"
+#include "src/core/guardian_proxy.h"
+#include "utils/json_parser.h"
 #include <optional>
 #include <string>
 
@@ -17,22 +19,6 @@ namespace Handlers {
 
 using Json = nlohmann::json;
 
-struct RpcResult 
-{
-    bool success;
-    std::optional<std::string> responseMessage;
-    std::optional<Json> responseData;
-
-    static RpcResult Success(const std::optional<std::string>& message = std::nullopt, const std::optional<Json>& data = std::nullopt)
-    {
-        return { true, message, data };
-    }
-
-    static RpcResult Error(const std::string& message)
-    {
-        return { false, message, std::nullopt };
-    }
-};
 
 //-----------------------------------------------------------------------------
 class IRpcHandler
@@ -42,7 +28,7 @@ class IRpcHandler
         virtual ~IRpcHandler() = default;
 
         //! Handle the RPC request with the given payload.
-        virtual RpcResult Handle(const std::string& payload) = 0;
+        virtual Result Handle(const std::string& payload) = 0;
 };
 
 //-----------------------------------------------------------------------------
@@ -53,10 +39,27 @@ class SetTempLimitsHandler : public IRpcHandler
         static constexpr const char* NAME = "setTempLimits";
 
         //!
-        RpcResult Handle(const std::string& payload) override 
+        Result Handle(const std::string& payload) override 
         {
-            return RpcResult::Success();
-            // return Core::GuardianProxy::GetInstance()->SetTemperatureLimits(); 
+            Utils::JsonPayloadParser parser(payload);
+            if (!parser.IsValid()) 
+            {
+                return Result::Error("Invalid JSON payload.");
+            }
+
+            const auto tempMinOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN);
+            const auto tempMaxOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MAX);
+
+            if (!tempMinOpt.has_value() || !tempMaxOpt.has_value()) 
+            {
+                return Result::Error("Error in temperature limit parameters.");
+            }
+
+            const float tempMin = tempMinOpt.value();
+            const float tempMax = tempMaxOpt.value();
+
+            const auto result = Core::GuardianProxy::GetInstance()->SetTemperatureLimits(tempMin, tempMax);
+            return result;
         }
 };
 
