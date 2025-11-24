@@ -10,11 +10,11 @@
 #include "framework/common_defs.h"
 #include "include/config.h"
 #include "src/core/guardian_proxy.h"
+#include "src/services/storage_service.h"
 #include "src/managers/food_feeder.h"
 #include "src/managers/network_controller.h"
 #include "src/managers/user_interface.h"
 #include "src/managers/water_monitor.h"
-#include "src/services/eeprom_memory.h"
 #include "src/services/real_time_clock.h"
 
 SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
@@ -44,8 +44,8 @@ void SmartAquariumGuardian::Init()
     Core::GuardianProxy::Init();
 
     // Initialize services
-    Services::EepromMemory::Init();
     Services::RealTimeClock::Init();
+    Services::StorageService::Init();
 
     // Initialize managers
     Managers::WaterMonitor::Init();

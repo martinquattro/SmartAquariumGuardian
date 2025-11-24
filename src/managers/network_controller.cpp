@@ -15,7 +15,7 @@
 #include "src/managers/comms/json_parser.h"
 #include "src/managers/comms/network_config.h"
 #include "src/managers/comms/telemetry_data.h"
-#include "src/utils/date_time.h"
+#include "src/services/storage_service.h"
 
 namespace Managers {
 
@@ -86,6 +86,7 @@ void NetworkController::Update()
 
         case State::WAITING_FOR_TIME_SYNC:
         {
+            // TODO - add timeout and error handling
             if (Core::GuardianProxy::GetInstance()->IsTimeSynced())
             {
                 ChangeState(State::START_MQTT_CLIENT);

@@ -50,9 +50,10 @@ class RealTimeClock
         bool IsTimeSynced() const { return _isTimeSynced; }
 
         /*!
-        * @brief Initializes the time synchronization process.
+        * @brief Initializes the time synchronization process. 
+                 Reads timezone from storage.
         */
-        void InitTimeSync(const char* envValue = nullptr) const;
+        void InitTimeSync() const;
         
         /*!
         * @brief Callback function for time synchronization.

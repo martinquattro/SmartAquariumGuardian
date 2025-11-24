@@ -7,9 +7,10 @@
 
 #include "src/services/real_time_clock.h"
 
+#include "esp_sntp.h"
 #include "framework/common_defs.h"
 #include "include/config.h"
-#include "esp_sntp.h"
+#include "src/core/guardian_proxy.h"
 
 namespace Services {
 
@@ -84,15 +85,20 @@ bool RealTimeClock::SetTime(const Utils::DateTime& dateTime)
 }
 
 //-----------------------------------------------------------------------------
-void RealTimeClock::InitTimeSync(const char* envValue) const
+void RealTimeClock::InitTimeSync() const
 {
-    if (envValue == nullptr)
+    const std::string timezone = Core::GuardianProxy::GetInstance()->GetTimezoneFromStorage().c_str();
+
+    if (!timezone.empty())
     {
-        // TODO - it should grab the saved timezone from settings
-        envValue = "UTC0"; // Default to UTC if no timezone provided
+        CORE_INFO("Setting timezone from storage: %s", timezone.c_str());
+    }
+    else
+    {
+        CORE_WARNING("No timezone set in storage");
     }
 
-    setenv("TZ", envValue, 1);
+    setenv("TZ", timezone.c_str(), 1);
     tzset();
 
     esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);

@@ -16,6 +16,18 @@
 namespace Core {
 
 //-----------------------------------------------------------------------------
+class IDataStore
+{
+    public:
+
+        //! Save timezone at EEPROM
+        virtual bool SaveTimezoneInStorage(const std::string& tz) = 0;
+
+        //! Get timezone from EEPROM
+        virtual std::string GetTimezoneFromStorage() const = 0;
+};
+
+//-----------------------------------------------------------------------------
 class IFoodFeeder
 {
     public:
@@ -46,7 +58,7 @@ class IRealTimeClock
         virtual auto IsTimeSynced() const -> bool = 0;
 
         // Init time synchronization
-        virtual auto InitTimeSync(const char* timezone = nullptr) const -> void = 0;
+        virtual auto InitTimeSync() const -> void = 0;
 };
 
 //-----------------------------------------------------------------------------

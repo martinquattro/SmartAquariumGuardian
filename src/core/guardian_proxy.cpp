@@ -13,6 +13,7 @@
 #include "src/managers/network_controller.h"
 #include "src/managers/water_monitor.h"
 #include "src/services/real_time_clock.h"
+#include "src/services/storage_service.h"
 
 namespace Core {
 
@@ -36,6 +37,18 @@ void GuardianProxy::Init()
 GuardianProxy* GuardianProxy::GetInstance()
 {
     return _instance;
+}
+
+//----IDataStore-----------------------------------------------------------------
+auto GuardianProxy::SaveTimezoneInStorage(const std::string& tz) -> bool
+{
+    return Services::StorageService::GetInstance()->SetTimezone(tz);
+}
+
+//----IDataStore-----------------------------------------------------------------
+auto GuardianProxy::GetTimezoneFromStorage() const -> std::string
+{
+    return Services::StorageService::GetInstance()->GetTimezone();
 }
 
 //----INetworkController--------------------------------------------------------
@@ -63,9 +76,9 @@ auto GuardianProxy::IsTimeSynced() const -> bool
 }
 
 //----IRealTimeClock------------------------------------------------------------
-auto GuardianProxy::InitTimeSync(const char* timezone) const -> void
+auto GuardianProxy::InitTimeSync() const -> void
 {
-    Services::RealTimeClock::GetInstance()->InitTimeSync(timezone);
+    Services::RealTimeClock::GetInstance()->InitTimeSync();
 }
 
 //----IWaterMonitor-------------------------------------------------------------

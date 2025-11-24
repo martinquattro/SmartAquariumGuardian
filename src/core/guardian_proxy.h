@@ -14,7 +14,8 @@
 
 namespace Core {
 
-class GuardianProxy : public IFoodFeeder,
+class GuardianProxy : public IDataStore,
+                      public IFoodFeeder,
                       public INetworkController,
                       public IRealTimeClock,
                       public IUserInterface,
@@ -24,6 +25,14 @@ class GuardianProxy : public IFoodFeeder,
 
         static void Init();
         static GuardianProxy* GetInstance();
+
+    // IDataStore
+
+        //! Save timezone at EEPROM
+        auto SaveTimezoneInStorage(const std::string& tz) -> bool override;
+
+        //! Get timezone from EEPROM
+        auto GetTimezoneFromStorage() const -> std::string override;
 
     // IFoodFeeder
 
@@ -44,7 +53,7 @@ class GuardianProxy : public IFoodFeeder,
         auto IsTimeSynced() const -> bool override;
 
         // Init time synchronization
-        auto InitTimeSync(const char* timezone = nullptr) const -> void override;
+        auto InitTimeSync() const -> void override;
 
     // IUserInterface
 

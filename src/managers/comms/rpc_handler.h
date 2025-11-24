@@ -15,6 +15,8 @@
 #include <optional>
 #include <string>
 
+#include "src/utils/date_time.h"
+
 namespace Handlers {
 
 using Json = nlohmann::json;
@@ -128,7 +130,12 @@ class SetTimezoneHandler : public IRpcHandler
                 return Result::Error("Timezone parameter missing or invalid.");
             }
 
-            Core::GuardianProxy::GetInstance()->InitTimeSync(timezone.value().c_str());
+            if (!Core::GuardianProxy::GetInstance()->SaveTimezoneInStorage(timezone.value()))
+            {
+                return Result::Error("Failed to save timezone.");
+            }
+
+            Core::GuardianProxy::GetInstance()->InitTimeSync();
             return Result::Success("Timezone set successfully.");
         }
 };

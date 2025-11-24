@@ -29,22 +29,35 @@ class EepromMemory
         static void Init();
 
         /**
-         * @brief Write a string to the EEPROM starting at the specified memory address.
-         * @param page  Page number to write to (0 to NUM_PAGES-1).
-         * @param str        String to write.
+         * @brief Write bytes to the EEPROM starting at the specified memory address.
+         * @param address    Memory address to start writing to (0 to EEPROM_SIZE_BYTES-1).
+         * @param data       Pointer to the data to write.
+         * @param length     Number of bytes to write.
          * @return true if success, false otherwise.
         */
-        bool WritePage(uint16_t page, const std::string str);
+        bool WriteBytes(uint16_t address, const uint8_t* data, size_t length);
 
         /**
-         * @brief Read a string from the EEPROM starting at the specified memory address.
-         * @param page       Page number to read from (0 to NUM_PAGES-1).
-         * @param str        String to store the read data.
+         * @brief Read bytes from the EEPROM starting at the specified memory address.
+         * @param address    Memory address to start reading from (0 to EEPROM_SIZE_BYTES-1).
+         * @param buffer     Pointer to the buffer to store read data.
+         * @param length     Number of bytes to read.
          * @return true if success, false otherwise.
         */
-        bool ReadPage(uint16_t page, std::string& str);
+        bool ReadBytes(uint16_t address, uint8_t* buffer, size_t length);
 
     private:
+
+        /*!
+         * @brief Write a full page to the EEPROM.
+         * @param pageAddress   Page address to write to.
+         * @param data          Pointer to the data to write.
+         * @param length        Number of bytes to write.
+         * @return true if success, false otherwise.
+        */
+        bool WritePageInternal(uint16_t pageAddress, const uint8_t* data, size_t length);
+
+        //---------------------------------------------
 
         EepromMemory(PinName sda, PinName scl, uint8_t address);
         ~EepromMemory() = default;

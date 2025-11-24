@@ -8,7 +8,6 @@
 #include "src/managers/water_monitor.h"
 
 #include "framework/common_defs.h"
-#include "services/eeprom_memory.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
 

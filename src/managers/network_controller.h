@@ -106,17 +106,19 @@ namespace Managers {
             */
             void SendTelemtry();
 
-            NetworkController(){}
-            ~NetworkController() = default;
-            NetworkController(const NetworkController&) = delete;
-            NetworkController& operator=(const NetworkController&) = delete;
-
             /*!
             * @brief Extracts the request ID from the RPC request URL.
             * @param url   The RPC request URL.
             * @return int  The extracted request ID.
             */
             int ExtractRequestId(const std::string& url);
+
+            //---------------------------------------------
+
+            NetworkController(){}
+            ~NetworkController() = default;
+            NetworkController(const NetworkController&) = delete;
+            NetworkController& operator=(const NetworkController&) = delete;
 
             //---------------------------------------------
             
