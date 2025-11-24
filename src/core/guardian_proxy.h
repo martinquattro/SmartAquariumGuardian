@@ -44,7 +44,7 @@ class GuardianProxy : public IFoodFeeder,
         auto IsTimeSynced() const -> bool override;
 
         // Init time synchronization
-        auto InitTimeSync() const -> void override;
+        auto InitTimeSync(const char* timezone = nullptr) const -> void override;
 
     // IUserInterface
 

@@ -84,10 +84,15 @@ bool RealTimeClock::SetTime(const Utils::DateTime& dateTime)
 }
 
 //-----------------------------------------------------------------------------
-void RealTimeClock::InitTimeSync() const
+void RealTimeClock::InitTimeSync(const char* envValue) const
 {
-    // TODO - This should be set by the user
-    setenv("TZ", "ART3", 1);
+    if (envValue == nullptr)
+    {
+        // TODO - it should grab the saved timezone from settings
+        envValue = "UTC0"; // Default to UTC if no timezone provided
+    }
+
+    setenv("TZ", envValue, 1);
     tzset();
 
     esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);
@@ -130,6 +135,8 @@ void RealTimeClock::TimeSyncCallback(struct ::timeval *tv)
     {
         CORE_ERROR("RTC instance not initialized; cannot set time");
     }
+
+    esp_sntp_stop();
 }
 
 //----private------------------------------------------------------------------

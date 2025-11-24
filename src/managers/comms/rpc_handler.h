@@ -105,4 +105,32 @@ class FeedNowHandler : public IRpcHandler
         }
 };
 
+//-----------------------------------------------------------------------------
+class SetTimezoneHandler : public IRpcHandler 
+{
+    public:
+
+        static constexpr const char* NAME = "setTimezone";
+
+        //!
+        Result Handle(const std::string& payload) override 
+        {
+            Utils::JsonPayloadParser parser(payload);
+            if (!parser.IsValid())
+            {
+                return Result::Error("Invalid JSON payload.");
+            }
+
+            const auto timezone = parser.GetParam<std::string>(NetworkConfig::SharedAttributes::TIMEZONE);
+            
+            if (!timezone.has_value())
+            {
+                return Result::Error("Timezone parameter missing or invalid.");
+            }
+
+            Core::GuardianProxy::GetInstance()->InitTimeSync(timezone.value().c_str());
+            return Result::Success("Timezone set successfully.");
+        }
+};
+
 } // namespace Handlers

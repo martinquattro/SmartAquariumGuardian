@@ -189,6 +189,7 @@ void NetworkController::RegisterRpcHandlers()
     _rpcHandlers[Handlers::AddFeedingScheduleHandler::NAME]     = std::make_unique<Handlers::AddFeedingScheduleHandler>();
     _rpcHandlers[Handlers::DeleteFeedingScheduleHandler::NAME]  = std::make_unique<Handlers::DeleteFeedingScheduleHandler>();
     _rpcHandlers[Handlers::FeedNowHandler::NAME]                = std::make_unique<Handlers::FeedNowHandler>();
+    _rpcHandlers[Handlers::SetTimezoneHandler::NAME]            = std::make_unique<Handlers::SetTimezoneHandler>();
 }
 
 //----private------------------------------------------------------------------

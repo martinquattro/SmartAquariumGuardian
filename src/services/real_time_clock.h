@@ -52,7 +52,7 @@ class RealTimeClock
         /*!
         * @brief Initializes the time synchronization process.
         */
-        void InitTimeSync() const;
+        void InitTimeSync(const char* envValue = nullptr) const;
         
         /*!
         * @brief Callback function for time synchronization.

@@ -63,9 +63,9 @@ auto GuardianProxy::IsTimeSynced() const -> bool
 }
 
 //----IRealTimeClock------------------------------------------------------------
-auto GuardianProxy::InitTimeSync() const -> void
+auto GuardianProxy::InitTimeSync(const char* timezone) const -> void
 {
-    Services::RealTimeClock::GetInstance()->InitTimeSync();
+    Services::RealTimeClock::GetInstance()->InitTimeSync(timezone);
 }
 
 //----IWaterMonitor-------------------------------------------------------------
