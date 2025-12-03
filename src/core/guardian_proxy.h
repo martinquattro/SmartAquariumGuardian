@@ -53,7 +53,7 @@ class GuardianProxy : public IDataStore,
         auto IsTimeSynced() const -> bool override;
 
         // Init time synchronization
-        auto InitTimeSync() const -> void override;
+        auto InitTimeSync(const char* timezone = nullptr) const -> Result override;
 
     // IUserInterface
 

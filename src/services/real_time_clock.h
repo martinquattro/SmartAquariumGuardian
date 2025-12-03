@@ -13,6 +13,8 @@
 #include <string>
 #include <sys/time.h>
 
+struct Result;
+
 namespace Services {
 
 class RealTimeClock
@@ -52,8 +54,10 @@ class RealTimeClock
         /*!
         * @brief Initializes the time synchronization process. 
                  Reads timezone from storage.
+        * @param timezone  Optional timezone string (e.g., "UTC", "PST8PDT"). If nullptr, reads from storage.
+        * @return Result indicating success or failure.
         */
-        void InitTimeSync() const;
+        Result InitTimeSync(const char* timezone = nullptr) const;
         
         /*!
         * @brief Callback function for time synchronization.

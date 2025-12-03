@@ -58,7 +58,7 @@ class IRealTimeClock
         virtual auto IsTimeSynced() const -> bool = 0;
 
         // Init time synchronization
-        virtual auto InitTimeSync() const -> void = 0;
+        virtual auto InitTimeSync(const char* timezone = nullptr) const -> Result = 0;
 };
 
 //-----------------------------------------------------------------------------

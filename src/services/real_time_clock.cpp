@@ -85,20 +85,23 @@ bool RealTimeClock::SetTime(const Utils::DateTime& dateTime)
 }
 
 //-----------------------------------------------------------------------------
-void RealTimeClock::InitTimeSync() const
+Result RealTimeClock::InitTimeSync(const char* timezone) const
 {
-    const std::string timezone = Core::GuardianProxy::GetInstance()->GetTimezoneFromStorage().c_str();
-
-    if (!timezone.empty())
+    if (timezone == nullptr)
     {
-        CORE_INFO("Setting timezone from storage: %s", timezone.c_str());
+        timezone = Core::GuardianProxy::GetInstance()->GetTimezoneFromStorage().c_str();
     }
     else
     {
-        CORE_WARNING("No timezone set in storage");
+        const bool successs = Core::GuardianProxy::GetInstance()->SaveTimezoneInStorage(timezone);
+        if (!successs)
+        {
+            CORE_ERROR("Failed to save timezone to storage");
+            return Result::Error("Internal error: Failed to save timezone to storage");
+        }
     }
 
-    setenv("TZ", timezone.c_str(), 1);
+    setenv("TZ", timezone, 1);
     tzset();
 
     esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);
@@ -107,6 +110,8 @@ void RealTimeClock::InitTimeSync() const
     sntp_set_time_sync_notification_cb(&RealTimeClock::TimeSyncCallback);
 
     esp_sntp_init();
+
+    return Result::Success("Timezone set and sync initialized");
 }
 
 //----static-------------------------------------------------------------------

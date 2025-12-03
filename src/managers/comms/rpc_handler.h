@@ -130,14 +130,9 @@ class SetTimezoneHandler : public IRpcHandler
                 return Result::Error("Timezone parameter missing or invalid.");
             }
 
-            if (!Core::GuardianProxy::GetInstance()->SaveTimezoneInStorage(timezone.value()))
-            {
-                return Result::Error("Failed to save timezone.");
-            }
-
-            Core::GuardianProxy::GetInstance()->InitTimeSync();
-            return Result::Success("Timezone set successfully.");
-        }
+            const auto result = Core::GuardianProxy::GetInstance()->InitTimeSync(timezone.value().c_str());
+            return result;
+        };
 };
 
 } // namespace Handlers
