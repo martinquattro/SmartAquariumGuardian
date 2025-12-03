@@ -34,32 +34,68 @@ class IRpcHandler
 };
 
 //-----------------------------------------------------------------------------
-class SetTempLimitsHandler : public IRpcHandler 
+class SetTempLimitsHandler : public IRpcHandler
 {
     public:
 
         static constexpr const char* NAME = "setTempLimits";
 
         //!
-        Result Handle(const std::string& payload) override 
+        Result Handle(const std::string& payload) override
         {
             Utils::JsonPayloadParser parser(payload);
-            if (!parser.IsValid()) 
+            if (!parser.IsValid())
             {
                 return Result::Error("Invalid JSON payload.");
             }
 
+            const auto minEnabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN_ENABLED);
+            const auto maxEnabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MAX_ENABLED);
+
+            if (!minEnabledOpt.has_value() || !maxEnabledOpt.has_value())
+            {
+                 return Result::Error("Missing required 'enabled' flags for limits.");
+            }
+
+            bool minEnabled = minEnabledOpt.value();
+            bool maxEnabled = maxEnabledOpt.value();
+
+            float tempMin = 0.0f;
+            float tempMax = 0.0f;
+
             const auto tempMinOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN);
             const auto tempMaxOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MAX);
 
-            if (!tempMinOpt.has_value() || !tempMaxOpt.has_value()) 
+            // --- Validación Mínimo ---
+            if (minEnabled)
             {
-                return Result::Error("Error in temperature limit parameters.");
+                if (!tempMinOpt.has_value())
+                {
+                    return Result::Error("Min limit is enabled but value is invalid or missing (cannot be null).");
+                }
+
+                tempMin = tempMinOpt.value();
+            }
+            else
+            {
+                if (tempMinOpt.has_value())
+                    tempMin = tempMinOpt.value();
             }
 
-            const float tempMin = tempMinOpt.value();
-            const float tempMax = tempMaxOpt.value();
+            if (maxEnabled)
+            {
+                if (!tempMaxOpt.has_value())
+                    return Result::Error("Max limit is enabled but value is invalid or missing (cannot be null).");
 
+                tempMax = tempMaxOpt.value();
+            }
+            else
+            {
+                 if (tempMaxOpt.has_value()) 
+                    tempMax = tempMaxOpt.value();
+            }
+
+            // const auto result = Core::GuardianProxy::GetInstance()->SetTemperatureLimits(tempMin, minEnabled, tempMax, maxEnabled);
             const auto result = Core::GuardianProxy::GetInstance()->SetTemperatureLimits(tempMin, tempMax);
             return result;
         }
