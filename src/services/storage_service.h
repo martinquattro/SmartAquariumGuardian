@@ -11,7 +11,7 @@
 #include <cstdint>
 #include "framework/common_defs.h"
 #include "lib/nlohmann_json/json.hpp"
-#include "src/services/memory_config_data.h"
+#include "src/services/memory/memory_config_data.h"
 
 namespace Services {
 
@@ -32,9 +32,64 @@ class StorageService
          */
         static void Init();
 
-        bool SetTimezone(const std::string& tz);
-        std::string GetTimezone() const;
-        
+        /*!
+         * @brief Get the value of a configuration field.
+         * @tparam T Type of the field to get.        
+        */
+        template<typename T>
+        T Get(FieldId fieldId) const
+        {
+            switch (fieldId)
+            {
+                #define X(type, id, name, key, def) \
+                    case FieldId::id: return *reinterpret_cast<const T*>(&_configCache.name);
+
+                CONFIG_FIELDS
+                #undef X
+
+                default:
+                    CORE_ERROR("Invalid FieldId in Get operation");
+                    return T{};
+            }
+        }
+
+        /*!
+         * @brief Set the value of a configuration field.
+         * @tparam T Type of the field to set.        
+        */
+        template<typename T>
+        bool Set(FieldId fieldId, T newValue)
+        {
+            bool changed = false;
+            switch (fieldId) 
+            {
+                #define X(type, id, name, key, def) \
+                    case FieldId::id: \
+                        if (*reinterpret_cast<const T*>(&_configCache.name) != newValue) \
+                        { \
+                            *reinterpret_cast<T*>(&_configCache.name) = newValue; \
+                            changed = true; \
+                        } \
+                        break;
+
+                CONFIG_FIELDS
+                #undef X
+                default:
+                    CORE_ERROR("Invalid FieldId in Set operation");
+                    return false;
+            }
+
+            if (changed) 
+            {
+                CORE_INFO("Storage: Field changed. Saving to EEPROM...");
+                return SaveConfigInternal();
+            }
+            else
+            {
+                return true;
+            }
+        }
+    
     private:
  
         /*!

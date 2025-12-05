@@ -16,18 +16,6 @@
 namespace Core {
 
 //-----------------------------------------------------------------------------
-class IDataStore
-{
-    public:
-
-        //! Save timezone at EEPROM
-        virtual bool SaveTimezoneInStorage(const std::string& tz) = 0;
-
-        //! Get timezone from EEPROM
-        virtual std::string GetTimezoneFromStorage() const = 0;
-};
-
-//-----------------------------------------------------------------------------
 class IFoodFeeder
 {
     public:
@@ -62,6 +50,24 @@ class IRealTimeClock
 };
 
 //-----------------------------------------------------------------------------
+class IStorageService
+{
+    public:
+
+        //! Save timezone at EEPROM
+        virtual bool SaveTimezoneInStorage(const std::string& tz) = 0;
+
+        //! Get timezone from EEPROM
+        virtual std::string GetTimezoneFromStorage() const = 0;
+
+        //! Save temperature limits in storage
+        virtual auto SaveTempLimitsInStorage(float minTemp, bool minEnabled, float maxTemp, bool maxEnabled) -> bool = 0;
+
+        //! Get temperature limits from storage
+        virtual auto GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void = 0;
+};
+
+//-----------------------------------------------------------------------------
 class IUserInterface
 {
     public:
@@ -79,7 +85,7 @@ class IWaterMonitor
         virtual auto GetTemperatureReading() const -> float = 0;
 
         //! Set Temperature limits
-        virtual auto SetTemperatureLimits(float minTemp, float maxTemp) -> Result = 0;
+        virtual auto SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled) -> Result = 0;
 };
 
 } // namespace Core

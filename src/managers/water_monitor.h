@@ -47,10 +47,12 @@ class WaterMonitor
         /*!
         * @brief Sets the temperature limits.
         * @param minTemp Minimum temperature limit.
+        * @param isMinLimitEnabled Flag indicating if the minimum limit is enabled.
         * @param maxTemp Maximum temperature limit.
+        * @param isMaxLimitEnabled Flag indicating if the maximum limit is enabled.
         * @return Result Result indicating success or failure.
         */
-        Result SetTemperatureLimits(float minTemp, float maxTemp);
+        Result SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled);
 
     private:
 

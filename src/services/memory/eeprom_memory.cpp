@@ -5,7 +5,7 @@
  * @date    Sep 2025
  *******************************************************************************/
 
-#include "src/services/eeprom/eeprom_memory.h"
+#include "src/services/memory/eeprom_memory.h"
 
 #include "framework/common_defs.h"
 #include "include/config.h"

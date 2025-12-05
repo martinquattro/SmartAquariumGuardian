@@ -10,6 +10,7 @@
 #include "framework/common_defs.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
+#include "src/core/guardian_proxy.h"
 
 namespace Managers {
 
@@ -60,12 +61,34 @@ float WaterMonitor::GetTemperatureReading() const
 }
 
 //-----------------------------------------------------------------------------
-Result WaterMonitor::SetTemperatureLimits(float minTemp, float maxTemp)
+Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled)
 {
-    // Placeholder implementation
-    CORE_INFO("Setting temperature limits: min=%.2f, max=%.2f", minTemp, maxTemp);
-    
-    return Result::Success("Temperature limits set successfully.");
+    CORE_INFO("WaterMonitor: Request to set temp limits -> Min: %.2f (En:%d), Max: %.2f (En:%d)",
+              minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+
+    if (isMinLimitEnabled && isMaxLimitEnabled)
+    {
+        if (minTemp >= maxTemp)
+        {
+            CORE_ERROR("WaterMonitor Validation Error: Min temp (%.2f) cannot be >= Max temp (%.2f) when both are enabled.", minTemp, maxTemp);
+            return Result::Error("Invalid limits: Minimum must be less than Maximum.");
+        }
+    }
+
+    // TODO - Check valid temperature ranges if needed.
+
+    const bool success = Core::GuardianProxy::GetInstance()->SaveTempLimitsInStorage(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+
+    if (success)
+    {
+        CORE_INFO("WaterMonitor: All temperature limit parameters saved successfully.");
+        return Result::Success("Temperature limits updated successfully.");
+    }
+    else
+    {
+        CORE_ERROR("WaterMonitor Storage Error: Failed to save temperature parameters.");
+        return Result::Error("Storage failure: Could not save settings to permanent memory.");
+    }
 }
 
 } // namespace Managers

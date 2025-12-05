@@ -66,7 +66,6 @@ class SetTempLimitsHandler : public IRpcHandler
             const auto tempMinOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN);
             const auto tempMaxOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MAX);
 
-            // --- Validación Mínimo ---
             if (minEnabled)
             {
                 if (!tempMinOpt.has_value())
@@ -95,8 +94,7 @@ class SetTempLimitsHandler : public IRpcHandler
                     tempMax = tempMaxOpt.value();
             }
 
-            // const auto result = Core::GuardianProxy::GetInstance()->SetTemperatureLimits(tempMin, minEnabled, tempMax, maxEnabled);
-            const auto result = Core::GuardianProxy::GetInstance()->SetTemperatureLimits(tempMin, tempMax);
+            const auto result = Core::GuardianProxy::GetInstance()->SetTemperatureLimits(tempMin, minEnabled, tempMax, maxEnabled);
             return result;
         }
 };

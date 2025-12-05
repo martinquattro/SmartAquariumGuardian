@@ -39,18 +39,6 @@ GuardianProxy* GuardianProxy::GetInstance()
     return _instance;
 }
 
-//----IDataStore-----------------------------------------------------------------
-auto GuardianProxy::SaveTimezoneInStorage(const std::string& tz) -> bool
-{
-    return Services::StorageService::GetInstance()->SetTimezone(tz);
-}
-
-//----IDataStore-----------------------------------------------------------------
-auto GuardianProxy::GetTimezoneFromStorage() const -> std::string
-{
-    return Services::StorageService::GetInstance()->GetTimezone();
-}
-
 //----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsWifiConnected() const -> bool
 {
@@ -81,6 +69,69 @@ auto GuardianProxy::InitTimeSync(const char* timezone) const -> Result
     return Services::RealTimeClock::GetInstance()->InitTimeSync(timezone);
 }
 
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::SaveTimezoneInStorage(const std::string& tz) -> bool
+{
+    return Services::StorageService::GetInstance()->Set<std::string>(
+        Services::FieldId::TIMEZONE,
+        tz
+    );
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::GetTimezoneFromStorage() const -> std::string
+{
+    return Services::StorageService::GetInstance()->Get<std::string>(
+        Services::FieldId::TIMEZONE
+    );
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::SaveTempLimitsInStorage(float minTemp, bool minEnabled, float maxTemp, bool maxEnabled) -> bool
+{
+    bool successMin = Services::StorageService::GetInstance()->Set<float>(
+        Services::FieldId::TEMP_MIN,
+        minTemp
+    );
+
+    bool successMinEn = Services::StorageService::GetInstance()->Set<bool>(
+        Services::FieldId::TEMP_MIN_ENABLED,
+        minEnabled
+    );
+
+    bool successMax = Services::StorageService::GetInstance()->Set<float>(
+        Services::FieldId::TEMP_MAX,
+        maxTemp
+    );
+
+    bool successMaxEn = Services::StorageService::GetInstance()->Set<bool>(
+        Services::FieldId::TEMP_MAX_ENALED,
+        maxEnabled
+    );
+
+    return (successMin && successMinEn && successMax && successMaxEn);
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void
+{
+    minTemp = Services::StorageService::GetInstance()->Get<float>(
+        Services::FieldId::TEMP_MIN
+    );
+
+    minEnabled = Services::StorageService::GetInstance()->Get<bool>(
+        Services::FieldId::TEMP_MIN_ENABLED
+    );
+
+    maxTemp = Services::StorageService::GetInstance()->Get<float>(
+        Services::FieldId::TEMP_MAX
+    );
+
+    maxEnabled = Services::StorageService::GetInstance()->Get<bool>(
+        Services::FieldId::TEMP_MAX_ENALED
+    );
+}
+
 //----IWaterMonitor-------------------------------------------------------------
 auto GuardianProxy::GetTdsReading() const -> int
 {
@@ -94,9 +145,9 @@ auto GuardianProxy::GetTemperatureReading() const -> float
 }
 
 //----IWaterMonitor-------------------------------------------------------------
-auto GuardianProxy::SetTemperatureLimits(float minTemp, float maxTemp) -> Result
+auto GuardianProxy::SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled) -> Result
 {
-    return Managers::WaterMonitor::GetInstance()->SetTemperatureLimits(minTemp, maxTemp);
+    return Managers::WaterMonitor::GetInstance()->SetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 }
 
 } // namespace Core

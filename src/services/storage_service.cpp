@@ -7,7 +7,7 @@
 
 #include "src/services/storage_service.h"
 
-#include "src/services/eeprom/eeprom_memory.h"
+#include "src/services/memory/eeprom_memory.h"
 #include "framework/common_defs.h"
 #include <vector>
 #include <cstring>
@@ -49,21 +49,6 @@ void StorageService::Init()
     }
 }
 
-//-----------------------------------------------------------------------------
-bool StorageService::SetTimezone(const std::string& tz)
-{
-    if (_configCache._timezone == tz) return true;
-
-    _configCache._timezone = tz;
-    return SaveConfigInternal();
-}
-
-//-----------------------------------------------------------------------------
-std::string StorageService::GetTimezone() const 
-{
-    return _configCache._timezone;
-}
-
 //----private------------------------------------------------------------------
 bool StorageService::SaveConfigInternal()
 {
@@ -93,6 +78,7 @@ bool StorageService::SaveConfigInternal()
     else
     {
         CORE_ERROR("Failed to write to EEPROM.");
+        LoadConfigInternal();
     }
     
     return success;

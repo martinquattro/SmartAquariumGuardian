@@ -14,7 +14,7 @@
 
 namespace Core {
 
-class GuardianProxy : public IDataStore,
+class GuardianProxy : public IStorageService,
                       public IFoodFeeder,
                       public INetworkController,
                       public IRealTimeClock,
@@ -25,14 +25,6 @@ class GuardianProxy : public IDataStore,
 
         static void Init();
         static GuardianProxy* GetInstance();
-
-    // IDataStore
-
-        //! Save timezone at EEPROM
-        auto SaveTimezoneInStorage(const std::string& tz) -> bool override;
-
-        //! Get timezone from EEPROM
-        auto GetTimezoneFromStorage() const -> std::string override;
 
     // IFoodFeeder
 
@@ -55,6 +47,20 @@ class GuardianProxy : public IDataStore,
         // Init time synchronization
         auto InitTimeSync(const char* timezone = nullptr) const -> Result override;
 
+        // IStorageService
+
+        //! Save timezone at EEPROM
+        auto SaveTimezoneInStorage(const std::string& tz) -> bool override;
+
+        //! Get timezone from EEPROM
+        auto GetTimezoneFromStorage() const -> std::string override;
+
+        //! Save temperature limits in storage
+        auto SaveTempLimitsInStorage(float minTemp, bool minEnabled, float maxTemp, bool maxEnabled) -> bool override;
+
+        //! Get temperature limits from storage
+        auto GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void override;
+
     // IUserInterface
 
     // IWaterMonitor
@@ -66,7 +72,7 @@ class GuardianProxy : public IDataStore,
         auto GetTemperatureReading() const -> float override;
 
         //! Set Temperature limits
-        auto SetTemperatureLimits(float minTemp, float maxTemp) -> Result override;
+        auto SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled) -> Result override;
 
     private:
 
