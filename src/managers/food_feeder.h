@@ -41,6 +41,16 @@ namespace Managers {
             */
             auto Feed(int dose) -> Result;
 
+            /*!
+            * @brief Add or modify feeding schedule entry.
+            * @param minutesAfterMidnight Minutes after midnight (0-1439).
+            * @param slotIndex Feeding slot index.
+            * @param dose Dose amount for this entry.
+            * @param enabled Is this entry enabled.
+            * @return Result Success or error result of the operation.
+            */
+            auto AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex, int dose, bool enabled) -> Result;
+
         private:
 
             /*!
@@ -58,13 +68,14 @@ namespace Managers {
 
             //---------------------------------------------
 
+            static constexpr const int MAX_FEEDING_SCHECULES = 10;
+            static constexpr const int MINUTES_IN_A_DAY = 1440;
             static constexpr const int MIN_FEED_DOSE = 1;
             static constexpr const int MAX_FEED_DOSE = 5;
             static constexpr const float FEEDER_OPEN_ANGLE = 180.0;
             static constexpr const float FEEDER_CLOSED_ANGLE = 0.0f;
             static constexpr const int FEEDER_MOVE_TIME_MS = 1000;
             static constexpr const int FEEDER_WAIT_TIME_MS = 300;
-
 
             //---------------------------------------------
 

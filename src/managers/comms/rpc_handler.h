@@ -107,7 +107,54 @@ class AddFeedingScheduleHandler : public IRpcHandler
         //!
         Result Handle(const std::string& payload) override 
         {
-            return Result::Success("Feeding schedule added successfully.");
+            Utils::JsonPayloadParser parser(payload);
+            if (!parser.IsValid())
+            {
+                return Result::Error("Internal error: Invalid JSON payload.");
+            }
+
+            const auto slotIdOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_SLOT_ID);
+            const auto timeMinutesOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_TIME);
+            const auto doseOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_DOSE);
+            const auto enabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::FEED_ENABLED);
+
+            if (!enabledOpt.has_value())
+            {
+                CORE_ERROR("Missing 'enabled' flag.");
+                return Result::Error("Missing parameters");
+            }
+
+            const bool enabled = enabledOpt.value();
+
+            if (enabled)
+            {
+                if (!slotIdOpt.has_value())
+                {
+                    CORE_ERROR("Missing 'slot_index' for enabled schedule.");
+                    return Result::Error("Missing parameters");
+                }
+
+                if (!timeMinutesOpt.has_value())
+                {
+                    CORE_ERROR("Missing 'time_min' for enabled schedule.");
+                    return Result::Error("Missing parameters");
+                }
+
+                if (!doseOpt.has_value())
+                {
+                    CORE_ERROR("Missing 'dose' for enabled schedule.");
+                    return Result::Error("Missing parameters");
+                }
+            }
+
+            const auto result = Core::GuardianProxy::GetInstance()->AddFeedingScheduleEntry(
+                timeMinutesOpt.value(),
+                slotIdOpt.value(), 
+                doseOpt.value(), 
+                enabled
+            );
+
+            return result;
         }
 };
 

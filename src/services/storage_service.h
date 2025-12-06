@@ -33,6 +33,16 @@ class StorageService
         static void Init();
 
         /*!
+         * @brief Save a feeding schedule entry in storage.
+         * @param timeMinutesAfterMidnight Minutes after midnight (0-1439).
+         * @param slotIndex Feeding slot index.
+         * @param dose Dose amount for this entry.
+         * @param enabled Is this entry enabled.
+         * @return true if the operation was successful, false otherwise.
+        */
+        bool SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled);
+        
+        /*!
          * @brief Get the value of a configuration field.
          * @tparam T Type of the field to get.        
         */

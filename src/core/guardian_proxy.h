@@ -31,6 +31,9 @@ class GuardianProxy : public IStorageService,
         //! Feed a specific dose of food
         auto Feed(int dose) -> Result override;
 
+        //! Add or modify feeding schedule entry
+        auto AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex, int dose, bool enabled) -> Result override;
+
     // INetworkController
 
         //! Check if WiFi is connected
@@ -64,7 +67,10 @@ class GuardianProxy : public IStorageService,
         //! Get temperature limits from storage
         auto GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void override;
 
-    // IUserInterface
+        //! Save feeding schedule in storage
+        auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool override;
+    
+        // IUserInterface
 
         //! Update feeding status indicator
         void UpdateFeedingStatusIndicator(bool isFeeding) override;

@@ -49,6 +49,46 @@ void StorageService::Init()
     }
 }
 
+//-----------------------------------------------------------------------------
+bool StorageService::SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) 
+{
+    auto& scheduleList = _configCache._feedingSchedule;
+    
+    // Find existing entry by slotIndex
+    auto it = std::find_if(
+        scheduleList.begin(),
+        scheduleList.end(),
+        [slotIndex](const Services::FeedingScheduleEntry& entry)
+        {
+            return entry._id == slotIndex;
+        }
+    );
+
+    if (it != scheduleList.end())
+    {
+        // Update existing entry
+        it->_min = timeMinutesAfterMidnight;
+        it->_dose = dose;
+        it->_enabled = enabled;
+    }
+    else
+    {
+        // Add new entry
+        Services::FeedingScheduleEntry newEntry;
+        newEntry._min = timeMinutesAfterMidnight;
+        newEntry._id = slotIndex;
+        newEntry._dose = dose;
+        newEntry._enabled = enabled;
+        scheduleList.push_back(newEntry);
+    }
+
+    // Save updated schedule back to storage
+    return Set<Services::FeeddingScheduleList>(
+        Services::FieldId::FEEDING_SCHEDULE,
+        scheduleList
+    );
+}
+
 //----private------------------------------------------------------------------
 bool StorageService::SaveConfigInternal()
 {

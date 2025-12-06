@@ -22,6 +22,9 @@ class IFoodFeeder
 
         //! Feed a specific dose of food
         virtual auto Feed(int dose) -> Result = 0;
+
+        //! Add or modify feeding schedule entry
+        virtual auto AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex, int dose, bool enabled) -> Result = 0;
 };
 
 //-----------------------------------------------------------------------------
@@ -67,6 +70,9 @@ class IStorageService
 
         //! Get temperature limits from storage
         virtual auto GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void = 0;
+
+        //! Save feeding schedule in storage
+        virtual auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool = 0;
 };
 
 //-----------------------------------------------------------------------------

@@ -39,5 +39,9 @@ namespace NetworkConfig
         inline constexpr const char* TDS_LIMIT_MIN              = "tds_limit_min";
         inline constexpr const char* TIMEZONE                   = "system_timezone";
         inline constexpr const char* FEED_DOSE                  = "dose";
+        inline constexpr const char* FEED_TIME                  = "time_min";
+        inline constexpr const char* FEED_SLOT_ID               = "slot_index";
+        inline constexpr const char* FEED_ENABLED               = "enabled";
+
     }
 }
