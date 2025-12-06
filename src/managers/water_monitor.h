@@ -63,6 +63,11 @@ class WaterMonitor
 
         //---------------------------------------------
 
+        static constexpr float MIN_TEMP_VALID_VALUE = 10.0f;
+        static constexpr float MAX_TEMP_VALID_VALUE = 40.0f;
+
+        //---------------------------------------------
+
         static WaterMonitor* _instance;
 };
 

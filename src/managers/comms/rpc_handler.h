@@ -15,8 +15,6 @@
 #include <optional>
 #include <string>
 
-#include "src/utils/date_time.h"
-
 namespace Handlers {
 
 using Json = nlohmann::json;

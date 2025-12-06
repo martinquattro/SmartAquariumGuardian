@@ -35,8 +35,8 @@ namespace NetworkConfig
         inline constexpr const char* TEMP_LIMIT_MAX_ENABLED     = "temp_limit_max_enabled";
         inline constexpr const char* TEMP_LIMIT_MIN             = "temp_limit_min";
         inline constexpr const char* TEMP_LIMIT_MIN_ENABLED     = "temp_limit_min_enabled";
-        inline constexpr const char* TDS_LIMIT_MAX     = "tds_limit_max";
-        inline constexpr const char* TDS_LIMIT_MIN     = "tds_limit_min";
-        inline constexpr const char* TIMEZONE          = "system_timezone";
+        inline constexpr const char* TDS_LIMIT_MAX              = "tds_limit_max";
+        inline constexpr const char* TDS_LIMIT_MIN              = "tds_limit_min";
+        inline constexpr const char* TIMEZONE                   = "system_timezone";
     }
 }

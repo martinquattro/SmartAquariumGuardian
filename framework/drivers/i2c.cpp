@@ -15,6 +15,13 @@ I2C::I2C(PinName sda, PinName scl, uint8_t addr7bit, i2c_port_num_t port, uint32
     : _port(port)
     , _valid(false)
 {
+    _mutex = xSemaphoreCreateMutex();
+    if (_mutex == nullptr)
+    {
+        CORE_ERROR("Failed to create I2C mutex!");
+        return;
+    }
+
     // Initialize bus only once
     if (_busHandles[port] == nullptr) 
     {
@@ -69,28 +76,50 @@ I2C::~I2C()
     {
         i2c_master_bus_rm_device(_dev);
     }
+
+    if (_mutex != nullptr)
+    {
+        vSemaphoreDelete(_mutex);
+    }
 }
 
 //-----------------------------------------------------------------------------
 bool I2C::Write(const uint8_t* data, size_t len)
 {
-    if (!_valid) 
+if (!_valid || _mutex == NULL)
     {
         return false;
     }
 
-    return (i2c_master_transmit(_dev, data, len, 100) == ESP_OK);
+    if (xSemaphoreTake(_mutex, portMAX_DELAY) == pdTRUE)
+    {
+        esp_err_t err = i2c_master_transmit(_dev, data, len, 100);
+        
+        xSemaphoreGive(_mutex);
+        
+        return (err == ESP_OK);
+    }
+    
+    return false;
 }
 
 //-----------------------------------------------------------------------------
 bool I2C::Read(uint8_t* data, size_t len)
 {
-    if (!_valid) 
+if (!_valid || _mutex == NULL)
     {
         return false;
     }
 
-    return (i2c_master_receive(_dev, data, len, 100) == ESP_OK);
+    if (xSemaphoreTake(_mutex, portMAX_DELAY) == pdTRUE)
+    {
+        esp_err_t err = i2c_master_receive(_dev, data, len, 100);
+        xSemaphoreGive(_mutex);
+
+        return (err == ESP_OK);
+    }
+
+    return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -99,12 +128,20 @@ bool I2C::WriteRead(const uint8_t* txBuffer
                     , uint8_t* rxBuffer
                     , size_t rxLen)
 {
-    if (!_valid) 
+    if (!_valid || _mutex == NULL)
     {
         return false;
     }
 
-    return (i2c_master_transmit_receive(_dev, txBuffer, txLen, rxBuffer, rxLen, 100) == ESP_OK);
+    if (xSemaphoreTake(_mutex, portMAX_DELAY) == pdTRUE)
+    {
+        esp_err_t err = i2c_master_transmit_receive(_dev, txBuffer, txLen, rxBuffer, rxLen, 100);
+        xSemaphoreGive(_mutex);
+
+        return (err == ESP_OK);
+    }
+
+    return false;
 }
 
 //-----------------------------------------------------------------------------

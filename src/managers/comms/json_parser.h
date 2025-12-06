@@ -112,12 +112,22 @@ std::optional<T> JsonPayloadParser::GetValue(const std::string& key, const std::
         {
             return valueJson.get<float>(); // Safe conversion
         }
+
+        if (valueJson.is_null())
+        {
+            return 0.0f;
+        }
     }
     else if constexpr (std::is_same_v<T, int>) 
     {
         if (valueJson.is_number_integer())
         {
             return valueJson.get<int>(); // Safe conversion
+        }
+
+        if (valueJson.is_null())
+        {
+            return 0;
         }
     }
     else if constexpr (std::is_same_v<T, bool>) 

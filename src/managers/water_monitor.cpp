@@ -75,8 +75,24 @@ Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinL
         }
     }
 
-    // TODO - Check valid temperature ranges if needed.
+    if (isMinLimitEnabled)
+    {
+        if (minTemp < MIN_TEMP_VALID_VALUE || minTemp > MAX_TEMP_VALID_VALUE)
+        {
+            CORE_ERROR("WaterMonitor Validation Error: Min temp (%.2f) out of valid range [%.2f, %.2f].", minTemp, MIN_TEMP_VALID_VALUE, MAX_TEMP_VALID_VALUE);
+            return Result::Error("Invalid minimum temperature limit.");
+        }
+    }
 
+    if (isMaxLimitEnabled)
+    {
+        if (maxTemp < MIN_TEMP_VALID_VALUE || maxTemp > MAX_TEMP_VALID_VALUE)
+        {
+            CORE_ERROR("WaterMonitor Validation Error: Max temp (%.2f) out of valid range [%.2f, %.2f].", maxTemp, MIN_TEMP_VALID_VALUE, MAX_TEMP_VALID_VALUE);
+            return Result::Error("Invalid maximum temperature limit.");
+        }
+    }
+    
     const bool success = Core::GuardianProxy::GetInstance()->SaveTempLimitsInStorage(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 
     if (success)
@@ -87,7 +103,7 @@ Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinL
     else
     {
         CORE_ERROR("WaterMonitor Storage Error: Failed to save temperature parameters.");
-        return Result::Error("Storage failure: Could not save settings to permanent memory.");
+        return Result::Error("Internal Error: Could not save settings to permanent memory.");
     }
 }
 

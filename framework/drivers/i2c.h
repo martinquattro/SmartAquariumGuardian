@@ -9,6 +9,8 @@
 
 #include "driver/i2c_master.h"
 #include "framework/pin_names.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
 #include <cstdint>
 
 class I2C
@@ -75,4 +77,5 @@ class I2C
         bool _valid;
         
         static i2c_master_bus_handle_t _busHandles[I2C_NUM_MAX];
+        SemaphoreHandle_t _mutex = nullptr;
     };
