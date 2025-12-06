@@ -28,6 +28,9 @@ class GuardianProxy : public IStorageService,
 
     // IFoodFeeder
 
+        //! Feed a specific dose of food
+        auto Feed(int dose) -> Result override;
+
     // INetworkController
 
         //! Check if WiFi is connected

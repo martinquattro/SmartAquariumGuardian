@@ -39,6 +39,12 @@ GuardianProxy* GuardianProxy::GetInstance()
     return _instance;
 }
 
+//----IFoodFeeder--------------------------------------------------------------
+auto GuardianProxy::Feed(int dose) -> Result
+{
+    return Managers::FoodFeeder::GetInstance()->Feed(dose);
+}
+
 //----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsWifiConnected() const -> bool
 {

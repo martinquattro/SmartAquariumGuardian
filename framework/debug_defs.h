@@ -10,14 +10,31 @@
 #include <cassert>
 #include <cstdio>
 #include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #define CORE_TAG (strrchr("/" __FILE__, '/') + 1)
 
-// Debug macros for logging
-#define CORE_TRACE(format, ...)   ESP_LOGD(CORE_TAG, format, ##__VA_ARGS__)
-#define CORE_ERROR(format, ...)   ESP_LOGE(CORE_TAG, format, ##__VA_ARGS__)
-#define CORE_WARNING(format, ...) ESP_LOGW(CORE_TAG, format, ##__VA_ARGS__)
-#define CORE_INFO(format, ...)    ESP_LOGI(CORE_TAG, format, ##__VA_ARGS__)
+static inline const char* get_current_task_name()
+{
+    if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+    {
+        return pcTaskGetName(NULL);
+    }
+    else
+    {
+        return "boot";
+    }
+}
+
+#define CORE_INFO(format, ...) \
+    ESP_LOGI(CORE_TAG, "[%s] " format, get_current_task_name(), ##__VA_ARGS__)
+
+#define CORE_WARNING(format, ...) \
+    ESP_LOGW(CORE_TAG, "[%s] " format, get_current_task_name(), ##__VA_ARGS__)
+
+#define CORE_ERROR(format, ...) \
+    ESP_LOGE(CORE_TAG, "[%s] " format, get_current_task_name(), ##__VA_ARGS__)
 
 // Asserts macros for runtime checks
 #define ASSERT(cond)                assert(cond)

@@ -51,10 +51,10 @@ namespace Drivers {
             static constexpr float PWM_FREQUENCY    = 50;
             
             static constexpr float LOWER_DUTY       = 0.025f;
-            static constexpr float HIGHER_DUTY      = 0.130f;
+            static constexpr float HIGHER_DUTY      = 0.125f;
 
             static constexpr float MIN_SAFE_DUTY      = LOWER_DUTY + 0.01f;
-            static constexpr float MAX_SAFE_DUTY      = HIGHER_DUTY + 0.01f;
+            static constexpr float MAX_SAFE_DUTY      = HIGHER_DUTY - 0.01f;
             
             //---------------------------------------------
 

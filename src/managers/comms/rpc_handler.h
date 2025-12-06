@@ -44,7 +44,7 @@ class SetTempLimitsHandler : public IRpcHandler
             Utils::JsonPayloadParser parser(payload);
             if (!parser.IsValid())
             {
-                return Result::Error("Invalid JSON payload.");
+                return Result::Error("Internal error: Invalid JSON payload.");
             }
 
             const auto minEnabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN_ENABLED);
@@ -135,7 +135,24 @@ class FeedNowHandler : public IRpcHandler
         //!
         Result Handle(const std::string& payload) override 
         {
-            return Result::Success("Feeding executed successfully.");
+            Utils::JsonPayloadParser parser(payload);
+            if (!parser.IsValid())
+            {
+                return Result::Error("Internal error: Invalid JSON payload.");
+            }
+
+            int doses = 0;
+
+            const auto dosesOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_DOSE);
+            if (!dosesOpt.has_value())
+            {
+                return Result::Error("Dose parameter missing");
+            }
+
+            doses = dosesOpt.value();
+
+            const auto result = Core::GuardianProxy::GetInstance()->Feed(doses);
+            return result;
         }
 };
 

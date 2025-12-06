@@ -16,6 +16,7 @@
 #include "framework/drivers/i2c.h"
 #include "framework/drivers/one_wire.h"
 #include "framework/drivers/pwm_out.h"
+#include "framework/os/async_worker.h"
 #include "framework/pin_names.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

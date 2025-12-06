@@ -20,6 +20,8 @@ class IFoodFeeder
 {
     public:
 
+        //! Feed a specific dose of food
+        virtual auto Feed(int dose) -> Result = 0;
 };
 
 //-----------------------------------------------------------------------------

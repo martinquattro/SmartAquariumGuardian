@@ -25,7 +25,7 @@ PwmOut::PwmOut(PinName pin, uint32_t freq, ledc_mode_t mode, ledc_timer_bit_t re
     {
         .speed_mode = _mode,
         .duty_resolution = _resolution,
-        .timer_num = LEDC_TIMER_0,
+        .timer_num = _timer,
         .freq_hz = _freq,
         .clk_cfg = LEDC_AUTO_CLK,
         .deconfigure = false
@@ -92,7 +92,7 @@ void PwmOut::FadeToDuty(float duty, uint32_t timeMs)
     uint32_t val = (duty * _maxDuty);
 
     ledc_set_fade_with_time(_mode, _channel, val, timeMs);
-    ledc_fade_start(_mode, _channel, LEDC_FADE_NO_WAIT);
+    ledc_fade_start(_mode, _channel, LEDC_FADE_WAIT_DONE);
 }
 
 //-----------------------------------------------------------------------------
