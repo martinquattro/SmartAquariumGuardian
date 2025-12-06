@@ -25,6 +25,9 @@ class IFoodFeeder
 
         //! Add or modify feeding schedule entry
         virtual auto AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex, int dose, bool enabled) -> Result = 0;
+
+        //! Delete feeding schedule entry
+        virtual auto DeleteFeedingScheduleEntry(int slotIndex) -> Result = 0;
 };
 
 //-----------------------------------------------------------------------------
@@ -73,6 +76,10 @@ class IStorageService
 
         //! Save feeding schedule in storage
         virtual auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool = 0;
+
+        //! Remove feeding schedule from storage
+        virtual auto RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool = 0;
+
 };
 
 //-----------------------------------------------------------------------------

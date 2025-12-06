@@ -52,7 +52,7 @@ void StorageService::Init()
 //-----------------------------------------------------------------------------
 bool StorageService::SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) 
 {
-    auto& scheduleList = _configCache._feedingSchedule;
+    auto scheduleList = _configCache._feedingSchedule;
     
     // Find existing entry by slotIndex
     auto it = std::find_if(
@@ -87,6 +87,40 @@ bool StorageService::SaveFeedingScheduleInStorage(const int timeMinutesAfterMidn
         Services::FieldId::FEEDING_SCHEDULE,
         scheduleList
     );
+}
+
+//-----------------------------------------------------------------------------
+bool StorageService::RemoveFeedingScheduleFromStorage(const int slotIndex) 
+{
+    auto scheduleList = _configCache._feedingSchedule;
+
+    size_t originalSize = scheduleList.size();
+
+    auto newEnd = std::remove_if(
+        scheduleList.begin(),
+        scheduleList.end(),
+        [slotIndex](const Services::FeedingScheduleEntry& entry)
+        {
+            return entry._id == slotIndex;
+        }
+    );
+
+    scheduleList.erase(newEnd, scheduleList.end());
+
+    if (scheduleList.size() < originalSize)
+    {
+        CORE_INFO("Removed feeding schedule with slotIndex %d", slotIndex);
+        
+        return Set<Services::FeeddingScheduleList>(
+            Services::FieldId::FEEDING_SCHEDULE,
+            scheduleList
+        );
+    }
+    else
+    {
+        CORE_WARNING("No feeding schedule entry found with slotIndex %d", slotIndex);
+        return false;
+    }   
 }
 
 //----private------------------------------------------------------------------

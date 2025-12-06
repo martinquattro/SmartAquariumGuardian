@@ -52,6 +52,12 @@ auto GuardianProxy::AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIn
     return Managers::FoodFeeder::GetInstance()->AddFeedingScheduleEntry(minutesAfterMidnight, slotIndex, dose, enabled);
 }
 
+//----IFoodFeeder--------------------------------------------------------------
+auto GuardianProxy::DeleteFeedingScheduleEntry(int slotIndex) -> Result
+{
+    return Managers::FoodFeeder::GetInstance()->DeleteFeedingScheduleEntry(slotIndex);
+}
+
 //----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsWifiConnected() const -> bool
 {
@@ -185,6 +191,12 @@ auto GuardianProxy::SaveFeedingScheduleInStorage(const int timeMinutesAfterMidni
         Services::FieldId::FEEDING_SCHEDULE,
         scheduleList
     );
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool
+{ 
+    return Services::StorageService::GetInstance()->RemoveFeedingScheduleFromStorage(slotIndex);
 }
 
 //----IUserInterface------------------------------------------------------------

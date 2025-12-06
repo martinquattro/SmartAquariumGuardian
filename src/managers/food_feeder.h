@@ -51,6 +51,13 @@ namespace Managers {
             */
             auto AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex, int dose, bool enabled) -> Result;
 
+            /*!
+            * @brief Delete feeding schedule entry.
+            * @param slotIndex Feeding slot index to delete.
+            * @return Result Success or error result of the operation.
+            */
+            auto DeleteFeedingScheduleEntry(int slotIndex) -> Result;
+
         private:
 
             /*!

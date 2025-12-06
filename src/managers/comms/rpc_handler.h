@@ -168,7 +168,27 @@ class DeleteFeedingScheduleHandler : public IRpcHandler
         //!
         Result Handle(const std::string& payload) override 
         {
-            return Result::Success("Feeding schedule deleted successfully.");
+            Utils::JsonPayloadParser parser(payload);
+            if (!parser.IsValid())
+            {
+                return Result::Error("Internal error: Invalid JSON payload.");
+            }
+
+            const auto slotIdOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_SLOT_ID);
+
+            if (!slotIdOpt.has_value())
+            {
+                CORE_ERROR("Missing 'slot_index' for enabled schedule.");
+                return Result::Error("Missing parameters");
+            }
+
+            const int slotIndex = slotIdOpt.value();
+
+            const auto result = Core::GuardianProxy::GetInstance()->DeleteFeedingScheduleEntry(
+                slotIndex
+            );
+
+            return result;
         }
 };
 

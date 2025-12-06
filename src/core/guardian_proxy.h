@@ -26,7 +26,7 @@ class GuardianProxy : public IStorageService,
         static void Init();
         static GuardianProxy* GetInstance();
 
-    // IFoodFeeder
+    // IFoodFeeder --------------------------------------------------------------
 
         //! Feed a specific dose of food
         auto Feed(int dose) -> Result override;
@@ -34,7 +34,10 @@ class GuardianProxy : public IStorageService,
         //! Add or modify feeding schedule entry
         auto AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex, int dose, bool enabled) -> Result override;
 
-    // INetworkController
+        //! Delete feeding schedule entry
+        auto DeleteFeedingScheduleEntry(int slotIndex) -> Result override;
+
+    // INetworkController --------------------------------------------------------
 
         //! Check if WiFi is connected
         auto IsWifiConnected() const -> bool override;
@@ -42,7 +45,7 @@ class GuardianProxy : public IStorageService,
         //! Check if MQTT client is connected
         auto IsMqttConnected() const -> bool override;
 
-    // IRealTimeClock
+    // IRealTimeClock --------------------------------------------------------
 
         //! Get current date and time
         auto GetDateTime() const -> Utils::DateTime override;
@@ -53,7 +56,7 @@ class GuardianProxy : public IStorageService,
         // Init time synchronization
         auto InitTimeSync(const char* timezone = nullptr) const -> Result override;
 
-        // IStorageService
+    // IStorageService -----------------------------------------------------------
 
         //! Save timezone at EEPROM
         auto SaveTimezoneInStorage(const std::string& tz) -> bool override;
@@ -70,12 +73,15 @@ class GuardianProxy : public IStorageService,
         //! Save feeding schedule in storage
         auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool override;
     
-        // IUserInterface
+        //! Remove feeding schedule from storage
+        auto RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool override;
+        
+    // IUserInterface --------------------------------------------------------
 
         //! Update feeding status indicator
         void UpdateFeedingStatusIndicator(bool isFeeding) override;
 
-    // IWaterMonitor
+    // IWaterMonitor --------------------------------------------------------
 
         //! Get last TDS reading
         auto GetTdsReading() const -> int override;

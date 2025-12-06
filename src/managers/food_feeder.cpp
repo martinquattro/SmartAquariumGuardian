@@ -117,6 +117,31 @@ auto FoodFeeder::AddFeedingScheduleEntry(int minutesAfterMidnight, int slotIndex
     return Result::Success("Feeding schedules updated.");
 }
 
+//-----------------------------------------------------------------------------
+auto FoodFeeder::DeleteFeedingScheduleEntry(int slotIndex) -> Result
+{
+    CORE_INFO("Deleting feeding schedule entry: SlotIndex=%d", slotIndex);
+
+    if (slotIndex < 0 || slotIndex >= MAX_FEEDING_SCHECULES)
+    {
+        CORE_WARNING("Invalid slotIndex %d. Must be in range [0, %d].", slotIndex, MAX_FEEDING_SCHECULES - 1);
+        return Result::Error("Internal error: Invalid slot index for feeding schedule.");
+    }
+
+    const bool success = Core::GuardianProxy::GetInstance()->RemoveFeedingScheduleFromStorage(
+        slotIndex
+    );
+    
+    if (!success)
+    {
+        CORE_ERROR("Failed to delete feeding schedule from storage");
+        return Result::Error("Internal error: Failed to delete feeding schedule from storage");
+    }
+
+    CORE_INFO("Feeding schedule entry deleted successfully.");
+    return Result::Success("Feeding schedule entry deleted.");
+}
+
 //----private------------------------------------------------------------------
 void FoodFeeder::PerformAsyncFeedingSequence(int dose)
 {

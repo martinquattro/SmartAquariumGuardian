@@ -43,6 +43,13 @@ class StorageService
         bool SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled);
         
         /*!
+         * @brief Remove a feeding schedule entry from storage.
+         * @param slotIndex Feeding slot index to delete.
+         * @return true if the operation was successful, false otherwise.
+        */
+        bool RemoveFeedingScheduleFromStorage(const int slotIndex);
+
+        /*!
          * @brief Get the value of a configuration field.
          * @tparam T Type of the field to get.        
         */
