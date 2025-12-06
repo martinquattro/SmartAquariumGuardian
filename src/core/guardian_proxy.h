@@ -66,6 +66,9 @@ class GuardianProxy : public IStorageService,
 
     // IUserInterface
 
+        //! Update feeding status indicator
+        void UpdateFeedingStatusIndicator(bool isFeeding) override;
+
     // IWaterMonitor
 
         //! Get last TDS reading

@@ -9,6 +9,8 @@
 #define USER_INTERFACE_H
 
 #include "framework/util/delay.h"
+#include "src/drivers/led.h"
+#include "include/config.h"
 
 namespace Managers {
 
@@ -32,6 +34,12 @@ namespace Managers {
             */
             void Update();
 
+            /*!
+            * @brief Update feeding status indicator
+            * @param isFeeding True if feeding is in progress, false otherwise.
+            */
+            void UpdateFeedingStatusIndicator(bool isFeeding);
+
         private:
 
             static constexpr int STATE_INTERVAL_MS = 4000;
@@ -53,7 +61,7 @@ namespace Managers {
 
             //---------------------------------------------
 
-            UserInterface() {}
+            UserInterface() : _feedingStatusLed(Config::FEEDING_STATUS_PIN_LED) {}
             ~UserInterface() = default;
             UserInterface(const UserInterface&) = delete;
             UserInterface& operator=(const UserInterface&) = delete;
@@ -63,6 +71,8 @@ namespace Managers {
             static UserInterface* _instance;
             Delay _stateTransitionDelay;
             DISPLAY_STATE _currentDisplayState = STATE_PAGE_1;
+
+            Drivers::Led _feedingStatusLed;
     };
 
 } // namespace Managers

@@ -124,4 +124,19 @@ void UserInterface::Update()
     }
 }
 
+//-----------------------------------------------------------------------------
+void UserInterface::UpdateFeedingStatusIndicator(bool isFeeding)
+{
+    CORE_INFO("Updating feeding status indicator to %s", isFeeding ? "ON" : "OFF");
+
+    if (isFeeding)
+    {
+        _feedingStatusLed.TurnOn();
+    }
+    else
+    {
+        _feedingStatusLed.TurnOff();
+    }
+}
+
 } // namespace Managers

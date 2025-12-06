@@ -11,6 +11,7 @@
 
 #include "src/managers/food_feeder.h"
 #include "src/managers/network_controller.h"
+#include "src/managers/user_interface.h"
 #include "src/managers/water_monitor.h"
 #include "src/services/real_time_clock.h"
 #include "src/services/storage_service.h"
@@ -136,6 +137,12 @@ auto GuardianProxy::GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, f
     maxEnabled = Services::StorageService::GetInstance()->Get<bool>(
         Services::FieldId::TEMP_MAX_ENALED
     );
+}
+
+//----IUserInterface------------------------------------------------------------
+void GuardianProxy::UpdateFeedingStatusIndicator(bool isFeeding)
+{
+    Managers::UserInterface::GetInstance()->UpdateFeedingStatusIndicator(isFeeding);
 }
 
 //----IWaterMonitor-------------------------------------------------------------

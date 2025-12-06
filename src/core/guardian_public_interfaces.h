@@ -73,6 +73,9 @@ class IStorageService
 class IUserInterface
 {
     public:
+
+        //! Update feeding status indicator
+        virtual void UpdateFeedingStatusIndicator(bool isFeeding) = 0;
 };
 
 //-----------------------------------------------------------------------------

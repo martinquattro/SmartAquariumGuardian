@@ -9,6 +9,7 @@
 
 #include "framework/common_defs.h"
 #include "src/drivers/servo.h"
+#include "src/core/guardian_proxy.h"
 
 namespace Managers {
 
@@ -48,9 +49,9 @@ auto FoodFeeder::Feed(int dose) -> Result
 {
     CORE_INFO("Feeding %d doses ", dose);
 
-    if (dose <= MIN_FEED_DOSE || dose > MAX_FEED_DOSE)
+    if (dose < MIN_FEED_DOSE || dose > MAX_FEED_DOSE)
     {
-        CORE_ERROR("Invalid dose %d. Must be in range [%d, %d].", dose, MIN_FEED_DOSE, MAX_FEED_DOSE);
+        CORE_WARNING("Invalid dose %d. Must be in range [%d, %d].", dose, MIN_FEED_DOSE, MAX_FEED_DOSE);
         return Result::Error("Invalid dose amount.");
     }
 
@@ -80,6 +81,8 @@ void FoodFeeder::PerformAsyncFeedingSequence(int dose)
 {
     CORE_INFO("Feeding sequence started for %d doses.", dose);
 
+    Core::GuardianProxy::GetInstance()->UpdateFeedingStatusIndicator(true);
+
     Drivers::Servo* servo = Drivers::Servo::GetInstance();
 
     for (int i = 0; i < dose; ++i)
@@ -96,6 +99,7 @@ void FoodFeeder::PerformAsyncFeedingSequence(int dose)
     }
 
     CORE_INFO("Feeding sequence completed for %d doses.", dose);
+    Core::GuardianProxy::GetInstance()->UpdateFeedingStatusIndicator(false);
 }
 
 } // namespace Managers

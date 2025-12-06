@@ -46,6 +46,8 @@ static constexpr uint8_t RTC_I2C_ADDRESS = 0x68; // DS3231 / DS1307
 // This pin is used to indicate the system status or for debugging purposes
 static constexpr PinName BUILTIN_LED = PinName::P2;
 
+static constexpr PinName FEEDING_STATUS_PIN_LED = PinName::P18;
+
 } // namespace Config
 
 #endif // CONFIG_H
