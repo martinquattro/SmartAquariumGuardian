@@ -312,6 +312,7 @@ void NetworkController::SendTelemtry()
     if (success)
     {
         CORE_INFO("Telemetry data sent successfully");
+        CORE_INFO("Payload sent: %s", payload.c_str());
     }
     else
     {

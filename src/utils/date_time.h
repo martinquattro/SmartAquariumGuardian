@@ -23,6 +23,7 @@ class DateTime
 
         // Conversion
         uint32_t ToSecondsOfDay() const;
+        uint32_t ToMinutesOfDay() const;
         std::string ToString() const;
 
         // Setters / Getters

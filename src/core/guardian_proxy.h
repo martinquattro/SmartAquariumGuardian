@@ -73,6 +73,9 @@ class GuardianProxy : public IStorageService,
         //! Save feeding schedule in storage
         auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool override;
     
+        //! Get feeding schedule list
+        auto GetFeedingScheduleFromStorage() const -> Services::FeeddingScheduleList override;
+        
         //! Remove feeding schedule from storage
         auto RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool override;
         

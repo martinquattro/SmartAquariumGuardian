@@ -148,6 +148,7 @@ bool StorageService::SaveConfigInternal()
     if (success)
     {
         CORE_INFO("Config saved.");
+        CORE_INFO("Saved config: %s", jsonStr.c_str());
     }
     else
     {

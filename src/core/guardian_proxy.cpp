@@ -194,6 +194,14 @@ auto GuardianProxy::SaveFeedingScheduleInStorage(const int timeMinutesAfterMidni
 }
 
 //----IStorageService-----------------------------------------------------------
+auto GuardianProxy::GetFeedingScheduleFromStorage() const -> Services::FeeddingScheduleList
+{
+    return Services::StorageService::GetInstance()->Get<Services::FeeddingScheduleList>(
+        Services::FieldId::FEEDING_SCHEDULE
+    );
+}
+
+//----IStorageService-----------------------------------------------------------
 auto GuardianProxy::RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool
 { 
     return Services::StorageService::GetInstance()->RemoveFeedingScheduleFromStorage(slotIndex);

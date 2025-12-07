@@ -11,6 +11,7 @@
 
 #include <string>
 #include <cstdint>
+#include "src/services/storage_service.h"
 #include "src/utils/date_time.h"
 
 namespace Core {
@@ -76,6 +77,9 @@ class IStorageService
 
         //! Save feeding schedule in storage
         virtual auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool = 0;
+
+        //! Get feeding schedule list
+        virtual auto GetFeedingScheduleFromStorage() const -> Services::FeeddingScheduleList = 0;
 
         //! Remove feeding schedule from storage
         virtual auto RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool = 0;

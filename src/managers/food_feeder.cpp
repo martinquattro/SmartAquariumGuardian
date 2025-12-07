@@ -34,14 +34,44 @@ void FoodFeeder::Init()
 
     _instance = new FoodFeeder();
     Drivers::Servo::Init();
+
+    // Ensure feeder is closed at startup
+    Drivers::Servo::GetInstance()->FadeToAngle(FEEDER_CLOSED_ANGLE, FEEDER_MOVE_TIME_MS);
 }
 
 //-----------------------------------------------------------------------------
 void FoodFeeder::Update()
 {
     CORE_INFO("Updating FoodFeeder...");
+
+    Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
+    const int currentMinute = guardianProxy->GetDateTime().ToMinutesOfDay();
     
-    Drivers::Servo::GetInstance()->Update();
+    // Check feeding schedule
+    if (currentMinute != _lastFeedTime)
+    {
+        const auto& scheduleList = guardianProxy->GetFeedingScheduleFromStorage();
+
+        for (const auto& entry : scheduleList)
+        {
+            if (entry._enabled && entry._min == currentMinute)
+            {
+                CORE_INFO("Scheduled feeding triggered for slot %d: Dose=%d at %d minutes after midnight.",
+                          entry._id, entry._dose, entry._min);
+
+                const Result feedResult = this->Feed(entry._dose);
+                if (!feedResult.success)
+                {
+                    CORE_ERROR("Scheduled feeding failed: %s", feedResult.responseMessage.value_or("Unknown error").c_str());
+                }
+                else
+                {
+                    _lastFeedTime = currentMinute;
+                    CORE_INFO("Scheduled feeding started successfully for slot %d.", entry._id);
+                }
+            }
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------

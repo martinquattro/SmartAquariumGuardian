@@ -9,6 +9,7 @@
 #define FOOD_FEEDER_H
 
 #include "framework/os/async_worker.h"
+#include "framework/common_defs.h"
 
 struct Result;
 
@@ -68,7 +69,10 @@ namespace Managers {
 
             //---------------------------------------------
 
-            FoodFeeder() : _feedingTask("feeding_task", 4096) {}
+            FoodFeeder() 
+                : _feedingTask("feeding_task", 4096) 
+                , _lastFeedTime(-1)
+            {}
             ~FoodFeeder() = default;
             FoodFeeder(const FoodFeeder&) = delete;
             FoodFeeder& operator=(const FoodFeeder&) = delete;
@@ -88,6 +92,7 @@ namespace Managers {
 
             static FoodFeeder* _instance;
             AsyncWorker _feedingTask;
+            int _lastFeedTime;
         };
 
 } // namespace Managers

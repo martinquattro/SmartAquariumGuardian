@@ -45,7 +45,13 @@ void DateTime::Set(uint8_t hour, uint8_t minute, uint8_t second)
 //-----------------------------------------------------------------------------
 uint32_t DateTime::ToSecondsOfDay() const
 {
-    return _hour * 3600 + _minute * 60 + _second;
+    return ToMinutesOfDay() * 60 + _second;
+}
+
+//-----------------------------------------------------------------------------
+uint32_t DateTime::ToMinutesOfDay() const
+{
+    return _hour * 60 + _minute;
 }
 
 //-----------------------------------------------------------------------------

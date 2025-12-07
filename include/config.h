@@ -16,7 +16,7 @@ namespace Config {
 
 // Definition of time increment used for system delays and updates
 // This value is used to control the frequency of updates in the system
-static constexpr int SYSTEM_TIME_INCREMENT_MS = 1000;
+static constexpr int SYSTEM_TIME_INCREMENT_MS = 3000;
 
 // Interval for sending telemetry data to the MQTT broker
 static constexpr int TELEMETRY_SEND_INTERVAL_MS = 30000;
