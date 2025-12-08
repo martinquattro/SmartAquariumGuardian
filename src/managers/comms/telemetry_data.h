@@ -23,7 +23,7 @@ class TelemetryData
         {
             Json json;
             json[NetworkConfig::SharedAttributes::TEMPERATURE] = temperature;
-            json[NetworkConfig::SharedAttributes::TDS] = temperature;
+            json[NetworkConfig::SharedAttributes::TDS] = tds;
 
             return json.dump();
         }

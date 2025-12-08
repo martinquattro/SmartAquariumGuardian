@@ -8,9 +8,10 @@
 #include "src/managers/water_monitor.h"
 
 #include "framework/common_defs.h"
+#include "src/core/guardian_proxy.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
-#include "src/core/guardian_proxy.h"
+#include "src/framework/localization/localization_service.h"
 
 namespace Managers {
 
@@ -66,6 +67,9 @@ Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinL
     CORE_INFO("WaterMonitor: Request to set temp limits -> Min: %.2f (En:%d), Max: %.2f (En:%d)",
               minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 
+    LocalizationService* locService = LocalizationService::GetInstance();
+    std::string locString = "";
+
     if (isMinLimitEnabled && isMaxLimitEnabled)
     {
         if (minTemp >= maxTemp)
@@ -98,12 +102,14 @@ Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinL
     if (success)
     {
         CORE_INFO("WaterMonitor: All temperature limit parameters saved successfully.");
-        return Result::Success("Temperature limits updated successfully.");
+        locService->Localize(locString, LocId::TXT_TEMP_LIMITS_UPDATED);
+        return Result::Success(locString);
     }
     else
     {
         CORE_ERROR("WaterMonitor Storage Error: Failed to save temperature parameters.");
-        return Result::Error("Internal Error: Could not save settings to permanent memory.");
+        locService->Localize(locString, LocId::TXT_INTERNAL_ERROR);
+        return Result::Error(locString);
     }
 }
 
