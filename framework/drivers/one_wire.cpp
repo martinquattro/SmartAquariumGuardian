@@ -14,6 +14,8 @@ OneWire::OneWire(PinName pin)
 {
     gpio_set_direction(_pin, GPIO_MODE_INPUT_OUTPUT_OD);
     gpio_set_pull_mode(_pin, GPIO_PULLUP_ONLY);
+
+    Release();
 }
 
 //-----------------------------------------------------------------------------
@@ -25,7 +27,7 @@ bool OneWire::Reset()
     TaskDelayUs(70);
 
     int presence = !gpio_get_level(_pin);
-    TaskDelayUs(410);
+    TaskDelayUs(250);
 
     return presence;
 }
@@ -92,13 +94,11 @@ uint8_t OneWire::ReadByte()
 //-----------------------------------------------------------------------------
 void OneWire::DriveLow()
 {
-    gpio_set_direction(_pin, GPIO_MODE_OUTPUT);
-    gpio_set_level(_pin, 0);
+    gpio_set_level(_pin, OFF);
 }
 
 //-----------------------------------------------------------------------------
 void OneWire::Release()
 {
-    gpio_set_direction(_pin, GPIO_MODE_INPUT);
-    gpio_set_pull_mode(_pin, GPIO_PULLUP_ONLY);
+    gpio_set_level(_pin, ON);
 }
