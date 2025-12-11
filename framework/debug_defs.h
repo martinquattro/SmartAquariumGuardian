@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cassert>
+#include <cstring>
 #include <cstdio>
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"

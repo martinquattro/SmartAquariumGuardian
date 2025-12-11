@@ -61,7 +61,7 @@ namespace Managers {
 
             //---------------------------------------------
 
-            UserInterface() : _feedingStatusLed(Config::FEEDING_STATUS_PIN_LED) {}
+            UserInterface() {}
             ~UserInterface() = default;
             UserInterface(const UserInterface&) = delete;
             UserInterface& operator=(const UserInterface&) = delete;
@@ -71,8 +71,6 @@ namespace Managers {
             static UserInterface* _instance;
             Delay _stateTransitionDelay;
             DISPLAY_STATE _currentDisplayState = STATE_PAGE_1;
-
-            Drivers::Led _feedingStatusLed;
     };
 
 } // namespace Managers

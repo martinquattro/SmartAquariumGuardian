@@ -27,14 +27,17 @@ static constexpr PinName TDS_SENSOR_ADC_PIN = PinName::A6;
 
 static constexpr PinName TEMP_SENSOR_PIN = PinName::P32;
 
-static constexpr PinName SERVO_FEEDER_PWM_PIN = PinName::P5; 
+static constexpr PinName SERVO_FEEDER_PWM_PIN = PinName::P33; 
 
-static constexpr PinName LCD_RS_PIN = PinName::P4;
-static constexpr PinName LCD_EN_PIN = PinName::P23;
-static constexpr PinName LCD_D4_PIN = PinName::P33;
-static constexpr PinName LCD_D5_PIN = PinName::P25;
-static constexpr PinName LCD_D6_PIN = PinName::P26;
-static constexpr PinName LCD_D7_PIN = PinName::P27;
+static constexpr PinName DISP_BACKLIGHT_PIN = PinName::P14;
+static constexpr PinName DISP_RESET_PIN = PinName::P4;
+static constexpr PinName DISP_DC_PIN = PinName::P2;
+static constexpr PinName DISP_CS_PIN = PinName::P15;
+static constexpr PinName DISP_CLK_PIN = PinName::P18;
+static constexpr PinName DISP_MOSI_PIN = PinName::P23;
+static constexpr PinName DISP_MISO_PIN = PinName::P19;
+static constexpr PinName DISP_TOUCH_CS_PIN = PinName::P5;
+static constexpr PinName DISP_TOUCH_IRQ_PIN = PinName::P27;
 
 static constexpr PinName I2C_SDA_PIN = PinName::P21;
 static constexpr PinName I2C_SCL_PIN = PinName::P22;
@@ -45,8 +48,6 @@ static constexpr uint8_t RTC_I2C_ADDRESS = 0x68; // DS3231 / DS1307
 // Pin for the built-in LED on the ESP32 DevKit board
 // This pin is used to indicate the system status or for debugging purposes
 static constexpr PinName BUILTIN_LED = PinName::P2;
-
-static constexpr PinName FEEDING_STATUS_PIN_LED = PinName::P18;
 
 } // namespace Config
 
