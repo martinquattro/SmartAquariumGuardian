@@ -6,6 +6,8 @@
 *.map
 *.d
 
+managed_components/
+
 # SDK config (si lo generás automáticamente)
 sdkconfig.*
 
