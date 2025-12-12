@@ -8,11 +8,93 @@
 #include "src/drivers/graphic_display.h"
 #include "esp_err.h"
 #include "include/config.h"
+#include "lvgl.h"
+
+LV_FONT_DECLARE(lv_font_montserrat_14);
+LV_FONT_DECLARE(lv_font_montserrat_20);
+LV_FONT_DECLARE(lv_font_montserrat_28);
 
 namespace Drivers {
 
 GraphicDisplay* GraphicDisplay::_instance = nullptr;
 uint32_t GraphicDisplay::_last_click_time = 0;
+
+//-----------------------------------------------------------------------------
+GraphicDisplay::UIElement::UIElement() 
+    : _lv_obj(nullptr)
+{
+}
+
+//-----------------------------------------------------------------------------
+GraphicDisplay::UIElement::~UIElement()
+{
+    if (_lv_obj != nullptr)
+    {
+        lv_obj_del(_lv_obj);
+        _lv_obj = nullptr;
+    }
+}
+
+//-----------------------------------------------------------------------------
+bool GraphicDisplay::UIElement::Init(lv_obj_t* parentScreen, lv_align_t align, int x, int y, const char* initialText, lv_font_t* font)
+{
+    _lv_obj = lv_label_create(parentScreen);
+    if (_lv_obj == nullptr) 
+    {
+        return false;
+    }
+
+    lv_obj_align(_lv_obj, align, x, y);
+    lv_label_set_text(_lv_obj, initialText);
+    lv_obj_set_style_text_font(_lv_obj, font, LV_PART_MAIN);
+    
+    lv_obj_set_style_text_color(_lv_obj, GetLvglStatusColor(ElementStatus::NORMAL), LV_PART_MAIN);
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::SetText(const char* newText)
+{
+    if (_lv_obj == nullptr) 
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_label_set_text(_lv_obj, newText);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::SetStatus(ElementStatus status)
+{
+    if (_lv_obj == nullptr) 
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_color_t color = GetLvglStatusColor(status);
+        lv_obj_set_style_text_color(_lv_obj, color, LV_PART_MAIN);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+lv_color_t GraphicDisplay::UIElement::GetLvglStatusColor(ElementStatus status)
+{
+    switch (status)
+    {
+        case ElementStatus::NORMAL:            return lv_color_white();             // White color
+        case ElementStatus::OK:                return lv_color_make(0, 255, 0);     // No Red, Full Green, No Blue;
+        case ElementStatus::WARNING:           return lv_color_make(255, 255, 0);   // Full Red, Full Green, No Blue;
+        case ElementStatus::CRITICAL:          return lv_color_make(255, 0, 0);     // Full Red, No Green, No Blue;
+        default:
+        {
+            return lv_color_white();
+        }
+    }
+}
 
 //----static-------------------------------------------------------------------
 GraphicDisplay* GraphicDisplay::GetInstance()
@@ -95,7 +177,7 @@ void GraphicDisplay::Init()
     esp_lcd_panel_dev_config_t panel_config =
     {
         .reset_gpio_num = _instance->_rstPin,
-        .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_BGR,
+        .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
         .bits_per_pixel = 16,
     };
 
@@ -141,6 +223,17 @@ void GraphicDisplay::Init()
 
     _instance->_lvgl_disp = lvgl_port_add_disp(&disp_cfg);
 
+    // Set default background color to black
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_t* scr = lv_scr_act();
+
+        lv_obj_set_style_bg_color(scr, lv_color_black(), LV_PART_MAIN);
+        lv_obj_set_style_bg_opa(scr, LV_OPA_COVER, LV_PART_MAIN);
+
+        lvgl_port_unlock();
+    }
+
     CORE_INFO("Initializing XPT2046 touch driver");
     
     esp_lcd_panel_io_handle_t tp_io_handle = nullptr;
@@ -159,7 +252,7 @@ void GraphicDisplay::Init()
         .flags = {}
     };
 
-    // Crear handle IO SPI para el táctil en el MISMO bus host
+    // Create SPI IO handle for touch panel
     ret = esp_lcd_new_panel_io_spi((spi_host_device_t)DISP_SPI_HOST, &tp_io_config, &tp_io_handle);
     ESP_ERROR_CHECK(ret);
 
@@ -197,40 +290,49 @@ void GraphicDisplay::Init()
         lvgl_port_unlock();
     }
 
-    // Create a test label to verify LVGL is working
-    _instance->TestDisplay();
-
     _instance->_valid = true;
     CORE_INFO("Graphic Display initialized successfully!");
 }
 
-//----private------------------------------------------------------------------
-void GraphicDisplay::TestDisplay()
+//-----------------------------------------------------------------------------
+GraphicDisplay::UIElement* GraphicDisplay::CreateTextElement(lv_align_t align, int x, int y, const char* initialText, FontSize size)
 {
-    CORE_INFO("Creating test label...");
+    if (!_valid) 
+        return nullptr;
 
-    if (lvgl_port_lock(0))
+    UIElement* newElement = new UIElement();
+
+    if (lvgl_port_lock(portMAX_DELAY))
     {
-        lv_obj_t * scr = lv_scr_act();
-
-        // 2. FORZAR FONDO NEGRO en la pantalla actual
-        lv_obj_set_style_bg_color(scr, lv_color_black(), LV_PART_MAIN);
-        lv_obj_set_style_bg_opa(scr, LV_OPA_COVER, LV_PART_MAIN); // Asegurar opacidad
-
-        // 3. Crear la etiqueta
-        lv_obj_t * label = lv_label_create(scr);
-        lv_label_set_text(label, "Hola Smart Aquarium! LVGL Works!");
+        lv_obj_t* scr = lv_scr_act();
+        lv_font_t* font = GetLvglFont(size);
         
-        // 4. FORZAR TEXTO BLANCO
-        lv_obj_set_style_text_color(label, lv_color_white(), LV_PART_MAIN);
-
-        // Asegúrate de usar una fuente habilitada en menuconfig
-        lv_obj_set_style_text_font(label, &lv_font_montserrat_14, 0);
-        lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+        bool success = newElement->Init(scr, align, x, y, initialText, font);
         
         lvgl_port_unlock();
 
-        CORE_INFO("Test label created.");
+        if (success) 
+        {
+            return newElement;
+        }
+    }
+
+    delete newElement;
+    return nullptr;
+}
+
+//-----------------------------------------------------------------------------
+lv_font_t* GraphicDisplay::GetLvglFont(FontSize size)
+{
+    switch (size) 
+    {
+        case FontSize::SMALL:       return (lv_font_t*)&lv_font_montserrat_14;
+        case FontSize::MEDIUM:      return (lv_font_t*)&lv_font_montserrat_20;
+        case FontSize::LARGE:       return (lv_font_t*)&lv_font_montserrat_28;
+        default: 
+        {
+            return (lv_font_t*)&lv_font_montserrat_14;
+        }
     }
 }
 

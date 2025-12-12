@@ -37,6 +37,19 @@ void UserInterface::Init()
     _instance->_stateTransitionDelay.Start(STATE_INTERVAL_MS);
 
     Drivers::GraphicDisplay::Init();
+
+    // Create UI elements
+    Drivers::GraphicDisplay* display = Drivers::GraphicDisplay::GetInstance();
+
+    _instance->_tempValueLabel = display->CreateTextElement(LV_ALIGN_TOP_RIGHT, 0, 0, "SMALL", Drivers::GraphicDisplay::FontSize::SMALL);
+    _instance->_phValueLabel = display->CreateTextElement(LV_ALIGN_TOP_LEFT, 0, 0, "MEDIUM", Drivers::GraphicDisplay::FontSize::MEDIUM);
+    _instance->_timeLabel = display->CreateTextElement(LV_ALIGN_BOTTOM_MID, 0, 0, "LARGE", Drivers::GraphicDisplay::FontSize::LARGE);
+
+    auto test1 = display->CreateTextElement(LV_ALIGN_CENTER, 0, 0, "SMALL_RED", Drivers::GraphicDisplay::FontSize::SMALL);
+    test1->SetStatus(Drivers::GraphicDisplay::ElementStatus::CRITICAL);
+
+    auto test2 = display->CreateTextElement(LV_ALIGN_BOTTOM_LEFT, 0, 0, "MEDIUM_YELLOW", Drivers::GraphicDisplay::FontSize::MEDIUM);
+    test2->SetStatus(Drivers::GraphicDisplay::ElementStatus::WARNING);
 }
 
 //-----------------------------------------------------------------------------
@@ -76,8 +89,7 @@ void UserInterface::Update()
     // Time
     {
         auto dateTime = guardianProxy->GetDateTime();
-
-
+        _tempValueLabel->SetText(dateTime.ToString().c_str());
     }
 
     if (_currentDisplayState == STATE_PAGE_1)

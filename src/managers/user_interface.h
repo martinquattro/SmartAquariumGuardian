@@ -11,6 +11,7 @@
 #include "framework/util/delay.h"
 #include "src/drivers/led.h"
 #include "include/config.h"
+#include "src/drivers/graphic_display.h"
 
 namespace Managers {
 
@@ -71,6 +72,10 @@ namespace Managers {
             static UserInterface* _instance;
             Delay _stateTransitionDelay;
             DISPLAY_STATE _currentDisplayState = STATE_PAGE_1;
+
+            Drivers::GraphicDisplay::UIElement* _tempValueLabel;
+            Drivers::GraphicDisplay::UIElement* _phValueLabel;
+            Drivers::GraphicDisplay::UIElement* _timeLabel;
     };
 
 } // namespace Managers

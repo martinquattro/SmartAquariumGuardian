@@ -26,6 +26,41 @@ class GraphicDisplay
 {
     public:
 
+        enum class FontSize
+        {
+            SMALL,
+            MEDIUM,
+            LARGE
+        };
+
+        enum class ElementStatus 
+        {
+            NORMAL,
+            OK,
+            WARNING,
+            CRITICAL
+        };
+
+        class UIElement
+        {
+            public:
+
+                UIElement();
+                ~UIElement();
+
+                bool Init(lv_obj_t* parentScreen, lv_align_t align,int x, int y, const char* initialText, lv_font_t* font);
+
+                void SetText(const char* newText);
+                void SetStatus(ElementStatus status);
+
+                bool IsValid() const { return _lv_obj != nullptr; }
+
+            private:
+                lv_obj_t* _lv_obj;
+
+                lv_color_t GetLvglStatusColor(ElementStatus status);
+        };
+
         /**
          * @brief Get the singleton instance of GraphicDisplay.
          * @return Pointer to the singleton instance.
@@ -38,9 +73,25 @@ class GraphicDisplay
          */
         static void Init();
 
+        /**
+         * @brief Creates a text UI element at specified position with initial text and font size.
+         * @param align Alignment of the element.
+         * @param x X coordinate.
+         * @param y Y coordinate.
+         * @param initialText Initial text to display.
+         * @param size Font size enum.
+         * @return Pointer to the created UIElement.
+         */
+        UIElement* CreateTextElement(lv_align_t align, int x, int y, const char* initialText, FontSize size);
+
     private:
 
-        void TestDisplay();
+        /**
+         * @brief Maps FontSize enum to LVGL font pointer.
+         * @param size Font size enum.
+         * @return Pointer to the corresponding LVGL font.
+         */
+        lv_font_t* GetLvglFont(FontSize size);
 
         void SetupTouchDetection();
         static void OnTouchTimer(lv_timer_t* timer);
