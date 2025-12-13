@@ -73,9 +73,20 @@ namespace Managers {
             Delay _stateTransitionDelay;
             DISPLAY_STATE _currentDisplayState = STATE_PAGE_1;
 
-            Drivers::GraphicDisplay::UIElement* _tempValueLabel;
-            Drivers::GraphicDisplay::UIElement* _phValueLabel;
-            Drivers::GraphicDisplay::UIElement* _timeLabel;
+            Drivers::GraphicDisplay::UIElement* _tempValue;
+            Drivers::GraphicDisplay::UIElement* _tempDescLabel;
+            Drivers::GraphicDisplay::UIElement* _tempCircle;
+
+            Drivers::GraphicDisplay::UIElement* _tdsValue;
+            Drivers::GraphicDisplay::UIElement* _tdsDescLabel;
+            Drivers::GraphicDisplay::UIElement* _tdsCircle;
+
+            Drivers::GraphicDisplay::UIElement* _time;
+            Drivers::GraphicDisplay::UIElement* _titleLabel;
+            Drivers::GraphicDisplay::UIElement* _wifiIcon;
+            Drivers::GraphicDisplay::UIElement* _cloudIcon;
+
+            Drivers::GraphicDisplay::UIElement* _headerLine;
     };
 
 } // namespace Managers

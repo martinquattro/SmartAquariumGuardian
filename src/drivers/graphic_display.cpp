@@ -11,8 +11,9 @@
 #include "lvgl.h"
 
 LV_FONT_DECLARE(lv_font_montserrat_14);
-LV_FONT_DECLARE(lv_font_montserrat_20);
-LV_FONT_DECLARE(lv_font_montserrat_28);
+LV_FONT_DECLARE(lv_font_montserrat_18);
+LV_FONT_DECLARE(lv_font_montserrat_22);
+LV_FONT_DECLARE(lv_font_montserrat_26);
 
 namespace Drivers {
 
@@ -22,16 +23,27 @@ uint32_t GraphicDisplay::_last_click_time = 0;
 //-----------------------------------------------------------------------------
 GraphicDisplay::UIElement::UIElement() 
     : _lv_obj(nullptr)
+    , _linePoints(nullptr)
 {
 }
 
 //-----------------------------------------------------------------------------
 GraphicDisplay::UIElement::~UIElement()
 {
-    if (_lv_obj != nullptr)
+    if (_lv_obj != nullptr) 
     {
-        lv_obj_del(_lv_obj);
+        if (lvgl_port_lock(portMAX_DELAY)) 
+        {
+            lv_obj_delete(_lv_obj);
+            lvgl_port_unlock();
+        }
         _lv_obj = nullptr;
+    }
+
+    if (_linePoints != nullptr) 
+    {
+        delete[] _linePoints;
+        _linePoints = nullptr;
     }
 }
 
@@ -81,6 +93,82 @@ void GraphicDisplay::UIElement::SetStatus(ElementStatus status)
 }
 
 //-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::SetColor(ElementColor color)
+{
+    if (_lv_obj == nullptr) 
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_set_style_text_color(_lv_obj, GetColor(color), LV_PART_MAIN);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::SetBold(bool enable)
+{
+    if (_lv_obj == nullptr)
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        if (enable)
+        {
+            static lv_style_t bold_style;
+            lv_style_init(&bold_style);
+            lv_style_set_text_outline_stroke_width(&bold_style, 2);
+            lv_obj_add_style(_lv_obj, &bold_style, LV_PART_MAIN);
+        }
+        else
+        {
+            lv_obj_remove_style_all(_lv_obj);
+        }
+
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::SetBorderColor(ElementColor color)
+{
+    if (_lv_obj == nullptr) 
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_set_style_border_color(_lv_obj, GetColor(color), LV_PART_MAIN);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::Hide()
+{
+    if (_lv_obj == nullptr)
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_add_flag(_lv_obj, LV_OBJ_FLAG_HIDDEN);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::Show()
+{
+    if (_lv_obj == nullptr)
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_clear_flag(_lv_obj, LV_OBJ_FLAG_HIDDEN);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
 lv_color_t GraphicDisplay::UIElement::GetLvglStatusColor(ElementStatus status)
 {
     switch (status)
@@ -89,6 +177,25 @@ lv_color_t GraphicDisplay::UIElement::GetLvglStatusColor(ElementStatus status)
         case ElementStatus::OK:                return lv_color_make(0, 255, 0);     // No Red, Full Green, No Blue;
         case ElementStatus::WARNING:           return lv_color_make(255, 255, 0);   // Full Red, Full Green, No Blue;
         case ElementStatus::CRITICAL:          return lv_color_make(255, 0, 0);     // Full Red, No Green, No Blue;
+        default:
+        {
+            return lv_color_white();
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+lv_color_t GraphicDisplay::UIElement::GetColor(ElementColor color)
+{
+    switch (color)
+    {
+        case ElementColor::RED:        return lv_color_make(255, 0, 0);     // Full Red, No Green, No Blue;
+        case ElementColor::GREEN:      return lv_color_make(0, 255, 0);     // No Red, Full Green, No Blue;
+        case ElementColor::BLUE:       return lv_color_make(0, 0, 255);     // No Red, No Green, Full Blue;
+        case ElementColor::YELLOW:     return lv_color_make(255, 255, 0);   // Full Red, Full Green, No Blue;
+        case ElementColor::WHITE:      return lv_color_white();             // White color
+        case ElementColor::BLACK:      return lv_color_make(0, 0, 0);       // Black color
+        case ElementColor::GREY:       return lv_color_make(210, 210, 210); // Grey color
         default:
         {
             return lv_color_white();
@@ -322,13 +429,96 @@ GraphicDisplay::UIElement* GraphicDisplay::CreateTextElement(lv_align_t align, i
 }
 
 //-----------------------------------------------------------------------------
+GraphicDisplay::UIElement* GraphicDisplay::CreateLine(int x1, int y1, int x2, int y2, ElementColor color, int width)
+{
+    if (!_valid) 
+        return nullptr;
+
+    UIElement* newLineElement = new UIElement();
+
+    newLineElement->_linePoints = new lv_point_precise_t[2];
+
+    newLineElement->_linePoints[0] = { (lv_value_precise_t)x1, (lv_value_precise_t)y1 };
+    newLineElement->_linePoints[1] = { (lv_value_precise_t)x2, (lv_value_precise_t)y2 };
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_t* scr = lv_scr_act();
+        
+        newLineElement->_lv_obj = lv_line_create(scr);
+
+        if (newLineElement->_lv_obj)
+        {
+            lv_line_set_points(newLineElement->_lv_obj, newLineElement->_linePoints, 2);
+
+            lv_obj_set_style_line_color(newLineElement->_lv_obj, newLineElement->GetColor(color), LV_PART_MAIN);
+            lv_obj_set_style_line_width(newLineElement->_lv_obj, width, LV_PART_MAIN);
+            lv_obj_set_style_line_rounded(newLineElement->_lv_obj, true, LV_PART_MAIN);
+            lv_obj_set_style_line_opa(newLineElement->_lv_obj, LV_OPA_10, LV_PART_MAIN);
+        } 
+        else 
+        {
+             delete[] newLineElement->_linePoints;
+             newLineElement->_linePoints = nullptr;
+             delete newLineElement;
+             newLineElement = nullptr;
+        }
+        lvgl_port_unlock();
+    }
+
+    return newLineElement;
+}
+
+//-----------------------------------------------------------------------------
+GraphicDisplay::UIElement* GraphicDisplay::CreateRing(lv_align_t align, int x, int y, int diameter, int thickness, ElementColor color)
+{
+    if (!_valid) return nullptr;
+
+    UIElement* newElement = new UIElement();
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_t* scr = lv_scr_act();
+        
+        newElement->_lv_obj = lv_obj_create(scr);
+
+        if (newElement->_lv_obj)
+        {
+            lv_obj_set_size(newElement->_lv_obj, diameter, diameter);
+            lv_obj_set_style_radius(newElement->_lv_obj, LV_RADIUS_CIRCLE, LV_PART_MAIN);
+            
+            lv_obj_set_style_bg_opa(newElement->_lv_obj, LV_OPA_TRANSP, LV_PART_MAIN);
+            
+            lv_obj_set_style_border_width(newElement->_lv_obj, thickness, LV_PART_MAIN);
+            lv_obj_set_style_border_color(newElement->_lv_obj, newElement->GetColor(color), LV_PART_MAIN);
+
+            // ---------------------------
+
+            lv_obj_set_style_shadow_width(newElement->_lv_obj, 0, LV_PART_MAIN);
+            lv_obj_remove_flag(newElement->_lv_obj, LV_OBJ_FLAG_SCROLLABLE);
+
+            lv_obj_align(newElement->_lv_obj, align, x, y);
+        }
+        else
+        {
+             delete newElement;
+             newElement = nullptr;
+        }
+
+        lvgl_port_unlock();
+    }
+    return newElement;
+}
+
+//-----------------------------------------------------------------------------
 lv_font_t* GraphicDisplay::GetLvglFont(FontSize size)
 {
     switch (size) 
     {
-        case FontSize::SMALL:       return (lv_font_t*)&lv_font_montserrat_14;
-        case FontSize::MEDIUM:      return (lv_font_t*)&lv_font_montserrat_20;
-        case FontSize::LARGE:       return (lv_font_t*)&lv_font_montserrat_28;
+        case FontSize::TINY:        return (lv_font_t*)&lv_font_montserrat_14;
+        case FontSize::SMALL:       return (lv_font_t*)&lv_font_montserrat_18;
+        case FontSize::MEDIUM:      return (lv_font_t*)&lv_font_montserrat_22;
+        case FontSize::LARGE:       return (lv_font_t*)&lv_font_montserrat_26;
         default: 
         {
             return (lv_font_t*)&lv_font_montserrat_14;

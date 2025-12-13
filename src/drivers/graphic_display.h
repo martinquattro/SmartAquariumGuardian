@@ -26,11 +26,26 @@ class GraphicDisplay
 {
     public:
 
+        static constexpr int DISP_H_RES = 320;
+        static constexpr int DISP_V_RES = 240;
+
         enum class FontSize
         {
+            TINY,
             SMALL,
             MEDIUM,
             LARGE
+        };
+
+        enum class ElementColor
+        {
+            RED,
+            GREEN,
+            BLUE,
+            YELLOW,
+            WHITE,
+            BLACK,
+            GREY
         };
 
         enum class ElementStatus 
@@ -52,13 +67,23 @@ class GraphicDisplay
 
                 void SetText(const char* newText);
                 void SetStatus(ElementStatus status);
+                void SetColor(ElementColor color);
+                void SetBold(bool enable);
+                void SetBorderColor(ElementColor color);
+                void Hide();
+                void Show();
 
                 bool IsValid() const { return _lv_obj != nullptr; }
 
+                friend class GraphicDisplay;
+
             private:
-                lv_obj_t* _lv_obj;
 
                 lv_color_t GetLvglStatusColor(ElementStatus status);
+                lv_color_t GetColor(ElementColor status);
+
+                lv_obj_t* _lv_obj;
+                lv_point_precise_t* _linePoints = nullptr;
         };
 
         /**
@@ -84,6 +109,29 @@ class GraphicDisplay
          */
         UIElement* CreateTextElement(lv_align_t align, int x, int y, const char* initialText, FontSize size);
 
+        /**
+         * @brief Creates a linear line on the display.
+         * @param x1 X coordinate of the line.
+         * @param y1 Y coordinate of the line.
+         * @param x2 X coordinate of the line.
+         * @param y2 Y coordinate of the line.
+         * @param color Color of the line.
+         * @param width Width of the line in pixels.
+         */
+        UIElement* CreateLine(int x1, int y1, int x2, int y2, ElementColor color, int width = 2);
+
+        /**
+         * @brief Creates a ring (circle) on the display.
+         * @param align Alignment of the ring.
+         * @param x X coordinate.
+         * @param y Y coordinate.
+         * @param diameter Diameter of the ring in pixels.
+         * @param thickness Thickness of the ring in pixels.
+         * @param color Color of the ring.
+         * @return Pointer to the created UIElement.
+         */
+        UIElement* CreateRing(lv_align_t align, int x, int y, int diameter, int thickness, ElementColor color);
+    
     private:
 
         /**
@@ -105,9 +153,6 @@ class GraphicDisplay
         GraphicDisplay& operator=(const GraphicDisplay&) = delete;
 
         //---------------------------------------------
-
-        static constexpr int DISP_H_RES = 320;
-        static constexpr int DISP_V_RES = 240;
 
         static constexpr int DISP_SPI_HOST = SPI2_HOST; // VSPI
 
