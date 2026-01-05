@@ -57,6 +57,7 @@ namespace Managers {
             Drivers::GraphicDisplay::UIElement* _tempValue;
             Drivers::GraphicDisplay::UIElement* _tempMinValue;
             Drivers::GraphicDisplay::UIElement* _tempMaxValue;
+            Drivers::GraphicDisplay::UIElement* _tempPanel;
 
             Drivers::GraphicDisplay::UIElement* _tdsValue;
             Drivers::GraphicDisplay::UIElement* _tdsMinValue;

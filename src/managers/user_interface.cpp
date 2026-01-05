@@ -47,8 +47,9 @@ void UserInterface::Init()
     _instance->_cloudIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOff);
     _instance->_cloudIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOn);
     _instance->_tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
-    _instance->_tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMin);
-    _instance->_tempMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
+    _instance->_tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
+    _instance->_tempMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMin);
+    _instance->_tempPanel = new Drivers::GraphicDisplay::UIElement(ui_panelTempAlert);
 }
 
 //-----------------------------------------------------------------------------
@@ -128,6 +129,18 @@ void UserInterface::Update()
         }
 
         _instance->_tempMaxValue->SetText(buffer);
+
+        // Panel state
+        if (guardianProxy->IsTemperatureOutOfLimits())
+        {
+            // Alert state
+            _instance->_tempPanel->SetState1();
+        }
+        else
+        {
+            // Normal state
+            _instance->_tempPanel->ClearState1();
+        }
     }
 
     // TDS reading

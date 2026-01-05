@@ -69,6 +69,32 @@ void GraphicDisplay::UIElement::Show()
     }
 }
 
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::SetState1()
+{
+    if (_lv_obj == nullptr)
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_add_state(_lv_obj, LV_STATE_USER_1);
+        lvgl_port_unlock();
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::UIElement::ClearState1()
+{
+    if (_lv_obj == nullptr)
+        return;
+
+    if (lvgl_port_lock(portMAX_DELAY))
+    {
+        lv_obj_clear_state(_lv_obj, LV_STATE_USER_1);
+        lvgl_port_unlock();
+    }
+}
+
 //----static-------------------------------------------------------------------
 GraphicDisplay* GraphicDisplay::GetInstance()
 {

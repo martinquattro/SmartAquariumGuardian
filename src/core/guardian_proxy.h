@@ -98,6 +98,9 @@ class GuardianProxy : public IStorageService,
         //! Get Temperature limits
         auto GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled, float& maxTemp, bool& isMaxLimitEnabled) const -> void override;
 
+        //! Check if temperature reading is out of limits
+        auto IsTemperatureOutOfLimits() const -> bool override;
+
     private:
 
         GuardianProxy() = default;

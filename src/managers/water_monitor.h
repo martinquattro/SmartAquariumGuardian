@@ -63,6 +63,12 @@ class WaterMonitor
         */
         void GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled, float& maxTemp, bool& isMaxLimitEnabled) const;
 
+        /*!
+        * @brief Checks if the temperature reading is out of limits.
+        * @return bool True if out of limits, false otherwise.
+        */
+        bool IsTemperatureOutOfLimits() const;
+
     private:
 
         WaterMonitor() {}

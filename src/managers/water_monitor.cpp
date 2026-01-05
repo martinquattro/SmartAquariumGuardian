@@ -113,4 +113,29 @@ void WaterMonitor::GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled,
     Core::GuardianProxy::GetInstance()->GetTempLimitsFromStorage(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 }
 
+//-----------------------------------------------------------------------------
+bool WaterMonitor::IsTemperatureOutOfLimits() const
+{
+    float minTemp = 0.0f, maxTemp = 0.0f;
+    bool isMinLimitEnabled = false, isMaxLimitEnabled = false;
+
+    GetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+
+    const float currentTemp = GetTemperatureReading();
+
+    if (isMinLimitEnabled && (currentTemp < minTemp))
+    {
+        CORE_INFO("Temperature reading %.2f is below the minimum limit of %.2f.", currentTemp, minTemp);
+        return true;
+    }
+
+    if (isMaxLimitEnabled && (currentTemp > maxTemp))
+    {
+        CORE_INFO("Temperature reading %.2f is above the maximum limit of %.2f.", currentTemp, maxTemp);
+        return true;
+    }
+
+    return false;
+}
+
 } // namespace Managers

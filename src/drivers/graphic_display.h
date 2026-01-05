@@ -39,6 +39,8 @@ class GraphicDisplay
                 void SetText(const char* newText);
                 void Hide();
                 void Show();
+                void SetState1();
+                void ClearState1();
 
                 bool IsValid() const { return _lv_obj != nullptr; }
 
