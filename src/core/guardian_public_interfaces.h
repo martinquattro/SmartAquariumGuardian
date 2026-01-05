@@ -108,6 +108,12 @@ class IWaterMonitor
 
         //! Set Temperature limits
         virtual auto SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled) -> Result = 0;
+
+        //! Get Temperature limits
+        virtual auto GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled, float& maxTemp, bool& isMaxLimitEnabled) const -> void = 0;
+
+        //! Check if temperature reading is out of limits
+        virtual auto IsTemperatureOutOfLimits() const -> bool = 0;
 };
 
 } // namespace Core

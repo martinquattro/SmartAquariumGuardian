@@ -107,4 +107,10 @@ Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinL
     }
 }
 
+//-----------------------------------------------------------------------------
+void WaterMonitor::GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled, float& maxTemp, bool& isMaxLimitEnabled) const
+{
+    Core::GuardianProxy::GetInstance()->GetTempLimitsFromStorage(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+}
+
 } // namespace Managers

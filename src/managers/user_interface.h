@@ -43,23 +43,6 @@ namespace Managers {
 
         private:
 
-            static constexpr int STATE_INTERVAL_MS = 4000;
-
-            enum DISPLAY_STATE
-            {
-                STATE_PAGE_1,
-                STATE_PAGE_2,
-                _size
-            };
-
-            enum DISPLAY_LINE
-            {
-                LINE_1 = 0,
-                LINE_2 = 1,
-                LINE_3 = 2,
-                LINE_4 = 3
-            };
-
             //---------------------------------------------
 
             UserInterface() {}
@@ -70,23 +53,21 @@ namespace Managers {
             //---------------------------------------------
 
             static UserInterface* _instance;
-            Delay _stateTransitionDelay;
-            DISPLAY_STATE _currentDisplayState = STATE_PAGE_1;
 
             Drivers::GraphicDisplay::UIElement* _tempValue;
-            Drivers::GraphicDisplay::UIElement* _tempDescLabel;
-            Drivers::GraphicDisplay::UIElement* _tempCircle;
+            Drivers::GraphicDisplay::UIElement* _tempMinValue;
+            Drivers::GraphicDisplay::UIElement* _tempMaxValue;
 
             Drivers::GraphicDisplay::UIElement* _tdsValue;
-            Drivers::GraphicDisplay::UIElement* _tdsDescLabel;
-            Drivers::GraphicDisplay::UIElement* _tdsCircle;
+            Drivers::GraphicDisplay::UIElement* _tdsMinValue;
+
+            Drivers::GraphicDisplay::UIElement* _wifiIconOn;
+            Drivers::GraphicDisplay::UIElement* _wifiIconOff;
+
+            Drivers::GraphicDisplay::UIElement* _cloudIconOn;
+            Drivers::GraphicDisplay::UIElement* _cloudIconOff;
 
             Drivers::GraphicDisplay::UIElement* _time;
-            Drivers::GraphicDisplay::UIElement* _titleLabel;
-            Drivers::GraphicDisplay::UIElement* _wifiIcon;
-            Drivers::GraphicDisplay::UIElement* _cloudIcon;
-
-            Drivers::GraphicDisplay::UIElement* _headerLine;
     };
 
 } // namespace Managers

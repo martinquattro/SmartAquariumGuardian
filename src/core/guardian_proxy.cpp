@@ -231,4 +231,10 @@ auto GuardianProxy::SetTemperatureLimits(const float minTemp, const bool isMinLi
     return Managers::WaterMonitor::GetInstance()->SetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 }
 
+//----IWaterMonitor-------------------------------------------------------------
+auto GuardianProxy::GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled, float& maxTemp, bool& isMaxLimitEnabled) const -> void
+{
+    Managers::WaterMonitor::GetInstance()->GetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+}
+
 } // namespace Core

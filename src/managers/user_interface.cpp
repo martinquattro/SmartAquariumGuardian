@@ -11,6 +11,7 @@
 #include "src/core/guardian_proxy.h"
 #include "src/drivers/graphic_display.h"
 #include "src/services/real_time_clock.h"
+#include "ui/ui.h"
 
 namespace Managers {
 
@@ -34,57 +35,20 @@ void UserInterface::Init()
     }
 
     _instance = new UserInterface();
-    _instance->_stateTransitionDelay.Start(STATE_INTERVAL_MS);
 
+    // Initialize Graphic Display
     Drivers::GraphicDisplay::Init();
-
-    // Create UI elements
-    Drivers::GraphicDisplay* display = Drivers::GraphicDisplay::GetInstance();
-
-    // Header elements
-    {
-        // Separator line
-        int centerY = 25;
-        _instance->_headerLine = display->CreateLine(0, centerY, Drivers::GraphicDisplay::DISP_H_RES, centerY, Drivers::GraphicDisplay::ElementColor::GREY, 2);
-
-        // Time
-        _instance->_time = display->CreateTextElement(LV_ALIGN_TOP_LEFT, 0, 0, "", Drivers::GraphicDisplay::FontSize::SMALL);
-        _instance->_time->SetBold(true);
-
-        // Title label
-        _instance->_titleLabel = display->CreateTextElement(LV_ALIGN_TOP_MID, 0, 0, "Guardian v2.0", Drivers::GraphicDisplay::FontSize::SMALL);
-
-        // Icons
-        _instance->_cloudIcon = display->CreateTextElement(LV_ALIGN_TOP_RIGHT, 0, 0, LV_SYMBOL_REFRESH, Drivers::GraphicDisplay::FontSize::SMALL);
-        _instance->_cloudIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::CRITICAL);
-        
-        _instance->_wifiIcon = display->CreateTextElement(LV_ALIGN_TOP_RIGHT, -20, 0, LV_SYMBOL_WIFI, Drivers::GraphicDisplay::FontSize::SMALL);
-        _instance->_wifiIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::CRITICAL);
-    }
     
-    // Main pages elements
-    {
-        int circleDiameter = 136;
-        int circleThickness = 8;
-        int circleXOffset = (Drivers::GraphicDisplay::DISP_H_RES / 4);
-        int circleYOffset = 0;
-
-        // Temperature circle and labels
-        _instance->_tempCircle = display->CreateRing(LV_ALIGN_CENTER, -circleXOffset, circleYOffset, circleDiameter, circleThickness, Drivers::GraphicDisplay::ElementColor::GREEN);
-
-        _instance->_tempDescLabel = display->CreateTextElement(LV_ALIGN_CENTER, -circleXOffset, circleYOffset + circleDiameter / 2 + 20 , "Temperature", Drivers::GraphicDisplay::FontSize::SMALL);
-
-        _instance->_tempValue = display->CreateTextElement(LV_ALIGN_CENTER, -circleXOffset, circleYOffset, "", Drivers::GraphicDisplay::FontSize::LARGE);
-        _instance->_tempValue->SetBold(true);
-
-        //TDS circle and labels
-        _instance->_tdsCircle = display->CreateRing(LV_ALIGN_CENTER, circleXOffset, circleYOffset, circleDiameter, circleThickness, Drivers::GraphicDisplay::ElementColor::GREEN);
-
-        _instance->_tdsDescLabel = display->CreateTextElement(LV_ALIGN_CENTER, circleXOffset, circleYOffset + circleDiameter / 2 + 20 , "TDS", Drivers::GraphicDisplay::FontSize::SMALL);
-
-        _instance->_tdsValue = display->CreateTextElement(LV_ALIGN_CENTER, circleXOffset, circleYOffset, "", Drivers::GraphicDisplay::FontSize::LARGE);
-        _instance->_tdsValue->SetBold(true);
-    }
+    // Initialize UI elements
+    _instance->_time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
+    _instance->_tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
+    _instance->_wifiIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgWiFiOff);
+    _instance->_wifiIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgWifiOn);
+    _instance->_cloudIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOff);
+    _instance->_cloudIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOn);
+    _instance->_tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
+    _instance->_tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMin);
+    _instance->_tempMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
 }
 
 //-----------------------------------------------------------------------------
@@ -94,36 +58,31 @@ void UserInterface::Update()
 
     Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
 
-    // Handle state transitions
-    if (_stateTransitionDelay.HasFinished())
-    {
-        _currentDisplayState = static_cast<DISPLAY_STATE>((_currentDisplayState + 1) % DISPLAY_STATE::_size);
-    }
-
-    // Title
-    {
-        // No need to update title for now
-    }
-    
     // Connection status
     {
         bool wifiOk = guardianProxy->IsWifiConnected();
         bool cloudOk = guardianProxy->IsMqttConnected();
 
         if (!wifiOk)
-        {
-            _instance->_wifiIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::CRITICAL);
-            _instance->_cloudIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::CRITICAL);
+        {   
+            _instance->_wifiIconOff->Show();
+            _instance->_wifiIconOn->Hide();
+            _instance->_cloudIconOff->Show();
+            _instance->_cloudIconOn->Hide();
         }
         else if (!cloudOk)
         {
-            _instance->_wifiIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::OK);
-            _instance->_cloudIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::CRITICAL);
+            _instance->_wifiIconOff->Hide();
+            _instance->_wifiIconOn->Show();
+            _instance->_cloudIconOff->Show();
+            _instance->_cloudIconOn->Hide();
         }
         else
         {
-            _instance->_wifiIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::OK);
-            _instance->_cloudIcon->SetStatus(Drivers::GraphicDisplay::ElementStatus::OK);
+            _instance->_wifiIconOff->Hide();
+            _instance->_wifiIconOn->Show();
+            _instance->_cloudIconOff->Hide();
+            _instance->_cloudIconOn->Show();
         }
     }
 
@@ -132,46 +91,53 @@ void UserInterface::Update()
         auto dateTime = guardianProxy->GetDateTime();
         _time->SetText(dateTime.ToString().c_str());
     }
-    
 
-    if (_currentDisplayState == STATE_PAGE_1)
+    // Temperature Panel
     {
         char buffer [50];
 
-        // Temperature reading
         const float tempReading = guardianProxy->GetTemperatureReading();
-        std::sprintf(buffer, "%02.1f °C", tempReading);
+        std::sprintf(buffer, "%.1f", tempReading);
 
         _instance->_tempValue->SetText(buffer);
 
-        // TDS reading
+        // Temperature limits
+        float minTemp = 0.0f, maxTemp = 0.0f;
+        bool isMinLimitEnabled = false, isMaxLimitEnabled = false;
+
+        guardianProxy->GetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+
+        if (isMinLimitEnabled)
+        {
+            std::sprintf(buffer, "%.1f", minTemp);
+        }
+        else
+        {
+            std::sprintf(buffer, "--"); 
+        }
+        
+        _instance->_tempMinValue->SetText(buffer);
+
+        if (isMaxLimitEnabled)
+        {
+            std::sprintf(buffer, "%.1f", maxTemp);
+        }
+        else
+        {
+            std::sprintf(buffer, "--"); 
+        }
+
+        _instance->_tempMaxValue->SetText(buffer);
+    }
+
+    // TDS reading
+    {
+        char buffer [50];
+
         const int tdsReading = guardianProxy->GetTdsReading();
-        std::sprintf(buffer, "%d ppm", tdsReading);
+        std::sprintf(buffer, "%d", tdsReading);
 
         _instance->_tdsValue->SetText(buffer);
-
-        _tempCircle->Show();
-        _tempDescLabel->Show();
-        _tempValue->Show();
-
-        _tdsCircle->Show();
-        _tdsDescLabel->Show();
-        _tdsValue->Show();
-    }
-    else if (_currentDisplayState == STATE_PAGE_2)
-    {
-
-        _tempCircle->Hide();
-        _tempDescLabel->Hide();
-        _tempValue->Hide();
-
-        _tdsCircle->Hide();
-        _tdsDescLabel->Hide();
-        _tdsValue->Hide();
-    }
-    else
-    {
-        CORE_ERROR("Unknown Display state: [%d]", _currentDisplayState);
     }
 }
 

@@ -54,6 +54,15 @@ class WaterMonitor
         */
         Result SetTemperatureLimits(const float minTemp, const bool isMinLimitEnabled, const float maxTemp, const bool isMaxLimitEnabled);
 
+        /*!
+        * @brief Gets the temperature limits.
+        * @param minTemp Reference to store the minimum temperature limit.
+        * @param isMinLimitEnabled Reference to store if the minimum limit is enabled.
+        * @param maxTemp Reference to store the maximum temperature limit.
+        * @param isMaxLimitEnabled Reference to store if the maximum limit is enabled.
+        */
+        void GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled, float& maxTemp, bool& isMaxLimitEnabled) const;
+
     private:
 
         WaterMonitor() {}
