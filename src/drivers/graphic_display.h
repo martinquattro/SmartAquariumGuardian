@@ -29,6 +29,8 @@ class GraphicDisplay
         static constexpr int DISP_H_RES = 320;
         static constexpr int DISP_V_RES = 240;
 
+        using TouchCallback = std::function<void()>;
+
         class UIElement
         {
             public:
@@ -62,6 +64,12 @@ class GraphicDisplay
          * Should be called once at startup.
          */
         static void Init();
+
+        /**
+         * @brief Sets the callback function to be called on double click events.
+         * @param callback Function to call on double click.
+         */
+        void SetOnDoubleClickAction(TouchCallback callback);
     
     private:
 
@@ -92,6 +100,8 @@ class GraphicDisplay
         int _rstPin;
         int _touchCsPin;
         int _touchIrqPin;
+
+        TouchCallback _onDoubleClickAction = nullptr;
 
         // Handles for ESP-IDF LCD panel and touch
         esp_lcd_panel_handle_t _panel_handle = nullptr;

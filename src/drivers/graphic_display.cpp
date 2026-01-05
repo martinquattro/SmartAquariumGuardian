@@ -234,7 +234,7 @@ void GraphicDisplay::Init()
     }
 
     CORE_INFO("Initializing XPT2046 touch driver");
-    
+
     esp_lcd_panel_io_handle_t tp_io_handle = nullptr;
     
     esp_lcd_panel_io_spi_config_t tp_io_config = 
@@ -242,7 +242,7 @@ void GraphicDisplay::Init()
         .cs_gpio_num = _instance->_touchCsPin,
         .dc_gpio_num = GPIO_NUM_NC,
         .spi_mode = 0,
-        .pclk_hz = 2 * 1000 * 1000,
+        .pclk_hz = 1 * 1000 * 1000,
         .trans_queue_depth = 10,
         .on_color_trans_done = NULL,
         .user_ctx = NULL,
@@ -300,6 +300,11 @@ void GraphicDisplay::Init()
     CORE_INFO("Graphic Display initialized successfully!");
 }
 
+//-----------------------------------------------------------------------------
+void GraphicDisplay::SetOnDoubleClickAction(TouchCallback callback)
+{
+    _onDoubleClickAction = callback;
+}
 
 //-----------------------------------------------------------------------------
 void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
@@ -313,12 +318,17 @@ void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
 
         if (current_time - _last_click_time < double_click_speed_ms)
         {
-            CORE_INFO(">>> Double click detecte<<<");
-            _last_click_time = 0; 
+            CORE_INFO(">>> Double click detected <<<");
+            _last_click_time = 0;
+
+            // Call the registered double click action
+            if (_instance->_onDoubleClickAction != nullptr)
+            {
+                _instance->_onDoubleClickAction();
+            }
         }
         else
         {
-            CORE_INFO("Single click detected");
             _last_click_time = current_time;
         }
     }
@@ -327,10 +337,13 @@ void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
 //-----------------------------------------------------------------------------
 void GraphicDisplay::SetupTouchDetection()
 {
-    lv_obj_t * scr = lv_scr_act();
-    lv_obj_add_event_cb(scr, OnTouchEventCallback, LV_EVENT_ALL, nullptr);
-    
-    CORE_INFO("Touch detection setup completed.");
+    lv_obj_t * top_layer = lv_layer_top();
+
+    lv_obj_add_flag(top_layer, LV_OBJ_FLAG_CLICKABLE);
+
+    lv_obj_add_event_cb(top_layer, OnTouchEventCallback, LV_EVENT_ALL, nullptr);
+
+    CORE_INFO("Touch detection setup completed on TOP LAYER.");
 }
 
 //----private------------------------------------------------------------------

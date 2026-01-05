@@ -38,6 +38,12 @@ void UserInterface::Init()
 
     // Initialize Graphic Display
     Drivers::GraphicDisplay::Init();
+
+    Drivers::GraphicDisplay::GetInstance()->SetOnDoubleClickAction([]()
+        {
+            Core::GuardianProxy::GetInstance()->Feed(1);
+        }
+    );
     
     // Initialize UI elements
     _instance->_time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
