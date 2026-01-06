@@ -58,6 +58,12 @@ auto GuardianProxy::DeleteFeedingScheduleEntry(int slotIndex) -> Result
     return Managers::FoodFeeder::GetInstance()->DeleteFeedingScheduleEntry(slotIndex);
 }
 
+//----IFoodFeeder--------------------------------------------------------------
+auto GuardianProxy::GetFeederStatus() const -> Managers::FoodFeeder::FeederStatus
+{
+    return Managers::FoodFeeder::GetInstance()->GetFeederStatus();
+}
+
 //----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsWifiConnected() const -> bool
 {

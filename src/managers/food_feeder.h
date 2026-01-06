@@ -10,6 +10,7 @@
 
 #include "framework/os/async_worker.h"
 #include "framework/common_defs.h"
+#include "src/utils/date_time.h"
 
 struct Result;
 
@@ -59,6 +60,20 @@ namespace Managers {
             */
             auto DeleteFeedingScheduleEntry(int slotIndex) -> Result;
 
+            struct FeederStatus
+            {
+                Utils::DateTime nextFeedTime;
+                int nextFeedDoses;
+                int remainingDosesToday;
+                int totalPerDay;
+            };
+
+            /*!
+            * @brief Get the current status of the feeder.
+            * @return FeederStatus Struct containing feeder status information.
+            */
+            auto GetFeederStatus() const -> FeederStatus;
+
         private:
 
             /*!
@@ -94,7 +109,6 @@ namespace Managers {
             AsyncWorker _feedingTask;
             int _lastFeedTime;
         };
-
 } // namespace Managers
 
 #endif // FOOD_FEEDER_H

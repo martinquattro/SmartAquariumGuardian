@@ -37,6 +37,9 @@ class GuardianProxy : public IStorageService,
         //! Delete feeding schedule entry
         auto DeleteFeedingScheduleEntry(int slotIndex) -> Result override;
 
+        //! Get feeder information
+        auto GetFeederStatus() const -> Managers::FoodFeeder::FeederStatus override;
+
     // INetworkController --------------------------------------------------------
 
         //! Check if WiFi is connected

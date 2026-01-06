@@ -10,6 +10,7 @@
 #include "framework/common_defs.h"
 #include "src/drivers/servo.h"
 #include "src/core/guardian_proxy.h"
+#include "include/config.h"
 
 namespace Managers {
 
@@ -170,6 +171,51 @@ auto FoodFeeder::DeleteFeedingScheduleEntry(int slotIndex) -> Result
 
     CORE_INFO("Feeding schedule entry deleted successfully.");
     return Result::Success("Feeding schedule entry deleted.");
+}
+
+//-----------------------------------------------------------------------------
+auto FoodFeeder::GetFeederStatus() const -> FeederStatus
+{
+    FeederStatus status;
+
+    Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
+
+    const auto& scheduleList = guardianProxy->GetFeedingScheduleFromStorage();
+    const Utils::DateTime currentTime = guardianProxy->GetDateTime();
+    const int currentMinutes = currentTime.ToMinutesOfDay();
+
+    status.totalPerDay = 0;
+    status.remainingDosesToday = 0;
+    status.nextFeedDoses = 0;
+    status.nextFeedTime = Utils::DateTime(0, 0, 0); // Default to midnight
+
+    int earliestNextFeedMinutes = MINUTES_IN_A_DAY + 1;
+
+    for (const auto& entry : scheduleList)
+    {
+        if (entry._enabled)
+        {
+            status.totalPerDay += entry._dose;
+
+            if (entry._min > currentMinutes)
+            {
+                status.remainingDosesToday += entry._dose;
+
+                if (entry._min < earliestNextFeedMinutes)
+                {
+                    earliestNextFeedMinutes = entry._min;
+                    status.nextFeedDoses = entry._dose;
+                }
+            }
+        }
+    }
+
+    if (earliestNextFeedMinutes <= MINUTES_IN_A_DAY)
+    {
+        status.nextFeedTime = Utils::DateTime(earliestNextFeedMinutes * 60);
+    }
+
+    return status;
 }
 
 //----private------------------------------------------------------------------

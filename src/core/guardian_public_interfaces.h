@@ -13,6 +13,7 @@
 #include <cstdint>
 #include "src/services/storage_service.h"
 #include "src/utils/date_time.h"
+#include "src/managers/food_feeder.h"
 
 namespace Core {
 
@@ -29,6 +30,9 @@ class IFoodFeeder
 
         //! Delete feeding schedule entry
         virtual auto DeleteFeedingScheduleEntry(int slotIndex) -> Result = 0;
+
+        //! Get feeder information
+        virtual auto GetFeederStatus() const -> Managers::FoodFeeder::FeederStatus = 0;
 };
 
 //-----------------------------------------------------------------------------

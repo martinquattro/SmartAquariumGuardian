@@ -47,15 +47,24 @@ void UserInterface::Init()
     
     // Initialize UI elements
     _instance->_time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
-    _instance->_tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
+
     _instance->_wifiIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgWiFiOff);
     _instance->_wifiIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgWifiOn);
+
     _instance->_cloudIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOff);
     _instance->_cloudIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOn);
+
     _instance->_tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
+
+    _instance->_tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
     _instance->_tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
     _instance->_tempMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMin);
     _instance->_tempPanel = new Drivers::GraphicDisplay::UIElement(ui_panelTempAlert);
+
+    _instance->_feederPanel = new Drivers::GraphicDisplay::UIElement(ui_panelFeeder);
+    _instance->_nextFeedingTime = new Drivers::GraphicDisplay::UIElement(ui_lblNextFeedTime);
+    _instance->_dosesPerDay = new Drivers::GraphicDisplay::UIElement(ui_lblDosesPerDay);
+    _instance->_dosesLeft = new Drivers::GraphicDisplay::UIElement(ui_lblDosesLeft);
 }
 
 //-----------------------------------------------------------------------------
@@ -120,7 +129,7 @@ void UserInterface::Update()
         }
         else
         {
-            std::sprintf(buffer, "--"); 
+            std::sprintf(buffer, "---"); 
         }
         
         _instance->_tempMinValue->SetText(buffer);
@@ -131,7 +140,7 @@ void UserInterface::Update()
         }
         else
         {
-            std::sprintf(buffer, "--"); 
+            std::sprintf(buffer, "---"); 
         }
 
         _instance->_tempMaxValue->SetText(buffer);
@@ -158,6 +167,33 @@ void UserInterface::Update()
 
         _instance->_tdsValue->SetText(buffer);
     }
+
+    // Feeder
+    {
+        const auto& feederStatus = guardianProxy->GetFeederStatus();
+
+        // Next feeding time
+        char buffer [50];
+
+        if (feederStatus.remainingDosesToday > 0)
+        {
+            std::sprintf(buffer, "%s [%d]", feederStatus.nextFeedTime.ToString().c_str(), feederStatus.nextFeedDoses);
+        }
+        else
+        {
+            std::sprintf(buffer, "Tomorrow");
+        }
+
+        _instance->_nextFeedingTime->SetText(buffer);
+
+        // Doses per day
+        std::sprintf(buffer, "%d", feederStatus.totalPerDay);
+        _instance->_dosesPerDay->SetText(buffer);
+
+        // Doses left today
+        std::sprintf(buffer, "%d", feederStatus.remainingDosesToday);
+        _instance->_dosesLeft->SetText(buffer);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -165,14 +201,14 @@ void UserInterface::UpdateFeedingStatusIndicator(bool isFeeding)
 {
     CORE_INFO("Updating feeding status indicator to %s", isFeeding ? "ON" : "OFF");
 
-    // if (isFeeding)
-    // {
-    //     _feedingStatusLed.TurnOn();
-    // }
-    // else
-    // {
-    //     _feedingStatusLed.TurnOff();
-    // }
+    if (isFeeding)
+    {
+        _instance->_feederPanel->SetState1();
+    }
+    else
+    {
+        _instance->_feederPanel->ClearState1();
+    }
 }
 
 } // namespace Managers

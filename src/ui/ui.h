@@ -31,13 +31,13 @@ extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 LV_IMG_DECLARE(ui_img_icn_tds_png);    // assets/icn_tds.png
-LV_IMG_DECLARE(ui_img_icn_down_arrow_png);    // assets/icn_down_arrow.png
-LV_IMG_DECLARE(ui_img_icn_up_arrow_png);    // assets/icn_up_arrow.png
+LV_IMG_DECLARE(ui_img_icn_range_arrow_png);    // assets/icn_range_arrow.png
 LV_IMG_DECLARE(ui_img_icn_temp_png);    // assets/icn_temp.png
 LV_IMG_DECLARE(ui_img_icn_wifi_on_png);    // assets/icn_wifi_on.png
 LV_IMG_DECLARE(ui_img_icn_wifi_off_png);    // assets/icn_wifi_off.png
 LV_IMG_DECLARE(ui_img_icn_cloud_on_png);    // assets/icn_cloud_on.png
 LV_IMG_DECLARE(ui_img_icn_cloud_off_png);    // assets/icn_cloud_off.png
+LV_IMG_DECLARE(ui_img_icn_food_png);    // assets/icn_food.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Bold_Font);

@@ -69,6 +69,11 @@ namespace Managers {
             Drivers::GraphicDisplay::UIElement* _cloudIconOff;
 
             Drivers::GraphicDisplay::UIElement* _time;
+
+            Drivers::GraphicDisplay::UIElement* _feederPanel;
+            Drivers::GraphicDisplay::UIElement* _nextFeedingTime;
+            Drivers::GraphicDisplay::UIElement* _dosesPerDay;
+            Drivers::GraphicDisplay::UIElement* _dosesLeft;
     };
 
 } // namespace Managers
