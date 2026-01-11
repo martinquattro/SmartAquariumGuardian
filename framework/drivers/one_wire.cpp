@@ -21,6 +21,7 @@ OneWire::OneWire(PinName pin)
 //-----------------------------------------------------------------------------
 bool OneWire::Reset()
 {
+    portENTER_CRITICAL(&_mux);
     DriveLow();
     TaskDelayUs(480);
     Release();
@@ -28,6 +29,7 @@ bool OneWire::Reset()
 
     int presence = !gpio_get_level(_pin);
     TaskDelayUs(250);
+    portEXIT_CRITICAL(&_mux);
 
     return presence;
 }
@@ -35,33 +37,39 @@ bool OneWire::Reset()
 //-----------------------------------------------------------------------------
 void OneWire::WriteBit(int bit)
 {
-    DriveLow();
+    portENTER_CRITICAL(&_mux);
+    {
+        DriveLow();
 
-    if (bit)
-    {
-        TaskDelayUs(6);
-        Release();
-        TaskDelayUs(64);
+        if (bit)
+        {
+            TaskDelayUs(6);
+            Release();
+            TaskDelayUs(64);
+        }
+        else
+        {
+            TaskDelayUs(60);
+            Release();
+            TaskDelayUs(10);
+        }
     }
-    else
-    {
-        TaskDelayUs(60);
-        Release();
-        TaskDelayUs(10);
-    }
+    portEXIT_CRITICAL(&_mux);
 }
 
 //-----------------------------------------------------------------------------
 int OneWire::ReadBit()
 {
+    portENTER_CRITICAL(&_mux);
     DriveLow();
-    TaskDelayUs(6);
+    TaskDelayUs(2);
 
     Release();
-    TaskDelayUs(9);
+    TaskDelayUs(8);
 
     int bit = gpio_get_level(_pin);
-    TaskDelayUs(55);
+    TaskDelayUs(50);
+    portEXIT_CRITICAL(&_mux);
 
     return bit;
 }

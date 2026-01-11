@@ -53,6 +53,14 @@ namespace Drivers {
              * @return float The average of the stored temperature readings.
              */
             float StoreReading(float reading);
+
+            /**
+             * @brief Calculate CRC8 for data validation.
+             * @param addr Pointer to the data array.
+             * @param len Length of the data array.
+             * @return uint8_t Calculated CRC8 value.
+             */
+            uint8_t CalculateCRC8(const uint8_t *addr, uint8_t len);
     
             using TempReadingsVec = std::vector<float>;
     

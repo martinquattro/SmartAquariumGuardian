@@ -68,7 +68,7 @@ void SmartAquariumGuardian::Update()
 
         // Update managers
         Managers::WaterMonitor::GetInstance()->Update();
-        Managers::FoodFeeder::GetInstance()->Update();
+        // Managers::FoodFeeder::GetInstance()->Update();
         Managers::UserInterface::GetInstance()->Update();
 
         CORE_INFO("Periodic update completed.");

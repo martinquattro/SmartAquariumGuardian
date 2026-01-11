@@ -40,6 +40,12 @@ void TemperatureSensor::Init()
 void TemperatureSensor::Update()
 {
     int16_t rawReading = GetRawReading();
+    if (rawReading == -1)
+    {
+        CORE_ERROR("Failed to get valid temperature reading!");
+        return;
+    }
+    
     float rawReadingAvg = StoreReading(rawReading);
 
     // Convert raw temperature to Celsius
@@ -84,8 +90,22 @@ int16_t TemperatureSensor::GetRawReading()
     _oneWirePin.WriteByte(CMD_SKIP_ROM);
     _oneWirePin.WriteByte(CMD_READ_SCRATCH);
 
-    uint8_t tempLSB = _oneWirePin.ReadByte();
-    uint8_t tempMSB = _oneWirePin.ReadByte();
+    uint8_t scratchpad[9];
+    for (int i = 0; i < 9; i++)
+    {
+        scratchpad[i] = _oneWirePin.ReadByte();
+    }
+
+    // Verify CRC
+    uint8_t crcCalculated = CalculateCRC8(scratchpad, 8);
+    if (crcCalculated != scratchpad[8])
+    {
+        CORE_ERROR("DS18B20 CRC check failed! Calculated: 0x%02X, Received: 0x%02X", crcCalculated, scratchpad[8]);
+        return -1;
+    }
+
+    uint8_t tempLSB = scratchpad[0];
+    uint8_t tempMSB = scratchpad[1];
 
     int16_t rawTemp = (tempMSB << 8) | tempLSB;
     return rawTemp;
@@ -113,6 +133,29 @@ float TemperatureSensor::StoreReading(float reading)
     }
     
     return (count > 0) ? (sum / count) : reading;
+}
+
+//----private------------------------------------------------------------------
+uint8_t TemperatureSensor::CalculateCRC8(const uint8_t *addr, uint8_t len)
+{
+    uint8_t crc = 0;
+
+    for (uint8_t i = 0; i < len; i++)
+    {
+        uint8_t inbyte = addr[i];
+        for (uint8_t j = 0; j < 8; j++)
+        {
+            uint8_t mix = (crc ^ inbyte) & 0x01;
+            crc >>= 1;
+            if (mix)
+            {
+                crc ^= 0x8C;
+            }
+            inbyte >>= 1;
+        }
+    }
+
+    return crc;
 }
 
 //----private------------------------------------------------------------------

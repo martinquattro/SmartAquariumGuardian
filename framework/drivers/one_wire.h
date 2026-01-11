@@ -9,6 +9,7 @@
 
 #include "driver/gpio.h"
 #include "framework/pin_names.h"
+#include "freertos/FreeRTOS.h"
 
 class OneWire
 {
@@ -55,5 +56,6 @@ class OneWire
         void DriveLow();
         void Release();
 
+        portMUX_TYPE _mux = portMUX_INITIALIZER_UNLOCKED;
         gpio_num_t _pin;
 };
