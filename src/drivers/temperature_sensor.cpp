@@ -46,7 +46,7 @@ void TemperatureSensor::Update()
     _lastReading = (rawReadingAvg / 16.0f);
     _lastReading = std::clamp(_lastReading, MIN_TEMP_VALUE, MAX_TEMP_VALUE);
 
-    CORE_INFO("Raw Reading = %d | Average: %.4f V | Temp = %.3f °C"
+    CORE_INFO("Raw Reading = %d | Average: %.2f | Temp = %.2f °C"
         , rawReading
         , rawReadingAvg
         , _lastReading
@@ -56,8 +56,8 @@ void TemperatureSensor::Update()
 //-----------------------------------------------------------------------------
 float TemperatureSensor::GetLastReading() const
 {
-    return (rand() % 4000 / 100.0f);
-    // return _lastReading;
+    // return (rand() % 4000 / 100.0f);
+    return _lastReading;
 }
 
 //----private------------------------------------------------------------------
@@ -105,7 +105,7 @@ float TemperatureSensor::StoreReading(float reading)
     int count = 0;
     for (auto val : _rawReadingsVec)
     {
-        if (val > -100.0f)
+        if (val > -1.0f)
         {
             sum += val;
             count++;

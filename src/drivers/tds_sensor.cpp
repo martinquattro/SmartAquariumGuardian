@@ -90,7 +90,7 @@ float TdsSensor::StoreAnalogReading(const float reading)
     int amountOfReadings = 0;
     for (auto it = _analogReadingsVec.begin(); it != _analogReadingsVec.end(); ++it) 
     {
-        if ((*it) > 0.0)
+        if ((*it) > -1.0f)
         {
             tdsReadingSum += (*it);
             ++amountOfReadings;

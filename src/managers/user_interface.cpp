@@ -125,7 +125,7 @@ void UserInterface::Update()
 
         if (isMinLimitEnabled)
         {
-            std::sprintf(buffer, "%.1f", minTemp);
+            std::sprintf(buffer, "%.1f °C", minTemp);
         }
         else
         {
@@ -136,7 +136,7 @@ void UserInterface::Update()
 
         if (isMaxLimitEnabled)
         {
-            std::sprintf(buffer, "%.1f", maxTemp);
+            std::sprintf(buffer, "%.1f °C", maxTemp);
         }
         else
         {

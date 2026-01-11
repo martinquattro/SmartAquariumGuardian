@@ -9,6 +9,7 @@
 #include "esp_err.h"
 #include "include/config.h"
 #include "lvgl.h"
+#include "driver/ledc.h"
 
 extern "C" {
     #include "ui/ui.h"
@@ -123,7 +124,8 @@ void GraphicDisplay::Init()
                                    Config::DISP_DC_PIN,
                                    Config::DISP_RESET_PIN,
                                    Config::DISP_TOUCH_CS_PIN,
-                                   Config::DISP_TOUCH_IRQ_PIN
+                                   Config::DISP_TOUCH_IRQ_PIN,
+                                   Config::DISP_BACKLIGHT_PIN
     );
     
     esp_err_t ret;
@@ -296,6 +298,8 @@ void GraphicDisplay::Init()
         lvgl_port_unlock();
     }
 
+    _instance->SetBrightness(80); // Set default brightness to 80%
+
     _instance->_valid = true;
     CORE_INFO("Graphic Display initialized successfully!");
 }
@@ -306,7 +310,7 @@ void GraphicDisplay::SetOnDoubleClickAction(TouchCallback callback)
     _onDoubleClickAction = callback;
 }
 
-//-----------------------------------------------------------------------------
+//----private------------------------------------------------------------------
 void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -334,7 +338,7 @@ void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
     }
 }
 
-//-----------------------------------------------------------------------------
+//----private------------------------------------------------------------------
 void GraphicDisplay::SetupTouchDetection()
 {
     lv_obj_t * top_layer = lv_layer_top();
@@ -347,7 +351,18 @@ void GraphicDisplay::SetupTouchDetection()
 }
 
 //----private------------------------------------------------------------------
-GraphicDisplay::GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName cs, PinName dc, PinName rst, PinName touchCs, PinName touchIrq)
+void GraphicDisplay::SetBrightness(uint8_t brightness)
+{
+    // Clamp brightness to 0-100%
+    brightness = (brightness > 100) ? 100 : brightness;
+
+    float duty = static_cast<float>(brightness) / 100.0f;
+
+    _bklPin.SetDuty(duty);
+}
+
+//----private------------------------------------------------------------------
+GraphicDisplay::GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName cs, PinName dc, PinName rst, PinName touchCs, PinName touchIrq, PinName bkl)
     : _misoPin(static_cast<int>(miso)),
       _mosiPin(static_cast<int>(mosi)),
       _clkPin(static_cast<int>(clk)),
@@ -355,9 +370,9 @@ GraphicDisplay::GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName 
       _dcPin(static_cast<int>(dc)),
       _rstPin(static_cast<int>(rst)),
       _touchCsPin(static_cast<int>(touchCs)),
-      _touchIrqPin(static_cast<int>(touchIrq))
+      _touchIrqPin(static_cast<int>(touchIrq)),
+      _bklPin(bkl, 1000, LEDC_HIGH_SPEED_MODE, LEDC_TIMER_10_BIT, LEDC_CHANNEL_1, LEDC_TIMER_1)
 {
-
 }
 
 } // namespace Drivers

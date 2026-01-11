@@ -7,6 +7,8 @@
 
 #include "framework/drivers/pwm_out.h"
 
+bool PwmOut::_fade_service_installed = false;
+
 //-----------------------------------------------------------------------------
 PwmOut::PwmOut(PinName pin, uint32_t freq, ledc_mode_t mode, ledc_timer_bit_t resolution,
                ledc_channel_t channel, ledc_timer_t timer)
@@ -31,10 +33,9 @@ PwmOut::PwmOut(PinName pin, uint32_t freq, ledc_mode_t mode, ledc_timer_bit_t re
         .deconfigure = false
     };
     
-    if (ledc_timer_config(&timer_conf) == ESP_OK) 
+    if (ledc_timer_config(&timer_conf) == ESP_OK)
     {
-        ledc_channel_config_t channel_conf = 
-        {
+        ledc_channel_config_t channel_conf = {
             .gpio_num = (int)_pin,
             .speed_mode = _mode,
             .channel = _channel,
@@ -43,17 +44,42 @@ PwmOut::PwmOut(PinName pin, uint32_t freq, ledc_mode_t mode, ledc_timer_bit_t re
             .duty = 0,
             .hpoint = 0,
             .sleep_mode = LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
-            .flags = 
-            {
-                .output_invert = 0 // No output inversion by default
+            .flags = {
+                .output_invert = 0
             }
         };
 
-        if (ledc_channel_config(&channel_conf) == ESP_OK && 
-            ledc_fade_func_install(0) == ESP_OK)
+        esp_err_t channel_err = ledc_channel_config(&channel_conf);
+
+        if (channel_err == ESP_OK)
         {
-            _valid = true;
+            if (!_fade_service_installed)
+            {
+                esp_err_t fade_err = ledc_fade_func_install(0);
+
+                if (fade_err == ESP_OK)
+                {
+                    _fade_service_installed = true;
+                    _valid = true;
+                }
+                else
+                {
+                    _valid = false;
+                }
+            }
+            else
+            {
+                _valid = true;
+            }
         }
+        else
+        {
+             _valid = false;
+        }
+    }
+    else 
+    {
+        _valid = false;
     }
 }
 

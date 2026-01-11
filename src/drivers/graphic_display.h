@@ -16,6 +16,7 @@
 #include "esp_lcd_types.h"
 #include "esp_lvgl_port.h"
 #include "framework/common_defs.h"
+#include "framework/drivers/pwm_out.h"
 #include "lvgl.h"
 #include <stdint.h>
 #include <string>
@@ -77,9 +78,11 @@ class GraphicDisplay
         static void OnTouchTimer(lv_timer_t* timer);
         static void OnTouchEventCallback(lv_event_t* e);
 
+        void SetBrightness(uint8_t brightness);
+
         //---------------------------------------------
         
-        GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName cs, PinName dc, PinName rst, PinName touchCs, PinName touchIrq);
+        GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName cs, PinName dc, PinName rst, PinName touchCs, PinName touchIrq, PinName bkl);
         ~GraphicDisplay() = default;
         GraphicDisplay(const GraphicDisplay&) = delete;
         GraphicDisplay& operator=(const GraphicDisplay&) = delete;
@@ -100,6 +103,7 @@ class GraphicDisplay
         int _rstPin;
         int _touchCsPin;
         int _touchIrqPin;
+        PwmOut _bklPin;
 
         TouchCallback _onDoubleClickAction = nullptr;
 

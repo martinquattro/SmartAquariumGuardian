@@ -56,4 +56,6 @@ class PwmOut
         ledc_timer_bit_t _resolution;
         uint32_t _maxDuty;
         bool _valid;
+
+        static bool _fade_service_installed;
 };
