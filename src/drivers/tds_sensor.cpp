@@ -39,7 +39,7 @@ void TdsSensor::Init()
 //-----------------------------------------------------------------------------
 void TdsSensor::Update(const float temperature /* = 25.0*/)
 {
-    const float analogReading = _analogInPin.ReadVoltage();
+    const float analogReading = _analogInPin.ReadVoltage(64);
     const float avgAnalogReading = StoreAnalogReading(analogReading);
 
     // Logic to transform reading to ppm units

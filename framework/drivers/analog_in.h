@@ -22,14 +22,14 @@ class AnalogIn
          * @param vref  Reference voltage in volts (default 3.3V).
          * @param atten Attenuation setting for ADC channel (default ADC_ATTEN_DB_12).
          */
-        AnalogIn(PinName pin, float vref = 3.3f, adc_atten_t atten = ADC_ATTEN_DB_12);
+        AnalogIn(PinName pin, float vref = 1.1f, adc_atten_t atten = ADC_ATTEN_DB_12);
 
         /**
          * @brief Read ADC value in volts.
+         * @param samples Number of samples to average (default 1).
+         * @return Voltage in volts.
          */
-        float ReadVoltage() const;
-
-
+        float ReadVoltage(const int samples = 1) const;
 
         /**
          * @brief Check if this instance is valid (pin supports ADC1).
@@ -37,11 +37,6 @@ class AnalogIn
         bool IsValid() const;
 
     private:
-
-        /**
-         * @brief Read ADC value in millivolts, calibrated.
-         */
-        int ReadCalibrated() const;
 
         /**
          * @brief Convert pin name to ADC1 channel.
