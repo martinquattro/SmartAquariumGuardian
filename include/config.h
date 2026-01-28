@@ -45,6 +45,9 @@ static constexpr PinName I2C_SCL_PIN = PinName::P22;
 static constexpr uint8_t EEPROM_I2C_ADDRESS = 0x50;
 static constexpr uint8_t RTC_I2C_ADDRESS = 0x68; // DS3231 / DS1307
 
+static constexpr PinName BATTERY_ADC_PIN = PinName::A7;
+static constexpr PinName USB_DETECT_PIN = PinName::P25;
+
 // Pin for the built-in LED on the ESP32 DevKit board
 // This pin is used to indicate the system status or for debugging purposes
 static constexpr PinName BUILTIN_LED = PinName::P2;

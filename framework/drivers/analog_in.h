@@ -46,7 +46,7 @@ class AnalogIn
          */
         bool PinToAdcChannel(PinName pin, adc_channel_t& out) const;
 
-        adc_oneshot_unit_handle_t _handle{};
+        static adc_oneshot_unit_handle_t _handle;
         adc_channel_t _channel{};
         float _vref;
         adc_bitwidth_t _width;

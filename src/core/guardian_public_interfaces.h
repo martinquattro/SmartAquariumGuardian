@@ -9,11 +9,12 @@
 
 #pragma once
 
-#include <string>
-#include <cstdint>
+#include "src/managers/food_feeder.h"
+#include "src/services/power_controller.h"
 #include "src/services/storage_service.h"
 #include "src/utils/date_time.h"
-#include "src/managers/food_feeder.h"
+#include <cstdint>
+#include <string>
 
 namespace Core {
 
@@ -45,6 +46,18 @@ class INetworkController
 
         //! Check if MQTT client is connected
         virtual auto IsMqttConnected() const -> bool = 0;
+};
+
+//-----------------------------------------------------------------------------
+class IPowerController
+{
+    public:
+
+        //! Get current power mode
+        virtual auto GetCurrentMode() -> Services::PowerController::Mode = 0;
+        
+        //! Get battery level
+        virtual auto GetBatteryLevel() -> Services::PowerController::BatteryLevel = 0;
 };
 
 //-----------------------------------------------------------------------------

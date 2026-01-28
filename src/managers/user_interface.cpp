@@ -74,6 +74,17 @@ void UserInterface::Update()
 
     Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
 
+    // Power status
+    {
+        const auto powerMode = guardianProxy->GetCurrentMode();
+        const auto batteryLevel = guardianProxy->GetBatteryLevel();
+
+        CORE_INFO("Power Mode: %s, Battery Level: %d%",
+                  powerMode == Services::PowerController::Mode::MODE_USB_POWERED ? "USB Powered" : "Battery Powered",
+                  static_cast<int>(batteryLevel)
+        );
+    }
+
     // Connection status
     {
         bool wifiOk = guardianProxy->IsWifiConnected();

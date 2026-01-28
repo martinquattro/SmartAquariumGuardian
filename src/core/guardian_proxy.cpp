@@ -64,6 +64,18 @@ auto GuardianProxy::GetFeederStatus() const -> Managers::FoodFeeder::FeederStatu
     return Managers::FoodFeeder::GetInstance()->GetFeederStatus();
 }
 
+//--IPowerController--------------------------------------------------------
+auto GuardianProxy::GetCurrentMode() -> Services::PowerController::Mode
+{
+    return Services::PowerController::GetInstance()->GetCurrentMode();
+}
+
+//--IPowerController--------------------------------------------------------
+auto GuardianProxy::GetBatteryLevel() -> Services::PowerController::BatteryLevel
+{
+    return Services::PowerController::GetInstance()->GetBatteryLevel();
+}
+
 //----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsWifiConnected() const -> bool
 {

@@ -17,6 +17,7 @@ namespace Core {
 class GuardianProxy : public IStorageService,
                       public IFoodFeeder,
                       public INetworkController,
+                      public IPowerController,
                       public IRealTimeClock,
                       public IUserInterface,
                       public IWaterMonitor
@@ -47,6 +48,14 @@ class GuardianProxy : public IStorageService,
 
         //! Check if MQTT client is connected
         auto IsMqttConnected() const -> bool override;
+
+    // IPowerController --------------------------------------------------------
+
+        //! Get current power mode
+        auto GetCurrentMode() -> Services::PowerController::Mode override;
+        
+        //! Get battery level
+        auto GetBatteryLevel() -> Services::PowerController::BatteryLevel override;
 
     // IRealTimeClock --------------------------------------------------------
 

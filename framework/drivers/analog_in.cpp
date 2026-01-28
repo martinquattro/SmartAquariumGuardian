@@ -8,6 +8,8 @@
 #include "framework/drivers/analog_in.h"
 #include "esp_err.h"
 
+adc_oneshot_unit_handle_t AnalogIn::_handle = nullptr;
+
 //-----------------------------------------------------------------------------
 AnalogIn::AnalogIn(PinName pin, float vref, adc_atten_t atten)
     : _vref(vref)
@@ -16,7 +18,6 @@ AnalogIn::AnalogIn(PinName pin, float vref, adc_atten_t atten)
 {
     if (PinToAdcChannel(pin, _channel)) 
     {
-        
         adc_oneshot_unit_init_cfg_t init_cfg = 
         {
             .unit_id = ADC_UNIT_1,
@@ -24,7 +25,7 @@ AnalogIn::AnalogIn(PinName pin, float vref, adc_atten_t atten)
             .ulp_mode = ADC_ULP_MODE_DISABLE
         };
 
-        if (adc_oneshot_new_unit(&init_cfg, &_handle) == ESP_OK) 
+        if (_handle != nullptr || adc_oneshot_new_unit(&init_cfg, &_handle) == ESP_OK) 
         {
             adc_oneshot_chan_cfg_t chan_cfg = 
             {
