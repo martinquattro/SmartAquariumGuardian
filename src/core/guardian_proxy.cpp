@@ -77,9 +77,9 @@ auto GuardianProxy::IsMqttConnected() const -> bool
 }
 
 //----IRealTimeClock------------------------------------------------------------
-auto GuardianProxy::GetDateTime() const -> Utils::DateTime
+auto GuardianProxy::GetDateTime(Utils::DateTime& time) const -> bool
 {
-    return Services::RealTimeClock::GetInstance()->GetTime();
+    return Services::RealTimeClock::GetInstance()->GetTime(time);
 }
 
 //----IRealTimeClock------------------------------------------------------------

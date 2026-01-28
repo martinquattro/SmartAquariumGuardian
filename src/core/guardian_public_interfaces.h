@@ -53,7 +53,7 @@ class IRealTimeClock
     public:
 
         //! Get current date and time
-        virtual auto GetDateTime() const -> Utils::DateTime = 0;
+        virtual auto GetDateTime(Utils::DateTime& time) const -> bool = 0;
 
         //! Is time synchronized
         virtual auto IsTimeSynced() const -> bool = 0;

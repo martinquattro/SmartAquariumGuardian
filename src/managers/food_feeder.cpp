@@ -46,8 +46,16 @@ void FoodFeeder::Update()
     CORE_INFO("Updating FoodFeeder...");
 
     Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
-    const int currentMinute = guardianProxy->GetDateTime().ToMinutesOfDay();
-    
+    Utils::DateTime currentTime;
+
+    if (!guardianProxy->GetDateTime(currentTime))
+    {
+        CORE_ERROR("Failed to get current time. System cannot get updated");
+        return;
+    }
+
+    const int currentMinute = currentTime.ToMinutesOfDay();
+
     // Check feeding schedule
     if (currentMinute != _lastFeedTime)
     {
@@ -181,7 +189,13 @@ auto FoodFeeder::GetFeederStatus() const -> FeederStatus
     Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
 
     const auto& scheduleList = guardianProxy->GetFeedingScheduleFromStorage();
-    const Utils::DateTime currentTime = guardianProxy->GetDateTime();
+    Utils::DateTime currentTime;
+    if (!guardianProxy->GetDateTime(currentTime))
+    {
+        CORE_ERROR("Failed to get current time. Status cannot be retrieved");
+        return status;
+    }
+
     const int currentMinutes = currentTime.ToMinutesOfDay();
 
     status.totalPerDay = 0;

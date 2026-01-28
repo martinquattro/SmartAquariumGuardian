@@ -104,8 +104,11 @@ void UserInterface::Update()
 
     // Time
     {
-        auto dateTime = guardianProxy->GetDateTime();
-        _time->SetText(dateTime.ToString().c_str());
+        Utils::DateTime dateTime;
+        if (guardianProxy->GetDateTime(dateTime))
+        {
+            _time->SetText(dateTime.ToString().c_str());
+        }
     }
 
     // Temperature Panel

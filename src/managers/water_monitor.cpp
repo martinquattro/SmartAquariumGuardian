@@ -44,8 +44,8 @@ void WaterMonitor::Update()
 {
     CORE_INFO("Updating WaterMonitor...");
     
-    Drivers::TdsSensor::GetInstance()->Update();
-    // Drivers::TemperatureSensor::GetInstance()->Update();
+    Drivers::TemperatureSensor::GetInstance()->Update();
+    Drivers::TdsSensor::GetInstance()->Update(Drivers::TemperatureSensor::GetInstance()->GetLastReading());
 }
 
 //-----------------------------------------------------------------------------

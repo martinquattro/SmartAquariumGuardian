@@ -42,7 +42,7 @@ void RealTimeClock::Init()
 }
 
 //-----------------------------------------------------------------------------
-auto RealTimeClock::GetTime() -> Utils::DateTime
+auto RealTimeClock::GetTime(Utils::DateTime& time) -> bool
 {
     uint8_t startReg = 0x00;
     uint8_t buffer[3] = {0};
@@ -57,7 +57,9 @@ auto RealTimeClock::GetTime() -> Utils::DateTime
     uint8_t minutes = BcdToDec(buffer[1]);
     uint8_t hours   = BcdToDec(buffer[2]);
 
-    return Utils::DateTime(hours, minutes, seconds);
+    time.Set(hours, minutes, seconds);
+    
+    return true;
 }
 
 //-----------------------------------------------------------------------------

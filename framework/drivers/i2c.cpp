@@ -133,7 +133,7 @@ bool I2C::WriteRead(const uint8_t* txBuffer
         return false;
     }
 
-    if (xSemaphoreTake(_mutex, portMAX_DELAY) == pdTRUE)
+    if (xSemaphoreTake(_mutex, 500 / portTICK_PERIOD_MS) == pdTRUE)
     {
         esp_err_t err = i2c_master_transmit_receive(_dev, txBuffer, txLen, rxBuffer, rxLen, 100);
         xSemaphoreGive(_mutex);

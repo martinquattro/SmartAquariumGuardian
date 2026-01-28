@@ -51,7 +51,7 @@ class GuardianProxy : public IStorageService,
     // IRealTimeClock --------------------------------------------------------
 
         //! Get current date and time
-        auto GetDateTime() const -> Utils::DateTime override;
+        auto GetDateTime(Utils::DateTime& time) const -> bool override;
         
         //! Is time synchronized
         auto IsTimeSynced() const -> bool override;

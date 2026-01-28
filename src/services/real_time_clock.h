@@ -34,9 +34,10 @@ class RealTimeClock
 
         /**
          * @brief Get the current time from the RTC.
-         * @return DateTime object with the current time.
+         * @param time    Reference to a DateTime object to store the current time.
+         * @return true if successful, false otherwise.
         */
-        auto GetTime() -> Utils::DateTime;
+        auto GetTime(Utils::DateTime& time) -> bool;
 
         /**
          * @brief Set the current time on the RTC.
