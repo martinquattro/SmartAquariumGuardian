@@ -1,0 +1,68 @@
+# Doxyfile - Smart Aquarium Guardian
+# Minimal configuration for HTML API documentation
+# Usage: doxygen Doxyfile
+
+PROJECT_NAME           = "Smart Aquarium Guardian"
+PROJECT_NUMBER         = 2.0
+PROJECT_BRIEF          = "ESP32 Aquarium Monitoring System"
+OUTPUT_DIRECTORY       = ./docs/doxygen
+
+# Input
+INPUT                  = src/ framework/ include/
+RECURSIVE              = YES
+FILE_PATTERNS          = *.h *.hpp *.cpp *.c
+EXCLUDE                = src/ui/
+EXCLUDE_PATTERNS       = */test_* */build/* */managed_components/*
+
+# Paths (show relative, not absolute)
+STRIP_FROM_PATH        = .
+STRIP_FROM_INC_PATH    = ./src ./framework ./include
+FULL_PATH_NAMES        = NO
+
+# Processing
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = YES
+HIDE_UNDOC_CLASSES     = YES
+
+# Hide clutter
+SOURCE_BROWSER         = YES
+STRIP_CODE_COMMENTS    = NO
+VERBATIM_HEADERS       = NO
+SHOW_INCLUDE_FILES     = NO
+
+# Output (HTML only, no LaTeX/PDF/etc)
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_RTF           = NO
+GENERATE_MAN           = NO
+GENERATE_XML           = NO
+HTML_COLORSTYLE        = LIGHT
+SEARCHENGINE           = YES
+
+# Custom tags (aliases)
+ALIASES                = "singleton=<p><b>Note:</b> Singleton - only one instance exists. Access via GetInstance().</p>" \
+                         "manager_16ms=<p><b>Cycle:</b> Updated every 16ms (~60 FPS).</p>" \
+                         "manager_100ms=<p><b>Cycle:</b> Updated every 100ms.</p>" \
+                         "manager_500ms=<p><b>Cycle:</b> Updated every 500ms.</p>" \
+                         "manager_1000ms=<p><b>Cycle:</b> Updated every 1000ms.</p>" \
+                         "threadsafe=<p><b>Thread Safe:</b> Yes</p>" \
+                         "not_threadsafe=<p><b>Thread Safe:</b> No</p>"
+
+# Tag file
+GENERATE_TAGFILE       = docs/doxygen/smart_aquarium.tag
+
+# Preprocessing
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES
+SEARCH_INCLUDES        = YES
+INCLUDE_PATH           = src/ framework/ include/
+PREDEFINED             = __DOXYGEN__=1
+
+# Other
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_FORMAT            = "$file:$line: $text"

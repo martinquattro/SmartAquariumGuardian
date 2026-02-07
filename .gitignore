@@ -5,6 +5,10 @@
 *.bin
 *.map
 *.d
+*.ini
+
+# Doxygen generated files
+docs/doxygen/
 
 managed_components/
 
