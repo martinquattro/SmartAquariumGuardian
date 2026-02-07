@@ -1,0 +1,17 @@
+# --- KiCad Ignores ---
+
+*.bak
+*.kicad_pcb-bak
+*.kicad_sch-bak
+_autosave-*
+*-backups
+
+*.kicad_prl
+
+# Temp files
+*.lck
+
+*.kicad_prl
+fp-info-cache
+
+gerbers
