@@ -16,7 +16,7 @@ This is the core of the system, responsible for:
 The project is designed using **KiCad EDA**. It is structured to be **fully self-contained**, meaning no external global libraries are required to view or edit the files.
 
 ```text
-/hardware
+/kicad
 ├── README.md                    # This documentation file
 ├── .gitignore                   # gitignore file for this folder
 └── smart_aquarium_guardian/     # Main Project Folder
