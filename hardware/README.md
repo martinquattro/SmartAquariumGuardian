@@ -50,4 +50,3 @@ To ensure the integrity of the design and library links, please follow these ste
    * **PCB Layout:** Open the PCB Editor (`.kicad_pcb`) to view the physical routing and placement.
 
 *Note: You do not need to install any external global libraries. All symbols and footprints
-```
