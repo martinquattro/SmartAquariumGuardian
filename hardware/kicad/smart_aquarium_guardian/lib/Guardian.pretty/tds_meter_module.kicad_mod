@@ -307,8 +307,8 @@
 		(uuid "ed257797-8c53-42c0-9b4c-1a3ac045d203")
 	)
 	(fp_line
-		(start 28.5 10.39)
-		(end 29.71 10.39)
+		(start 28.59 0.89)
+		(end 29.8 0.89)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -317,8 +317,8 @@
 		(uuid "d8e90164-766b-43c5-9796-8dcf7483e2e1")
 	)
 	(fp_line
-		(start 28.5 17.11)
-		(end 28.5 10.39)
+		(start 28.59 7.61)
+		(end 28.59 0.89)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -327,8 +327,8 @@
 		(uuid "924d12d1-5d65-433d-9e03-0d47e654cdaa")
 	)
 	(fp_line
-		(start 29.71 10.39)
-		(end 29.71 9.89)
+		(start 29.8 0.89)
+		(end 29.8 0.39)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -337,8 +337,8 @@
 		(uuid "954f793f-6c7f-4aad-9aa6-b8e35f808492")
 	)
 	(fp_line
-		(start 29.71 17.11)
-		(end 28.5 17.11)
+		(start 29.8 7.61)
+		(end 28.59 7.61)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -347,8 +347,8 @@
 		(uuid "608b4c76-55ba-41b3-b276-afc89b35ecc8")
 	)
 	(fp_line
-		(start 29.71 17.61)
-		(end 29.71 17.11)
+		(start 29.8 8.11)
+		(end 29.8 7.61)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -357,8 +357,8 @@
 		(uuid "5fbc83ad-775f-4ccd-b8fd-79588d20e6a4")
 	)
 	(fp_line
-		(start 29.82 17.91)
-		(end 32.32 17.91)
+		(start 29.91 8.41)
+		(end 32.41 8.41)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -367,8 +367,8 @@
 		(uuid "34304ba4-9fec-4123-a98f-bf08b674e325")
 	)
 	(fp_line
-		(start 30.52 9.89)
-		(end 30.52 10.89)
+		(start 30.61 0.39)
+		(end 30.61 1.39)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -377,8 +377,8 @@
 		(uuid "409cc9bd-d26a-432f-a575-f80f6a53a159")
 	)
 	(fp_line
-		(start 30.52 10.89)
-		(end 32.02 10.89)
+		(start 30.61 1.39)
+		(end 32.11 1.39)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -387,8 +387,8 @@
 		(uuid "bb1e902d-6622-4fdf-ab36-fee9a89c3afa")
 	)
 	(fp_line
-		(start 30.52 16.61)
-		(end 32.02 16.61)
+		(start 30.61 7.11)
+		(end 32.11 7.11)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -397,8 +397,8 @@
 		(uuid "84552cac-f97e-48fa-a0ea-41f3c032d0cb")
 	)
 	(fp_line
-		(start 30.52 17.61)
-		(end 30.52 16.61)
+		(start 30.61 8.11)
+		(end 30.61 7.11)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -407,8 +407,8 @@
 		(uuid "1e7649d1-c43e-4932-bfe9-33521fa7054d")
 	)
 	(fp_line
-		(start 32.32 17.91)
-		(end 32.32 15.41)
+		(start 32.41 8.41)
+		(end 32.41 5.91)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -431,16 +431,16 @@
 		(start -20.8 -14.5)
 		(end 20.5 17.2)
 		(stroke
-			(width 0.1)
-			(type solid)
+			(width 0.1778)
+			(type dash)
 		)
 		(fill no)
 		(layer "F.SilkS")
 		(uuid "a2df33ed-561f-4058-baa3-30224e0a057a")
 	)
 	(fp_rect
-		(start 28 9.89)
-		(end 32.02 17.61)
+		(start 28.09 0.39)
+		(end 32.11 8.11)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -494,8 +494,8 @@
 		(uuid "a1291753-f4fe-4231-8416-23d72f31c981")
 	)
 	(fp_rect
-		(start 27.61 9.5)
-		(end 32.41 18)
+		(start 27.7 0)
+		(end 32.5 8.5)
 		(stroke
 			(width 0.05)
 			(type solid)
@@ -547,8 +547,8 @@
 		(uuid "8e6f56c0-faa3-426f-88ad-17a5738b6eba")
 	)
 	(fp_line
-		(start 29.82 17.91)
-		(end 32.32 17.91)
+		(start 29.91 8.41)
+		(end 32.41 8.41)
 		(stroke
 			(width 0.1)
 			(type solid)
@@ -557,8 +557,8 @@
 		(uuid "57fd2906-f734-40a6-8102-ae701050b464")
 	)
 	(fp_line
-		(start 32.32 17.91)
-		(end 32.32 15.41)
+		(start 32.41 8.41)
+		(end 32.41 5.91)
 		(stroke
 			(width 0.1)
 			(type solid)
@@ -578,8 +578,8 @@
 		(uuid "c3859229-0f51-4019-8fb5-085214c80fd9")
 	)
 	(fp_rect
-		(start 28.11 10)
-		(end 31.91 17.5)
+		(start 28.2 0.5)
+		(end 32 8)
 		(stroke
 			(width 0.1)
 			(type solid)
@@ -600,7 +600,7 @@
 		)
 	)
 	(fp_text user "${REFERENCE}"
-		(at 31.21 13.75 90)
+		(at 31.3 4.25 90)
 		(layer "F.Fab")
 		(uuid "4a4c0c5e-180e-45cf-93c8-8f3da05e4326")
 		(effects
@@ -684,7 +684,7 @@
 		(uuid "5a25a9cd-d876-4188-8ed6-fcda1cf9d6d9")
 	)
 	(pad "4" thru_hole roundrect
-		(at 29.71 15 90)
+		(at 29.8 5.5 90)
 		(size 1.7 2)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
@@ -693,7 +693,7 @@
 		(uuid "65f7eeb8-a7f0-4fe7-9757-806ec0c8e246")
 	)
 	(pad "5" thru_hole oval
-		(at 29.71 12.5 90)
+		(at 29.8 3 90)
 		(size 1.7 2)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
