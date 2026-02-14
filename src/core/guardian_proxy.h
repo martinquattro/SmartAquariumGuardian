@@ -11,10 +11,13 @@
 
 #include "framework/common_defs.h"
 #include "src/core/guardian_public_interfaces.h"
+#include "src/core/base/module.h"
 
 namespace Core {
 
-class GuardianProxy : public IStorageService,
+class GuardianProxy : public Base::Singleton<GuardianProxy>,
+                      public Base::Module,
+                      public IStorageService,
                       public IFoodFeeder,
                       public INetworkController,
                       public IPowerController,
@@ -23,9 +26,6 @@ class GuardianProxy : public IStorageService,
                       public IWaterMonitor
 {
     public:
-
-        static void Init();
-        static GuardianProxy* GetInstance();
 
     // IFoodFeeder --------------------------------------------------------------
 
@@ -115,14 +115,35 @@ class GuardianProxy : public IStorageService,
 
     private:
 
+        friend class Base::Singleton<GuardianProxy>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "GuardianProxy"; }
+
+        /*!
+         * @brief Initializes the Module.
+         *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
+         */
+        bool OnInit() override { return true; }
+
+        /*!
+         * @brief Updates the Module state.
+         *        This method should be called periodically to update the system state.
+         */
+        void OnUpdate() override {}
+
+        //---------------------------------------------
+
         GuardianProxy() = default;
         ~GuardianProxy() = default;
         GuardianProxy(const GuardianProxy&) = delete;
         GuardianProxy& operator=(const GuardianProxy&) = delete;
 
         //---------------------------------------------
-
-        static GuardianProxy* _instance;
 };
 
 } // namespace Core

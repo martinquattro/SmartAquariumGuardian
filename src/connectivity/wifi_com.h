@@ -8,33 +8,20 @@
 #ifndef WIFI_COM_H
 #define WIFI_COM_H
 
-#include "framework/common_defs.h"
-#include <string>
-#include <atomic>
 #include "esp_event.h"
 #include "esp_wifi.h"
+#include "framework/common_defs.h"
+#include "src/core/base/driver.h"
+#include <atomic>
+#include <string>
 
 namespace Connectivity {
 
-class WiFiCom
+class WiFiCom : public Base::Singleton<WiFiCom>,
+                public Base::Driver
+
 {
     public:
-
-        /*!
-        * @brief Get the singleton instance of WiFiCom.
-        * @return WiFiCom* Pointer to the WiFiCom instance.
-        */
-        static WiFiCom * GetInstance();
-
-        /*!
-        * @brief Initialize the WiFiCom.
-        */
-        static void Init();
-
-        /*!
-        * @brief Periodically poll/update (non-blocking)
-        */
-        void Update();
 
         /*!
         * @brief Check if connected to WiFi
@@ -53,6 +40,27 @@ class WiFiCom
         void Disconnect();
 
     private:
+
+        friend class Base::Singleton<WiFiCom>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "WiFiCom"; }
+
+        /*!
+        * @brief Initializes the Module.
+        *        This method should be called once at the start of the application.
+        *       * @return bool True if initialization successful, false otherwise.
+        */
+        bool OnInit() override;
+
+        /*!
+        * @brief Updates the Module state.
+        *        This method should be called periodically to update the system state.
+        */
+        void OnUpdate() override;
 
         enum class State 
         {
@@ -90,7 +98,6 @@ class WiFiCom
 
         //---------------------------------------------
 
-        static WiFiCom * _instance;
         State _state;
         std::string _ssid;
         std::string _password;
@@ -98,6 +105,7 @@ class WiFiCom
         std::atomic<bool> _connected;
         void* _netif; // forward-declare type to avoid exposing esp-netif here
     };
+
 } // namespace Connectivity
 
 #endif // WIFI_COM_H

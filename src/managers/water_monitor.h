@@ -8,29 +8,18 @@
 #ifndef WATER_MONITOR_H
 #define WATER_MONITOR_H
 
+#include "src/core/base/manager.h"
+#include "src/drivers/tds_sensor.h"
+#include "src/drivers/temperature_sensor.h"
+
 struct Result;
 
 namespace Managers {
 
-class WaterMonitor 
+class WaterMonitor : public Base::Singleton<WaterMonitor>
+                   , public Base::Manager
 {
     public:
-
-        /*!
-        * @brief Gets the singleton instance of the WaterMonitor.
-        * @return WaterMonitor* Pointer to the WaterMonitor instance.
-        */
-        static WaterMonitor* GetInstance();
-
-        /*!
-        * @brief Initializes the WaterMonitor.
-        */
-        static void Init();
-
-        /*!
-        * @brief Updates the WaterMonitor readings.
-        */
-        void Update();
 
         /*!
         * @brief Gets the last TDS reading.
@@ -71,6 +60,29 @@ class WaterMonitor
 
     private:
 
+        friend class Base::Singleton<WaterMonitor>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "WaterMonitor"; }
+
+        /*!
+         * @brief Initializes the Module.
+         *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
+         */
+        bool OnInit() override;
+
+        /*!
+         * @brief Updates the Module state.
+         *        This method should be called periodically to update the system state.
+         */
+        void OnUpdate() override;
+
+        //---------------------------------------------
+
         WaterMonitor() {}
         ~WaterMonitor() = default;
         WaterMonitor(const WaterMonitor&) = delete;
@@ -83,7 +95,8 @@ class WaterMonitor
 
         //---------------------------------------------
 
-        static WaterMonitor* _instance;
+        Drivers::TemperatureSensor* _temperatureSensor = nullptr;
+        Drivers::TdsSensor* _tdsSensor = nullptr;
 };
 
 } // namespace Managers

@@ -9,6 +9,8 @@
 
 #include "src/core/base/module.h"
 
+namespace Core { class GuardianProxy;}
+
 namespace Base {
 
 /**
@@ -28,7 +30,7 @@ namespace Base {
 class Manager : public Module
 {
     public:
-
+    
         /**
          * @brief Virtual destructor.
          */
@@ -39,7 +41,7 @@ class Manager : public Module
         /**
          * @brief Protected constructor.
          */
-        Manager() = default;
+        Manager() {}
 
     private:
 

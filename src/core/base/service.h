@@ -35,12 +35,17 @@ class Service : public Module
          */
         virtual ~Service() = default;
 
+        /**
+         * @brief Services typically don't require periodic updates.
+         */
+        void Update() = delete;
+
     protected:
 
         /**
          * @brief Protected constructor.
          */
-        Service() = default;
+        Service() {}
 
     private:
 

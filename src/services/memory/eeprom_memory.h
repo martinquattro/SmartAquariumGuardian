@@ -9,24 +9,15 @@
 #define EEPROM_MEMORY_H
 
 #include "framework/common_defs.h"
+#include "src/core/base/driver.h"
 #include <string>
 
 namespace Services {
 
-class EepromMemory
+class EepromMemory : public Base::Singleton<EepromMemory>,
+                     public Base::Driver
 {
     public:
-
-        /**
-         * @brief Get the singleton instance of EepromMemory.
-         * @return EepromMemory* Pointer to the EepromMemory instance.
-         */
-        static EepromMemory* GetInstance();
-        
-        /**
-         * @brief Initialize the EEPROM memory driver.
-         */
-        static void Init();
 
         /**
          * @brief Write bytes to the EEPROM starting at the specified memory address.
@@ -48,6 +39,27 @@ class EepromMemory
 
     private:
 
+        friend class Base::Singleton<EepromMemory>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "EepromMemory"; }
+
+        /*!
+        * @brief Initializes the Module.
+        *        This method should be called once at the start of the application.
+        *       * @return bool True if initialization successful, false otherwise.
+        */
+        bool OnInit() override;
+
+        /*!
+        * @brief Updates the Module state.
+        *        This method should be called periodically to update the system state.
+        */
+        void OnUpdate() override {}
+
         /*!
          * @brief Write a full page to the EEPROM.
          * @param pageAddress   Page address to write to.
@@ -59,7 +71,7 @@ class EepromMemory
 
         //---------------------------------------------
 
-        EepromMemory(PinName sda, PinName scl, uint8_t address);
+        EepromMemory();
         ~EepromMemory() = default;
         EepromMemory(const EepromMemory&) = delete;
         EepromMemory& operator=(const EepromMemory&) = delete;
@@ -73,7 +85,6 @@ class EepromMemory
 
         //---------------------------------------------
 
-        static EepromMemory* _instance;
         I2C _i2c;
 };
 

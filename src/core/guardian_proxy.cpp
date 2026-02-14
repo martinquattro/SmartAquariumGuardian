@@ -18,28 +18,6 @@
 
 namespace Core {
 
-GuardianProxy* GuardianProxy::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-void GuardianProxy::Init()
-{
-    CORE_INFO("Initializing GuardianProxy...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("GuardianProxy already initialized!");
-        return;
-    }
-
-    _instance = new GuardianProxy();
-}
-
-//----static-------------------------------------------------------------------
-GuardianProxy* GuardianProxy::GetInstance()
-{
-    return _instance;
-}
-
 //----IFoodFeeder--------------------------------------------------------------
 auto GuardianProxy::Feed(int dose) -> Result
 {

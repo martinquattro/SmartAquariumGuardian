@@ -12,31 +12,15 @@
 
 namespace Drivers {
 
-Servo* Servo::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-Servo* Servo::GetInstance()
+//----private------------------------------------------------------------------
+bool Servo::OnInit()
 {
-    return _instance;
+    _pwmOut.SetDuty(MIN_SAFE_DUTY);
+    return true;
 }
 
-//----static-------------------------------------------------------------------
-void Servo::Init()
-{
-    CORE_INFO("Initializing Servo...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("Servo already initialized!");
-        return;
-    }
-
-    _instance = new Servo(Config::SERVO_FEEDER_PWM_PIN, PWM_FREQUENCY);
-    _instance->_pwmOut.SetDuty(MIN_SAFE_DUTY);
-}
-
-//-----------------------------------------------------------------------------
-void Servo::Update()
+//----private------------------------------------------------------------------
+void Servo::OnUpdate()
 {
     // For now, no periodic logic.
     // In the future, could track Fade completion or add timed sequences.
@@ -53,8 +37,8 @@ void Servo::FadeToAngle(float angle, uint32_t timeMs)
 }
 
 //----private------------------------------------------------------------------
-Servo::Servo(PinName pin, uint32_t freq)
-    : _pwmOut(pin, freq)
+Servo::Servo()
+    : _pwmOut(Config::SERVO_FEEDER_PWM_PIN, PWM_FREQUENCY)
 {}
 
 } // namespace Drivers

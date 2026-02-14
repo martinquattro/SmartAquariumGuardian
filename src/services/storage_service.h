@@ -7,31 +7,23 @@
 
 #pragma once
 
-#include <string>
-#include <cstdint>
 #include "framework/common_defs.h"
 #include "lib/nlohmann_json/json.hpp"
+#include "src/core/base/service.h"
+#include "src/services/memory/eeprom_memory.h"
 #include "src/services/memory/memory_config_data.h"
+#include <cstdint>
+#include <string>
 
 namespace Services {
 
-class StorageService
+class StorageService : public Base::Singleton<StorageService>
+                     , public Base::Service
 {
     using Json = nlohmann::json;
    
     public:
-
-        /*!
-         * @brief Get the singleton instance of StorageService.
-         * @return StorageService* Pointer to the StorageService instance.
-        */
-        static StorageService* GetInstance();
-
-        /*!
-         * @brief Initialize the StorageService.
-         */
-        static void Init();
-
+        
         /*!
          * @brief Save a feeding schedule entry in storage.
          * @param timeMinutesAfterMidnight Minutes after midnight (0-1439).
@@ -109,6 +101,21 @@ class StorageService
     
     private:
  
+        friend class Base::Singleton<StorageService>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "StorageService"; }
+
+        /*!
+         * @brief Initializes the Module.
+         *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
+         */
+        bool OnInit() override;
+
         /*!
             * @brief Save configuration data to EEPROM.
             * @return true if success, false otherwise.
@@ -135,7 +142,7 @@ class StorageService
 
         //---------------------------------------------
 
-        static StorageService* _instance;
+        Services::EepromMemory* _eepromMemory = nullptr;
         MemoryConfigData _configCache;
 };
 

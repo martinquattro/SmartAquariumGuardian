@@ -14,31 +14,12 @@
 
 namespace Services {
 
-RealTimeClock* RealTimeClock::_instance = nullptr;
-
-//-----------------------------------------------------------------------------
-RealTimeClock* RealTimeClock::GetInstance()
+//----private------------------------------------------------------------------
+bool RealTimeClock::OnInit()
 {
-    return _instance;
-}
+    _isTimeSynced = false;
 
-//-----------------------------------------------------------------------------
-void RealTimeClock::Init()
-{
-    CORE_INFO("Initializing RealTimeClock...");
-
-    if (_instance != nullptr) 
-    {
-        CORE_ERROR("RealTimeClock already initialized!");
-        return;
-    }
-
-    _instance = new RealTimeClock(
-          Config::I2C_SDA_PIN
-        , Config::I2C_SCL_PIN
-        , Config::RTC_I2C_ADDRESS
-    );
-    _instance->_isTimeSynced = false;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -132,9 +113,10 @@ void RealTimeClock::TimeSyncCallback(struct ::timeval *tv)
               , timeinfo.tm_sec
     );
 
-    if (_instance)
+    auto instance = RealTimeClock::GetInstance();
+    if (instance)
     {
-        _instance->SetTime(
+        instance->SetTime(
             Utils::DateTime(
                   static_cast<uint8_t>(timeinfo.tm_hour)
                 , static_cast<uint8_t>(timeinfo.tm_min)
@@ -142,7 +124,7 @@ void RealTimeClock::TimeSyncCallback(struct ::timeval *tv)
             )
         );
 
-        _instance->_isTimeSynced = true;
+        instance->_isTimeSynced = true;
     }
     else
     {
@@ -165,8 +147,9 @@ uint8_t RealTimeClock::BcdToDec(uint8_t val)
 }
 
 //----private------------------------------------------------------------------
-RealTimeClock::RealTimeClock(PinName sda, PinName scl, uint8_t address)
-    : _i2c(sda, scl, address)
-{}
+RealTimeClock::RealTimeClock()
+    : _i2c(Config::I2C_SDA_PIN, Config::I2C_SCL_PIN, Config::RTC_I2C_ADDRESS)
+{
+}
 
 } // namespace Services

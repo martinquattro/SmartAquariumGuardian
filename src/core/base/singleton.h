@@ -26,29 +26,14 @@ class Singleton
     public:
 
         /**
-         * @brief Get the singleton instance of type T.
-         *
-         * Creates the instance on first call.
-         * Subsequent calls return the same instance.
-         *
-         * @return T& Reference to the singleton instance
-         *
-         * @note This is automatically inherited by derived classes.
-         *       Each derived class T gets its own unique instance.
-         *
-         * @note Thread-safe in C++11 and later.
-         *       Static local variable initialization is thread-safe.
-         *
-         * @example
-         * @code
-         * auto& mgr = MyManager::GetInstance();
-         * mgr.DoWork();
-         * @endcode
+         * @brief Get the singleton instance as a pointer.
+         * Creates the instance on first call (Lazy Initialization).
          */
-        static T& GetInstance()
+        static T* GetInstance()
         {
+            // C++11 Magic Static: Thread-safe initialization
             static T instance;
-            return instance;
+            return &instance; 
         }
 
         /**

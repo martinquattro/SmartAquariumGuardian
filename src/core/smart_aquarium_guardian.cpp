@@ -18,48 +18,30 @@
 #include "src/services/real_time_clock.h"
 #include "src/services/storage_service.h"
 
-SmartAquariumGuardian* SmartAquariumGuardian::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-SmartAquariumGuardian* SmartAquariumGuardian::GetInstance()
+//----private------------------------------------------------------------------
+bool SmartAquariumGuardian::OnInit()
 {
-    return _instance;
-}
-
-//----static-------------------------------------------------------------------
-void SmartAquariumGuardian::Init()
-{
-    CORE_INFO("Initializing SmartAquariumGuardian...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("SmartAquariumGuardian already initialized!");
-        return;
-    }
-
-    // Start periodic update delay
-    _instance = new SmartAquariumGuardian();
-    _instance->_delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
+    _delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
 
     // Create and initialize the GuardianProxy
-    Core::GuardianProxy::Init();
+    Core::GuardianProxy::GetInstance()->Init();
 
     // Initialize services
-    Services::RealTimeClock::Init();
-    Services::StorageService::Init();
-    Services::PowerController::Init();
+    Services::RealTimeClock::GetInstance()->Init();
+    Services::StorageService::GetInstance()->Init();
+    Services::PowerController::GetInstance()->Init();
 
     // Initialize managers
-    Managers::WaterMonitor::Init();
-    Managers::FoodFeeder::Init();
-    Managers::UserInterface::Init();
-    Managers::NetworkController::Init();
+    Managers::WaterMonitor::GetInstance()->Init();
+    Managers::FoodFeeder::GetInstance()->Init();
+    Managers::UserInterface::GetInstance()->Init();
+    Managers::NetworkController::GetInstance()->Init();
 
-    CORE_INFO("SmartAquariumGuardian initialized.");
+    return true;
 }
 
-//-----------------------------------------------------------------------------
-void SmartAquariumGuardian::Update()
+//----private------------------------------------------------------------------
+void SmartAquariumGuardian::OnUpdate()
 {
     // Periodic update
     // Only proceed if the delay has finished

@@ -8,56 +8,40 @@
 #include "src/managers/water_monitor.h"
 
 #include "framework/common_defs.h"
+#include "src/core/guardian_proxy.h"
 #include "src/drivers/tds_sensor.h"
 #include "src/drivers/temperature_sensor.h"
-#include "src/core/guardian_proxy.h"
 
 namespace Managers {
 
-WaterMonitor* WaterMonitor::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-WaterMonitor* WaterMonitor::GetInstance()
+//----private------------------------------------------------------------------
+bool WaterMonitor::OnInit()
 {
-    return _instance;
+    _temperatureSensor = Drivers::TemperatureSensor::GetInstance();
+    _tdsSensor = Drivers::TdsSensor::GetInstance();
+
+    return (_temperatureSensor->Init() && _tdsSensor->Init());
 }
 
-//----static-------------------------------------------------------------------
-void WaterMonitor::Init()
+//----private------------------------------------------------------------------
+void WaterMonitor::OnUpdate()
 {
-    CORE_INFO("Initializing WaterMonitor...");
-    
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("WaterMonitor already initialized!");
-        return;
-    }
+    _temperatureSensor->Update();
 
-    _instance = new WaterMonitor();
-    
-    Drivers::TdsSensor::Init();
-    Drivers::TemperatureSensor::Init();
-}
-
-//-----------------------------------------------------------------------------
-void WaterMonitor::Update()
-{
-    CORE_INFO("Updating WaterMonitor...");
-    
-    Drivers::TemperatureSensor::GetInstance()->Update();
-    Drivers::TdsSensor::GetInstance()->Update(Drivers::TemperatureSensor::GetInstance()->GetLastReading());
+    _tdsSensor->SetTemperature(_temperatureSensor->GetLastReading());
+    _tdsSensor->Update();
 }
 
 //-----------------------------------------------------------------------------
 int WaterMonitor::GetTdsReading() const
 {
-    return (Drivers::TdsSensor::GetInstance()->GetLastReading());
+    return (_tdsSensor->GetLastReading());
 }
 
 //-----------------------------------------------------------------------------
 float WaterMonitor::GetTemperatureReading() const
 {
-    return (Drivers::TemperatureSensor::GetInstance()->GetLastReading());
+    return (_temperatureSensor->GetLastReading());
 }
 
 //-----------------------------------------------------------------------------
@@ -92,7 +76,7 @@ Result WaterMonitor::SetTemperatureLimits(const float minTemp, const bool isMinL
             return Result::Error("Invalid maximum temperature limit.");
         }
     }
-    
+
     const bool success = Core::GuardianProxy::GetInstance()->SaveTempLimitsInStorage(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 
     if (success)

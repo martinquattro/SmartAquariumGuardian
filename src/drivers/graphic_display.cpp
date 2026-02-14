@@ -17,7 +17,6 @@ extern "C" {
 
 namespace Drivers {
 
-GraphicDisplay* GraphicDisplay::_instance = nullptr;
 uint32_t GraphicDisplay::_last_click_time = 0;
 
 //-----------------------------------------------------------------------------
@@ -96,47 +95,18 @@ void GraphicDisplay::UIElement::ClearState1()
     }
 }
 
-//----static-------------------------------------------------------------------
-GraphicDisplay* GraphicDisplay::GetInstance()
+//----private------------------------------------------------------------------
+bool GraphicDisplay::OnInit()
 {
-    if (_instance != nullptr)
-    {
-        return _instance;
-    }
-    return _instance;
-}
-
-//----static-------------------------------------------------------------------
-void GraphicDisplay::Init()
-{
-    CORE_INFO("Initializing GraphicDisplay...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("GraphicDisplay already initialized!"); 
-        return;
-    }
-
-    _instance = new GraphicDisplay(Config::DISP_MISO_PIN,
-                                   Config::DISP_MOSI_PIN,
-                                   Config::DISP_CLK_PIN,
-                                   Config::DISP_CS_PIN,
-                                   Config::DISP_DC_PIN,
-                                   Config::DISP_RESET_PIN,
-                                   Config::DISP_TOUCH_CS_PIN,
-                                   Config::DISP_TOUCH_IRQ_PIN,
-                                   Config::DISP_BACKLIGHT_PIN
-    );
-    
     esp_err_t ret;
 
     CORE_INFO("Initializing SPI bus");
 
     spi_bus_config_t buscfg = 
     {
-        .mosi_io_num = _instance->_mosiPin,
-        .miso_io_num = _instance->_misoPin,
-        .sclk_io_num = _instance->_clkPin,
+        .mosi_io_num = _mosiPin,
+        .miso_io_num = _misoPin,
+        .sclk_io_num = _clkPin,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
         .max_transfer_sz = (DISP_H_RES * 80 * sizeof(uint16_t)),
@@ -158,8 +128,8 @@ void GraphicDisplay::Init()
     
     esp_lcd_panel_io_spi_config_t io_config = 
     {
-        .cs_gpio_num = _instance->_csPin,
-        .dc_gpio_num = _instance->_dcPin,
+        .cs_gpio_num = _csPin,
+        .dc_gpio_num = _dcPin,
         .spi_mode = 0,
         .pclk_hz = 40 * 1000 * 1000, // 40 MHz clock
         .trans_queue_depth = 10,
@@ -177,33 +147,33 @@ void GraphicDisplay::Init()
 
     esp_lcd_panel_dev_config_t panel_config =
     {
-        .reset_gpio_num = _instance->_rstPin,
+        .reset_gpio_num = _rstPin,
         .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
         .bits_per_pixel = 16,
     };
 
     // Create the panel handle
-    ret = esp_lcd_new_panel_ili9341(io_handle, &panel_config, &_instance->_panel_handle);
+    ret = esp_lcd_new_panel_ili9341(io_handle, &panel_config, &_panel_handle);
     ESP_ERROR_CHECK(ret);
 
     // Intialize the panel
-    ret = esp_lcd_panel_reset(_instance->_panel_handle);
+    ret = esp_lcd_panel_reset(_panel_handle);
     ESP_ERROR_CHECK(ret);
     
-    ret = esp_lcd_panel_init(_instance->_panel_handle);
+    ret = esp_lcd_panel_init(_panel_handle);
     ESP_ERROR_CHECK(ret);
 
     // Additional panel configurations
     CORE_INFO("Configuring panel orientation and color settings");
 
-    ret = esp_lcd_panel_mirror(_instance->_panel_handle, false, true);
+    ret = esp_lcd_panel_mirror(_panel_handle, false, true);
     ESP_ERROR_CHECK(ret);
 
-    ret = esp_lcd_panel_swap_xy(_instance->_panel_handle, false);
+    ret = esp_lcd_panel_swap_xy(_panel_handle, false);
     ESP_ERROR_CHECK(ret);
 
     // Turn on the display
-    ret = esp_lcd_panel_disp_on_off(_instance->_panel_handle, true);
+    ret = esp_lcd_panel_disp_on_off(_panel_handle, true);
     ESP_ERROR_CHECK(ret);
 
     // Add display to LVGL
@@ -212,7 +182,7 @@ void GraphicDisplay::Init()
     lvgl_port_display_cfg_t disp_cfg =
     {
         .io_handle = io_handle,
-        .panel_handle = _instance->_panel_handle,
+        .panel_handle = _panel_handle,
         .buffer_size = DISP_H_RES * 60,
         .double_buffer = true,
         .hres = DISP_H_RES,
@@ -222,7 +192,7 @@ void GraphicDisplay::Init()
         .flags = { .buff_dma = 1, .swap_bytes = 1 }
     };
 
-    _instance->_lvgl_disp = lvgl_port_add_disp(&disp_cfg);
+    _lvgl_disp = lvgl_port_add_disp(&disp_cfg);
 
     // Set default background color to black
     if (lvgl_port_lock(portMAX_DELAY))
@@ -241,7 +211,7 @@ void GraphicDisplay::Init()
     
     esp_lcd_panel_io_spi_config_t tp_io_config = 
     {
-        .cs_gpio_num = _instance->_touchCsPin,
+        .cs_gpio_num = _touchCsPin,
         .dc_gpio_num = GPIO_NUM_NC,
         .spi_mode = 0,
         .pclk_hz = 1 * 1000 * 1000,
@@ -262,13 +232,13 @@ void GraphicDisplay::Init()
         .x_max = DISP_H_RES,
         .y_max = DISP_V_RES,
         .rst_gpio_num = GPIO_NUM_NC,
-        .int_gpio_num = (gpio_num_t)_instance->_touchIrqPin,
+        .int_gpio_num = (gpio_num_t)_touchIrqPin,
         .levels = { .reset = 0, .interrupt = 0 },
         .flags = { .swap_xy = false, .mirror_x = false, .mirror_y = true }
     };
 
     // Create touch handle
-    ret = esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &_instance->_tp_handle);
+    ret = esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &_tp_handle);
     ESP_ERROR_CHECK(ret);
 
     // Add touch to LVGL
@@ -276,17 +246,16 @@ void GraphicDisplay::Init()
 
     lvgl_port_touch_cfg_t touch_cfg = 
     {
-        .disp = _instance->_lvgl_disp,
-        .handle = _instance->_tp_handle,
+        .disp = _lvgl_disp,
+        .handle = _tp_handle,
     };
     lvgl_port_add_touch(&touch_cfg);
-
 
     CORE_INFO("Finalizing setup...");
 
     if (lvgl_port_lock(portMAX_DELAY)) 
     {
-        _instance->SetupTouchDetection();
+        SetupTouchDetection();
         
         lvgl_port_unlock();
     }
@@ -298,10 +267,16 @@ void GraphicDisplay::Init()
         lvgl_port_unlock();
     }
 
-    _instance->SetBrightness(80); // Set default brightness to 80%
+    SetBrightness(80); // Set default brightness to 80%
 
-    _instance->_valid = true;
-    CORE_INFO("Graphic Display initialized successfully!");
+    _valid = true;
+    return true;
+}
+
+//----private------------------------------------------------------------------
+void GraphicDisplay::OnUpdate()
+{
+     // Currently no periodic updates needed for the display driver
 }
 
 //-----------------------------------------------------------------------------
@@ -326,9 +301,9 @@ void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
             _last_click_time = 0;
 
             // Call the registered double click action
-            if (_instance->_onDoubleClickAction != nullptr)
+            if (GraphicDisplay::GetInstance()->_onDoubleClickAction != nullptr)
             {
-                _instance->_onDoubleClickAction();
+                GraphicDisplay::GetInstance()->_onDoubleClickAction();
             }
         }
         else
@@ -362,16 +337,16 @@ void GraphicDisplay::SetBrightness(uint8_t brightness)
 }
 
 //----private------------------------------------------------------------------
-GraphicDisplay::GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName cs, PinName dc, PinName rst, PinName touchCs, PinName touchIrq, PinName bkl)
-    : _misoPin(static_cast<int>(miso)),
-      _mosiPin(static_cast<int>(mosi)),
-      _clkPin(static_cast<int>(clk)),
-      _csPin(static_cast<int>(cs)),
-      _dcPin(static_cast<int>(dc)),
-      _rstPin(static_cast<int>(rst)),
-      _touchCsPin(static_cast<int>(touchCs)),
-      _touchIrqPin(static_cast<int>(touchIrq)),
-      _bklPin(bkl, 1000, LEDC_HIGH_SPEED_MODE, LEDC_TIMER_10_BIT, LEDC_CHANNEL_1, LEDC_TIMER_1)
+GraphicDisplay::GraphicDisplay()
+    : _misoPin(static_cast<int>(Config::DISP_MISO_PIN)),
+      _mosiPin(static_cast<int>(Config::DISP_MOSI_PIN)),
+      _clkPin(static_cast<int>(Config::DISP_CLK_PIN)),
+      _csPin(static_cast<int>(Config::DISP_CS_PIN)),
+      _dcPin(static_cast<int>(Config::DISP_DC_PIN)),
+      _rstPin(static_cast<int>(Config::DISP_RESET_PIN)),
+      _touchCsPin(static_cast<int>(Config::DISP_TOUCH_CS_PIN)),
+      _touchIrqPin(static_cast<int>(Config::DISP_TOUCH_IRQ_PIN)),
+      _bklPin(Config::DISP_BACKLIGHT_PIN, 1000, LEDC_HIGH_SPEED_MODE, LEDC_TIMER_10_BIT, LEDC_CHANNEL_1, LEDC_TIMER_1)
 {
 }
 

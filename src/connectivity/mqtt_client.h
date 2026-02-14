@@ -9,34 +9,20 @@
 #define MQTT_CLIENT_H
 
 #include "framework/common_defs.h"
-#include <mqtt_client.h>
+#include "src/core/base/driver.h"
 #include <atomic>
 #include <functional>
+#include <mqtt_client.h>
 #include <string>
 
 namespace Connectivity {
 
-class MqttClient
+class MqttClient : public Base::Singleton<MqttClient>,
+                   public Base::Driver
 {
     public:
 
         using MessageCallback = std::function<void(const std::string &topic, const std::string &payload)>;
-
-        /*!
-        * @brief Get the singleton instance of MqttClient.
-        * @return MqttClient* Pointer to the MqttClient instance.
-        */
-        static MqttClient * GetInstance();
-
-        /*!
-        * @brief Initialize the MqttClient. Must be called after WiFi is connected.
-        */
-        static void Init();
-
-        /*!
-        * @brief Periodically poll/update (non-blocking)
-        */
-        void Update();
 
         /*!
         * @brief Check if connected to the MQTT broker
@@ -73,6 +59,27 @@ class MqttClient
         void SetMessageCallback(MessageCallback cb);
 
     private:
+
+        friend class Base::Singleton<MqttClient>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "MqttClient"; }
+
+        /*!
+        * @brief Initializes the Module.
+        *        This method should be called once at the start of the application.
+        *       * @return bool True if initialization successful, false otherwise.
+        */
+        bool OnInit() override;
+
+        /*!
+        * @brief Updates the Module state.
+        *        This method should be called periodically to update the system state.
+        */
+        void OnUpdate() override;
 
         enum class State 
         {
@@ -111,7 +118,6 @@ class MqttClient
 
         //---------------------------------------------
 
-        static MqttClient* _instance;
         State _state;
         esp_mqtt_client_handle_t _client;
         std::string _brokerUri;

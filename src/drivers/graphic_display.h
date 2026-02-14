@@ -18,12 +18,14 @@
 #include "framework/common_defs.h"
 #include "framework/drivers/pwm_out.h"
 #include "lvgl.h"
+#include "src/core/base/driver.h"
 #include <stdint.h>
 #include <string>
 
 namespace Drivers {
 
-class GraphicDisplay
+class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
+                       public Base::Driver
 {
     public:
 
@@ -55,24 +57,33 @@ class GraphicDisplay
         };
 
         /**
-         * @brief Get the singleton instance of GraphicDisplay.
-         * @return Pointer to the singleton instance.
-         */
-        static GraphicDisplay* GetInstance();
-
-        /**
-         * @brief Initializes the display, touch, and LVGL subsystem.
-         * Should be called once at startup.
-         */
-        static void Init();
-
-        /**
          * @brief Sets the callback function to be called on double click events.
          * @param callback Function to call on double click.
          */
         void SetOnDoubleClickAction(TouchCallback callback);
     
     private:
+
+        friend class Base::Singleton<GraphicDisplay>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "GraphicDisplay"; }
+
+        /*!
+        * @brief Initializes the Module.
+        *        This method should be called once at the start of the application.
+        *       * @return bool True if initialization successful, false otherwise.
+        */
+        bool OnInit() override;
+
+        /*!
+        * @brief Updates the Module state.
+        *        This method should be called periodically to update the system state.
+        */
+        void OnUpdate() override;
 
         void SetupTouchDetection();
         static void OnTouchTimer(lv_timer_t* timer);
@@ -82,7 +93,7 @@ class GraphicDisplay
 
         //---------------------------------------------
         
-        GraphicDisplay(PinName miso, PinName mosi, PinName clk, PinName cs, PinName dc, PinName rst, PinName touchCs, PinName touchIrq, PinName bkl);
+        GraphicDisplay();
         ~GraphicDisplay() = default;
         GraphicDisplay(const GraphicDisplay&) = delete;
         GraphicDisplay& operator=(const GraphicDisplay&) = delete;
@@ -92,8 +103,6 @@ class GraphicDisplay
         static constexpr int DISP_SPI_HOST = SPI2_HOST; // VSPI
 
         // ---------------------------------------------
-
-        static GraphicDisplay* _instance;
 
         int _misoPin;
         int _mosiPin;

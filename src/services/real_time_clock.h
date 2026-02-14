@@ -9,6 +9,7 @@
 #define REAL_TIME_CLOCK_H
 
 #include "framework/drivers/i2c.h"
+#include "src/core/base/service.h"
 #include "src/utils/date_time.h"
 #include <string>
 #include <sys/time.h>
@@ -17,20 +18,10 @@ struct Result;
 
 namespace Services {
 
-class RealTimeClock
+class RealTimeClock : public Base::Singleton<RealTimeClock>
+                    , public Base::Service
 {
     public:
-
-        /**
-         * @brief Get the singleton instance of RealTimeClock.
-         * @return RealTimeClock* Pointer to the RealTimeClock instance.
-         */
-        static RealTimeClock* GetInstance();
-
-        /**
-         * @brief Initialize the RTC driver.
-         */
-        static void Init();
 
         /**
          * @brief Get the current time from the RTC.
@@ -68,6 +59,21 @@ class RealTimeClock
 
     private:
 
+        friend class Base::Singleton<RealTimeClock>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "RealTimeClock"; }
+
+        /*!
+         * @brief Initializes the Module.
+         *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
+         */
+        bool OnInit() override;
+
         /**
          * @brief Convert decimal to BCD format.
          * @param val   Decimal value (0-99).
@@ -80,14 +86,13 @@ class RealTimeClock
          */
         uint8_t BcdToDec(uint8_t val);
 
-        RealTimeClock(PinName sda, PinName scl, uint8_t address);
+        RealTimeClock();
         ~RealTimeClock() = default;
         RealTimeClock(const RealTimeClock&) = delete;
         RealTimeClock& operator=(const RealTimeClock&) = delete;
 
         //---------------------------------------------
 
-        static RealTimeClock* _instance;
         I2C _i2c;
         bool _isTimeSynced;
 };

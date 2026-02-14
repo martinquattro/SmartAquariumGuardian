@@ -13,31 +13,15 @@
 
 namespace Drivers {
 
-TemperatureSensor* TemperatureSensor::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-TemperatureSensor* TemperatureSensor::GetInstance()
+//----private------------------------------------------------------------------
+bool TemperatureSensor::OnInit()
 {
-    return _instance;
+    _lastReading = 0.0f;
+    return true;
 }
 
-//----static-------------------------------------------------------------------
-void TemperatureSensor::Init()
-{
-    CORE_INFO("Initializing TemperatureSensor...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("TemperatureSensor already initialized!");
-        return;
-    }
-
-    _instance = new TemperatureSensor(Config::TEMP_SENSOR_PIN);
-    _instance->_lastReading = 0.0f;
-}
-
-//-----------------------------------------------------------------------------
-void TemperatureSensor::Update()
+//----private------------------------------------------------------------------
+void TemperatureSensor::OnUpdate()
 {
     int16_t rawReading = GetRawReading();
     if (rawReading == -1)
@@ -159,8 +143,8 @@ uint8_t TemperatureSensor::CalculateCRC8(const uint8_t *addr, uint8_t len)
 }
 
 //----private------------------------------------------------------------------
-TemperatureSensor::TemperatureSensor(const PinName pin)
-    : _oneWirePin(pin)
+TemperatureSensor::TemperatureSensor()
+    : _oneWirePin(Config::TEMP_SENSOR_PIN)
     , _rawReadingsVec(NUM_AVG_SAMPLES, -1.0f)
     , _rawReadingsVecIter(_rawReadingsVec.begin())
 {

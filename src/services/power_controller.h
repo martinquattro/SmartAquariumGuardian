@@ -8,23 +8,14 @@
 #pragma once
 
 #include "framework/common_defs.h"
+#include "src/core/base/service.h"
 
 namespace Services {
 
-class PowerController
+class PowerController : public Base::Singleton<PowerController>
+                      , public Base::Service
 {
     public:
-
-        /**
-         * @brief Get the singleton instance of PowerController.
-         * @return PowerController* Pointer to the PowerController instance.
-         */
-        static PowerController* GetInstance();
-
-        /**
-         * @brief Initialize the PowerController.
-         */
-        static void Init();
 
         enum class Mode
         {
@@ -57,6 +48,23 @@ class PowerController
 
     private:
 
+        friend class Base::Singleton<PowerController>;
+
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "PowerController"; }
+
+        /*!
+         * @brief Initializes the Module.
+         *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
+         */
+        bool OnInit() override;
+
+        //---------------------------------------------
+
         PowerController();
         ~PowerController() = default;
         PowerController(const PowerController&) = delete;
@@ -67,7 +75,6 @@ class PowerController
         static constexpr float VOLTAGE_MULTIPLIER = 2.0f;
         //---------------------------------------------
 
-        static PowerController* _instance;
         AnalogIn _batteryVoltagePin;
         DigitalInOut _usbDetectPin;
 

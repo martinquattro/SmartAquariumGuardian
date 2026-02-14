@@ -9,72 +9,78 @@
 #define USER_INTERFACE_H
 
 #include "framework/util/delay.h"
-#include "src/drivers/led.h"
 #include "include/config.h"
 #include "src/drivers/graphic_display.h"
+#include "src/core/base/manager.h"
 
 namespace Managers {
 
-    class UserInterface 
-    {
-        public:
+class UserInterface : public Base::Singleton<UserInterface>
+                    , public Base::Manager
+{
+    public:
 
-            /*!
-            * @brief Gets the singleton instance of the UserInterface.
-            * @return UserInterface* Pointer to the UserInterface instance.
-            */
-            static UserInterface* GetInstance();
+        /*!
+        * @brief Update feeding status indicator
+        * @param isFeeding True if feeding is in progress, false otherwise.
+        */
+        void UpdateFeedingStatusIndicator(bool isFeeding);
 
-            /*!
-            * @brief Initializes the UserInterface.
-            */
-            static void Init();
+    private:
 
-            /*!
-            * @brief Updates the UserInterface readings.
-            */
-            void Update();
+        friend class Base::Singleton<UserInterface>;
 
-            /*!
-            * @brief Update feeding status indicator
-            * @param isFeeding True if feeding is in progress, false otherwise.
-            */
-            void UpdateFeedingStatusIndicator(bool isFeeding);
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "UserInterface"; }
 
-        private:
+        /*!
+         * @brief Initializes the Module.
+         *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
+         */
+        bool OnInit() override;
 
-            //---------------------------------------------
+        /*!
+         * @brief Updates the Module state.
+         *        This method should be called periodically to update the system state.
+         */
+        void OnUpdate() override;
 
-            UserInterface() {}
-            ~UserInterface() = default;
-            UserInterface(const UserInterface&) = delete;
-            UserInterface& operator=(const UserInterface&) = delete;
+        //---------------------------------------------
 
-            //---------------------------------------------
+        UserInterface() {}
+        ~UserInterface() = default;
+        UserInterface(const UserInterface&) = delete;
+        UserInterface& operator=(const UserInterface&) = delete;
 
-            static UserInterface* _instance;
+        //---------------------------------------------
 
-            Drivers::GraphicDisplay::UIElement* _tempValue;
-            Drivers::GraphicDisplay::UIElement* _tempMinValue;
-            Drivers::GraphicDisplay::UIElement* _tempMaxValue;
-            Drivers::GraphicDisplay::UIElement* _tempPanel;
+        Drivers::GraphicDisplay* _display = nullptr;
 
-            Drivers::GraphicDisplay::UIElement* _tdsValue;
-            Drivers::GraphicDisplay::UIElement* _tdsMinValue;
+        Drivers::GraphicDisplay::UIElement* _tempValue;
+        Drivers::GraphicDisplay::UIElement* _tempMinValue;
+        Drivers::GraphicDisplay::UIElement* _tempMaxValue;
+        Drivers::GraphicDisplay::UIElement* _tempPanel;
 
-            Drivers::GraphicDisplay::UIElement* _wifiIconOn;
-            Drivers::GraphicDisplay::UIElement* _wifiIconOff;
+        Drivers::GraphicDisplay::UIElement* _tdsValue;
+        Drivers::GraphicDisplay::UIElement* _tdsMinValue;
 
-            Drivers::GraphicDisplay::UIElement* _cloudIconOn;
-            Drivers::GraphicDisplay::UIElement* _cloudIconOff;
+        Drivers::GraphicDisplay::UIElement* _wifiIconOn;
+        Drivers::GraphicDisplay::UIElement* _wifiIconOff;
 
-            Drivers::GraphicDisplay::UIElement* _time;
+        Drivers::GraphicDisplay::UIElement* _cloudIconOn;
+        Drivers::GraphicDisplay::UIElement* _cloudIconOff;
 
-            Drivers::GraphicDisplay::UIElement* _feederPanel;
-            Drivers::GraphicDisplay::UIElement* _nextFeedingTime;
-            Drivers::GraphicDisplay::UIElement* _dosesPerDay;
-            Drivers::GraphicDisplay::UIElement* _dosesLeft;
-    };
+        Drivers::GraphicDisplay::UIElement* _time;
+
+        Drivers::GraphicDisplay::UIElement* _feederPanel;
+        Drivers::GraphicDisplay::UIElement* _nextFeedingTime;
+        Drivers::GraphicDisplay::UIElement* _dosesPerDay;
+        Drivers::GraphicDisplay::UIElement* _dosesLeft;
+};
 
 } // namespace Managers
 

@@ -15,69 +15,49 @@
 
 namespace Managers {
 
-UserInterface* UserInterface::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-UserInterface* UserInterface::GetInstance()
+//----private------------------------------------------------------------------
+bool UserInterface::OnInit()
 {
-    return _instance;
-}
+    _display = Drivers::GraphicDisplay::GetInstance();
+    _display->Init();
 
-//----static-------------------------------------------------------------------
-void UserInterface::Init()
-{
-    CORE_INFO("Initializing UserInterface...");
-    
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("UserInterface already initialized!");
-        return;
-    }
-
-    _instance = new UserInterface();
-
-    // Initialize Graphic Display
-    Drivers::GraphicDisplay::Init();
-
-    Drivers::GraphicDisplay::GetInstance()->SetOnDoubleClickAction([]()
+    _display->SetOnDoubleClickAction([this]()
         {
             Core::GuardianProxy::GetInstance()->Feed(1);
         }
     );
     
     // Initialize UI elements
-    _instance->_time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
+    _time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
 
-    _instance->_wifiIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgWiFiOff);
-    _instance->_wifiIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgWifiOn);
+    _wifiIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgWiFiOff);
+    _wifiIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgWifiOn);
 
-    _instance->_cloudIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOff);
-    _instance->_cloudIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOn);
+    _cloudIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOff);
+    _cloudIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOn);
 
-    _instance->_tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
+    _tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
 
-    _instance->_tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
-    _instance->_tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
-    _instance->_tempMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMin);
-    _instance->_tempPanel = new Drivers::GraphicDisplay::UIElement(ui_panelTempAlert);
+    _tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
+    _tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
+    _tempMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMin);
+    _tempPanel = new Drivers::GraphicDisplay::UIElement(ui_panelTempAlert);
 
-    _instance->_feederPanel = new Drivers::GraphicDisplay::UIElement(ui_panelFeeder);
-    _instance->_nextFeedingTime = new Drivers::GraphicDisplay::UIElement(ui_lblNextFeedTime);
-    _instance->_dosesPerDay = new Drivers::GraphicDisplay::UIElement(ui_lblDosesPerDay);
-    _instance->_dosesLeft = new Drivers::GraphicDisplay::UIElement(ui_lblDosesLeft);
+    _feederPanel = new Drivers::GraphicDisplay::UIElement(ui_panelFeeder);
+    _nextFeedingTime = new Drivers::GraphicDisplay::UIElement(ui_lblNextFeedTime);
+    _dosesPerDay = new Drivers::GraphicDisplay::UIElement(ui_lblDosesPerDay);
+    _dosesLeft = new Drivers::GraphicDisplay::UIElement(ui_lblDosesLeft);
+
+    return true;
 }
 
-//-----------------------------------------------------------------------------
-void UserInterface::Update()
+//----private------------------------------------------------------------------
+void UserInterface::OnUpdate()
 {
-    CORE_INFO("Updating UserInterface...");
-
-    Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
-
     // Power status
     {
-        const auto powerMode = guardianProxy->GetCurrentMode();
-        const auto batteryLevel = guardianProxy->GetBatteryLevel();
+        const auto powerMode = Core::GuardianProxy::GetInstance()->GetCurrentMode();
+        const auto batteryLevel = Core::GuardianProxy::GetInstance()->GetBatteryLevel();
 
         CORE_INFO("Power Mode: %s, Battery Level: %d%",
                   powerMode == Services::PowerController::Mode::MODE_USB_POWERED ? "USB Powered" : "Battery Powered",
@@ -87,36 +67,36 @@ void UserInterface::Update()
 
     // Connection status
     {
-        bool wifiOk = guardianProxy->IsWifiConnected();
-        bool cloudOk = guardianProxy->IsMqttConnected();
+        bool wifiOk = Core::GuardianProxy::GetInstance()->IsWifiConnected();
+        bool cloudOk = Core::GuardianProxy::GetInstance()->IsMqttConnected();
 
         if (!wifiOk)
         {   
-            _instance->_wifiIconOff->Show();
-            _instance->_wifiIconOn->Hide();
-            _instance->_cloudIconOff->Show();
-            _instance->_cloudIconOn->Hide();
+            _wifiIconOff->Show();
+            _wifiIconOn->Hide();
+            _cloudIconOff->Show();
+            _cloudIconOn->Hide();
         }
         else if (!cloudOk)
         {
-            _instance->_wifiIconOff->Hide();
-            _instance->_wifiIconOn->Show();
-            _instance->_cloudIconOff->Show();
-            _instance->_cloudIconOn->Hide();
+            _wifiIconOff->Hide();
+            _wifiIconOn->Show();
+            _cloudIconOff->Show();
+            _cloudIconOn->Hide();
         }
         else
         {
-            _instance->_wifiIconOff->Hide();
-            _instance->_wifiIconOn->Show();
-            _instance->_cloudIconOff->Hide();
-            _instance->_cloudIconOn->Show();
+            _wifiIconOff->Hide();
+            _wifiIconOn->Show();
+            _cloudIconOff->Hide();
+            _cloudIconOn->Show();
         }
     }
 
     // Time
     {
         Utils::DateTime dateTime;
-        if (guardianProxy->GetDateTime(dateTime))
+        if (Core::GuardianProxy::GetInstance()->GetDateTime(dateTime))
         {
             _time->SetText(dateTime.ToString().c_str());
         }
@@ -126,16 +106,16 @@ void UserInterface::Update()
     {
         char buffer [50];
 
-        const float tempReading = guardianProxy->GetTemperatureReading();
+        const float tempReading = Core::GuardianProxy::GetInstance()->GetTemperatureReading();
         std::sprintf(buffer, "%.1f", tempReading);
 
-        _instance->_tempValue->SetText(buffer);
+        _tempValue->SetText(buffer);
 
         // Temperature limits
         float minTemp = 0.0f, maxTemp = 0.0f;
         bool isMinLimitEnabled = false, isMaxLimitEnabled = false;
 
-        guardianProxy->GetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
+        Core::GuardianProxy::GetInstance()->GetTemperatureLimits(minTemp, isMinLimitEnabled, maxTemp, isMaxLimitEnabled);
 
         if (isMinLimitEnabled)
         {
@@ -146,7 +126,7 @@ void UserInterface::Update()
             std::sprintf(buffer, "---"); 
         }
         
-        _instance->_tempMinValue->SetText(buffer);
+        _tempMinValue->SetText(buffer);
 
         if (isMaxLimitEnabled)
         {
@@ -157,18 +137,18 @@ void UserInterface::Update()
             std::sprintf(buffer, "---"); 
         }
 
-        _instance->_tempMaxValue->SetText(buffer);
+        _tempMaxValue->SetText(buffer);
 
         // Panel state
-        if (guardianProxy->IsTemperatureOutOfLimits())
+        if (Core::GuardianProxy::GetInstance()->IsTemperatureOutOfLimits())
         {
             // Alert state
-            _instance->_tempPanel->SetState1();
+            _tempPanel->SetState1();
         }
         else
         {
             // Normal state
-            _instance->_tempPanel->ClearState1();
+            _tempPanel->ClearState1();
         }
     }
 
@@ -176,15 +156,15 @@ void UserInterface::Update()
     {
         char buffer [50];
 
-        const int tdsReading = guardianProxy->GetTdsReading();
+        const int tdsReading = Core::GuardianProxy::GetInstance()->GetTdsReading();
         std::sprintf(buffer, "%d", tdsReading);
 
-        _instance->_tdsValue->SetText(buffer);
+        _tdsValue->SetText(buffer);
     }
 
     // Feeder
     {
-        const auto& feederStatus = guardianProxy->GetFeederStatus();
+        const auto& feederStatus = Core::GuardianProxy::GetInstance()->GetFeederStatus();
 
         // Next feeding time
         char buffer [50];
@@ -198,15 +178,15 @@ void UserInterface::Update()
             std::sprintf(buffer, "Tomorrow");
         }
 
-        _instance->_nextFeedingTime->SetText(buffer);
+        _nextFeedingTime->SetText(buffer);
 
         // Doses per day
         std::sprintf(buffer, "%d", feederStatus.totalPerDay);
-        _instance->_dosesPerDay->SetText(buffer);
+        _dosesPerDay->SetText(buffer);
 
         // Doses left today
         std::sprintf(buffer, "%d", feederStatus.remainingDosesToday);
-        _instance->_dosesLeft->SetText(buffer);
+        _dosesLeft->SetText(buffer);
     }
 }
 
@@ -217,11 +197,11 @@ void UserInterface::UpdateFeedingStatusIndicator(bool isFeeding)
 
     if (isFeeding)
     {
-        _instance->_feederPanel->SetState1();
+        _feederPanel->SetState1();
     }
     else
     {
-        _instance->_feederPanel->ClearState1();
+        _feederPanel->ClearState1();
     }
 }
 

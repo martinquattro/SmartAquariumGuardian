@@ -13,31 +13,16 @@
 
 namespace Drivers {
 
-TdsSensor* TdsSensor::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-TdsSensor* TdsSensor::GetInstance()
+//----private------------------------------------------------------------------
+bool TdsSensor::OnInit()
 {
-    return _instance;
-}
-
-//----static-------------------------------------------------------------------
-void TdsSensor::Init()
-{
-    CORE_INFO("Initializing TdsSensor...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("TdsSensor already initialized!");
-        return;
-    }
-
-    _instance = new TdsSensor(Config::TDS_SENSOR_ADC_PIN);
-    _instance->_lastReading = 0;
+    _temperature = 25.0f; // Default to 25°C for initial readings
+    _lastReading = 0;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
-void TdsSensor::Update(const float temperature /* = 25.0*/)
+void TdsSensor::OnUpdate()
 {
     const float analogReading = _analogInPin.ReadVoltage(64);
     const float avgAnalogReading = StoreAnalogReading(analogReading);
@@ -45,7 +30,7 @@ void TdsSensor::Update(const float temperature /* = 25.0*/)
     // Logic to transform reading to ppm units
     // ppm = (133.42 * V³ - 255.86 * V² + 857.39 * V) / factorTemp * 0.5
     // factorTemp ≈ 1.0 + 0.02 * (temp - 25)
-    float factorTemp = (1.0 + 0.02 * (temperature - 25.0));
+    float factorTemp = (1.0 + 0.02 * (_temperature - 25.0));
 
     _lastReading = (133.42 * pow(avgAnalogReading, 3) 
                      - 255.86 * pow(avgAnalogReading, 2) 
@@ -102,8 +87,8 @@ float TdsSensor::StoreAnalogReading(const float reading)
 }
 
 //----private------------------------------------------------------------------
-TdsSensor::TdsSensor(const PinName pin)
-    : _analogInPin(pin)
+TdsSensor::TdsSensor()
+    : _analogInPin(Config::TDS_SENSOR_ADC_PIN)
     , _analogReadingsVec(NUM_AVG_SAMPLES, -1.0)
     , _analogReadingsVecIter(_analogReadingsVec.begin())
 {

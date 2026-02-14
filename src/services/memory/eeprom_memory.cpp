@@ -13,30 +13,10 @@
 
 namespace Services {
 
-EepromMemory* EepromMemory::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-EepromMemory* EepromMemory::GetInstance()
+//----private------------------------------------------------------------------
+bool EepromMemory::OnInit()
 {
-    return _instance;
-}
-
-//----static-------------------------------------------------------------------
-void EepromMemory::Init()
-{
-    CORE_INFO("Initializing EepromMemory...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("EepromMemory already initialized!");
-        return;
-    }
-
-    _instance = new EepromMemory(
-          Config::I2C_SDA_PIN
-        , Config::I2C_SCL_PIN
-        , Config::EEPROM_I2C_ADDRESS
-    );
+    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -115,8 +95,8 @@ bool EepromMemory::WritePageInternal(uint16_t memAddress, const uint8_t* data, s
 }
 
 //----private------------------------------------------------------------------
-EepromMemory::EepromMemory(PinName sda, PinName scl, uint8_t address)
-    : _i2c(sda, scl, address)
+EepromMemory::EepromMemory()
+    : _i2c(Config::I2C_SDA_PIN, Config::I2C_SCL_PIN, Config::EEPROM_I2C_ADDRESS)
 {}
 
 } // namespace Services

@@ -11,6 +11,7 @@
 #include "include/config.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
+#include "src/core/guardian_proxy.h"
 #include "src/core/guardian_public_interfaces.h"
 #include "src/managers/comms/json_parser.h"
 #include "src/managers/comms/network_config.h"
@@ -19,41 +20,28 @@
 
 namespace Managers {
 
-NetworkController* NetworkController::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-NetworkController* NetworkController::GetInstance()
+//----private------------------------------------------------------------------
+bool NetworkController::OnInit()
 {
-    return _instance;
+    _state = State::INIT;
+    _telemetrySendDelay.Start(Config::TELEMETRY_SEND_INTERVAL_MS);
+    RegisterRpcHandlers();
+
+    _wifiCom = Connectivity::WiFiCom::GetInstance();
+    _mqttClient = Connectivity::MqttClient::GetInstance();
+
+    return (_wifiCom->Init() &&
+            _mqttClient->Init()
+    );
 }
 
-//----static-------------------------------------------------------------------
-void NetworkController::Init()
+//----private------------------------------------------------------------------
+void NetworkController::OnUpdate()
 {
-    CORE_INFO("Initializing NetworkController...");
+    _wifiCom->Update();
+    _mqttClient->Update();
 
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("NetworkController already initialized!");
-        return;
-    }
-
-    _instance = new NetworkController();
-    _instance->_state = State::INIT;
-    _instance->_telemetrySendDelay.Start(Config::TELEMETRY_SEND_INTERVAL_MS);
-    _instance->RegisterRpcHandlers();
-
-    Connectivity::WiFiCom::Init();
-    Connectivity::MqttClient::Init();
-}
-
-//-----------------------------------------------------------------------------
-void NetworkController::Update()
-{
-    Connectivity::WiFiCom::GetInstance()->Update();
-    Connectivity::MqttClient::GetInstance()->Update();
-
-    switch (_instance->_state)
+    switch (_state)
     {
         case State::INIT:
         {
@@ -63,7 +51,7 @@ void NetworkController::Update()
         
         case State::START_WIFI:
         {
-            Connectivity::WiFiCom::GetInstance()->Start();
+            _wifiCom->Start();
             ChangeState(State::WAITING_FOR_WIFI);
         }
         break;
@@ -96,7 +84,7 @@ void NetworkController::Update()
 
         case State::START_MQTT_CLIENT:
         {
-            Connectivity::MqttClient::GetInstance()->Start();
+            _mqttClient->Start();
             ChangeState(State::WAITING_FOR_MQTT_CLIENT);
         }
         break;
@@ -112,18 +100,18 @@ void NetworkController::Update()
 
         case State::SETUP_MQTT_CLIENT:
         {
-            Connectivity::MqttClient::GetInstance()->Subscribe(
+            _mqttClient->Subscribe(
                 RPC_REQUEST_TOPIC
             );
 
-            // Connectivity::MqttClient::GetInstance()->Subscribe(
+            // _mqttClient->Subscribe(
             //     ATTRIBUTES_TOPIC
             // );
 
-            Connectivity::MqttClient::GetInstance()->SetMessageCallback(
-                [](const std::string& topic, const std::string& payload)
+            _mqttClient->SetMessageCallback(
+                [this](const std::string& topic, const std::string& payload)
                 {
-                    _instance->DispatchMqttMessage(topic, payload);
+                    DispatchMqttMessage(topic, payload);
                 }
             );
 
@@ -174,13 +162,13 @@ void NetworkController::Update()
 //-----------------------------------------------------------------------------
 bool NetworkController::IsWiFiConnected() const
 {
-    return Connectivity::WiFiCom::GetInstance()->IsConnected();
+    return _wifiCom->IsConnected();
 }
 
 //-----------------------------------------------------------------------------
 bool NetworkController::IsMqttClientConnected() const
 {
-    return Connectivity::MqttClient::GetInstance()->IsConnected();
+    return _mqttClient->IsConnected();
 }
 
 //----private------------------------------------------------------------------
@@ -258,7 +246,7 @@ void NetworkController::DispatchRpcRequest(const std::string& topic, const std::
         }
    
         // Serialize and publish the response
-        const bool publishSuccess = Connectivity::MqttClient::GetInstance()->Publish(
+        const bool publishSuccess = _mqttClient->Publish(
             responseTopic,
             responseJson.dump()
         );
@@ -304,7 +292,7 @@ void NetworkController::SendTelemtry()
     const std::string payload = telemetryData.ToJsonString();
 
     // Publish telemetry data
-    const bool success = Connectivity::MqttClient::GetInstance()->Publish(
+    const bool success = _mqttClient->Publish(
         TELEMETRY_TOPIC
       , payload
     );

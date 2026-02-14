@@ -9,30 +9,37 @@
 #define SMART_AQUARIUM_GUARDIAN_H
 
 #include "framework/util/delay.h"
+#include "src/core/base/manager.h"
 
-class SmartAquariumGuardian
+class SmartAquariumGuardian : public Base::Singleton<SmartAquariumGuardian>,
+                              public Base::Manager
 {
     public:
 
+    private:
+
+        friend class Base::Singleton<SmartAquariumGuardian>;
+
         /*!
-         * @brief Gets the singleton instance of the SmartAquariumGuardian.
-         * @return SmartAquariumGuardian* Pointer to the SmartAquariumGuardian instance.
-         */
-        static SmartAquariumGuardian* GetInstance();
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "SmartAquariumGuardian"; }
 
         /*!
          * @brief Initializes the SmartAquariumGuardian.
          *        This method should be called once at the start of the application.
+         *       * @return bool True if initialization successful, false otherwise.
          */
-        static void Init();
+        bool OnInit() override;
 
         /*!
          * @brief Updates the SmartAquariumGuardian state.
          *        This method should be called periodically to update the system state.
          */
-        void Update();
+        void OnUpdate() override;
 
-    private:
+        //---------------------------------------------
 
         SmartAquariumGuardian() {}
         ~SmartAquariumGuardian() = default;
@@ -41,7 +48,6 @@ class SmartAquariumGuardian
 
         //---------------------------------------------
 
-        static SmartAquariumGuardian* _instance;
         Delay _delay;
 };
 

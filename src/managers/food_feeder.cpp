@@ -8,47 +8,30 @@
 #include "src/managers/food_feeder.h"
 
 #include "framework/common_defs.h"
+#include "include/config.h"
 #include "src/drivers/servo.h"
 #include "src/core/guardian_proxy.h"
-#include "include/config.h"
 
 namespace Managers {
 
-FoodFeeder* FoodFeeder::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-FoodFeeder* FoodFeeder::GetInstance()
+//----private------------------------------------------------------------------
+bool FoodFeeder::OnInit()
 {
-    return _instance;
-}
-
-//----static-------------------------------------------------------------------
-void FoodFeeder::Init()
-{
-    CORE_INFO("Initializing FoodFeeder...");
-    
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("FoodFeeder already initialized!");
-        return;
-    }
-
-    _instance = new FoodFeeder();
-    Drivers::Servo::Init();
+    _servo = Drivers::Servo::GetInstance();
+    _servo->Init();
 
     // Ensure feeder is closed at startup
-    Drivers::Servo::GetInstance()->FadeToAngle(FEEDER_CLOSED_ANGLE, FEEDER_MOVE_TIME_MS);
+    _servo->FadeToAngle(FEEDER_CLOSED_ANGLE, FEEDER_MOVE_TIME_MS);
+
+    return true;
 }
 
-//-----------------------------------------------------------------------------
-void FoodFeeder::Update()
+//----private------------------------------------------------------------------
+void FoodFeeder::OnUpdate()
 {
-    CORE_INFO("Updating FoodFeeder...");
-
-    Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
     Utils::DateTime currentTime;
 
-    if (!guardianProxy->GetDateTime(currentTime))
+    if (!Core::GuardianProxy::GetInstance()->GetDateTime(currentTime))
     {
         CORE_ERROR("Failed to get current time. System cannot get updated");
         return;
@@ -59,7 +42,7 @@ void FoodFeeder::Update()
     // Check feeding schedule
     if (currentMinute != _lastFeedTime)
     {
-        const auto& scheduleList = guardianProxy->GetFeedingScheduleFromStorage();
+        const auto& scheduleList = Core::GuardianProxy::GetInstance()->GetFeedingScheduleFromStorage();
 
         for (const auto& entry : scheduleList)
         {
@@ -186,11 +169,9 @@ auto FoodFeeder::GetFeederStatus() const -> FeederStatus
 {
     FeederStatus status;
 
-    Core::GuardianProxy* guardianProxy = Core::GuardianProxy::GetInstance();
-
-    const auto& scheduleList = guardianProxy->GetFeedingScheduleFromStorage();
+    const auto& scheduleList = Core::GuardianProxy::GetInstance()->GetFeedingScheduleFromStorage();
     Utils::DateTime currentTime;
-    if (!guardianProxy->GetDateTime(currentTime))
+    if (!Core::GuardianProxy::GetInstance()->GetDateTime(currentTime))
     {
         CORE_ERROR("Failed to get current time. Status cannot be retrieved");
         return status;

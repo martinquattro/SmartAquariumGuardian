@@ -8,59 +8,68 @@
 #ifndef SERVO_H
 #define SERVO_H
 
+#include "src/core/base/driver.h"
 #include "framework/common_defs.h"
 
 namespace Drivers {
 
-    class Servo
-    {
-        public:
-            /**
-             * @brief Get the singleton instance of Servo.
-             * @return Servo* Pointer to the Servo instance.
-             */
-            static Servo* GetInstance();
+class Servo : public Base::Singleton<Servo>,
+              public Base::Driver
+{
+    public:
 
-            /**
-             * @brief Initialize the servo driver.
-             */
-            static void Init();
+        /**
+         * @brief Smoothly move servo to target angle in given time.
+         * 
+         * @param angle Target angle [0–180°].
+         * @param timeMs Transition duration in milliseconds.
+         */
+        void FadeToAngle(float angle, uint32_t timeMs);
 
-            /**
-             * @brief Update servo state (call regularly from main loop).
-             */
-            void Update();
+    private:
 
-            /**
-             * @brief Smoothly move servo to target angle in given time.
-             * 
-             * @param angle Target angle [0–180°].
-             * @param timeMs Transition duration in milliseconds.
-             */
-            void FadeToAngle(float angle, uint32_t timeMs);
+        friend class Base::Singleton<Servo>;
 
-        private:
+        /*!
+        * @brief Get the module name.
+        * @return const char* Module name.
+        */
+        const char* GetModuleName() const override { return "Servo"; }
 
-            Servo(PinName pin, uint32_t freq = 50);
-            ~Servo() = default;
-            Servo(const Servo&) = delete;
-            Servo& operator=(const Servo&) = delete;
+        /*!
+        * @brief Initializes the Module.
+        *        This method should be called once at the start of the application.
+        *       * @return bool True if initialization successful, false otherwise.
+        */
+        bool OnInit() override;
 
-            //---------------------------------------------
+        /*!
+        * @brief Updates the Module state.
+        *        This method should be called periodically to update the system state.
+        */
+        void OnUpdate() override;
 
-            static constexpr float PWM_FREQUENCY    = 50;
-            
-            static constexpr float LOWER_DUTY       = 0.025f;
-            static constexpr float HIGHER_DUTY      = 0.125f;
+        //---------------------------------------------
 
-            static constexpr float MIN_SAFE_DUTY      = LOWER_DUTY + 0.01f;
-            static constexpr float MAX_SAFE_DUTY      = HIGHER_DUTY - 0.01f;
-            
-            //---------------------------------------------
+        Servo();
+        ~Servo() = default;
+        Servo(const Servo&) = delete;
+        Servo& operator=(const Servo&) = delete;
 
-            static Servo* _instance;
-            PwmOut _pwmOut;
-    };
+        //---------------------------------------------
+
+        static constexpr float PWM_FREQUENCY    = 50;
+        
+        static constexpr float LOWER_DUTY       = 0.025f;
+        static constexpr float HIGHER_DUTY      = 0.125f;
+
+        static constexpr float MIN_SAFE_DUTY      = LOWER_DUTY + 0.01f;
+        static constexpr float MAX_SAFE_DUTY      = HIGHER_DUTY - 0.01f;
+
+        //---------------------------------------------
+
+        PwmOut _pwmOut;
+};
 
 } // namespace Drivers
 

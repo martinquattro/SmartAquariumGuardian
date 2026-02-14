@@ -14,34 +14,19 @@
 
 namespace Connectivity {
 
-MqttClient* MqttClient::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-MqttClient* MqttClient::GetInstance()
+//----private------------------------------------------------------------------
+bool MqttClient::OnInit()
 {
-    return _instance;
+    _brokerUri = "mqtt://192.168.0.51:1883";
+    _username = "Ltew0gHjxRjGTSxYj85t";
+    _state = State::IDLE;
+    _connected = false;
+
+    return true;
 }
 
-//----static-------------------------------------------------------------------
-void MqttClient::Init()
-{
-    CORE_INFO("Initializing MqttClient...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("MqttClient already initialized!");
-        return;
-    }
-
-    _instance = new MqttClient();
-    _instance->_brokerUri = "mqtt://192.168.0.51:1883";
-    _instance->_username = "Ltew0gHjxRjGTSxYj85t";
-    _instance->_state = State::IDLE;
-    _instance->_connected = false;
-}
-
-//-----------------------------------------------------------------------------
-void MqttClient::Update()
+//----private------------------------------------------------------------------
+void MqttClient::OnUpdate()
 {
     switch (_state)
     {
@@ -211,6 +196,7 @@ void MqttClient::EventHandler(
     int32_t event_id,
     void* event_data)
 {
+    MqttClient* instance = MqttClient::GetInstance();
     esp_mqtt_event_handle_t event = static_cast<esp_mqtt_event_handle_t>(event_data);
 
     switch (event->event_id)
@@ -218,14 +204,14 @@ void MqttClient::EventHandler(
         case MQTT_EVENT_CONNECTED:
         {
             CORE_INFO("MqttClient: connected");
-            _instance->_connected = true;
+            instance->_connected = true;
         }
         break;
 
         case MQTT_EVENT_DISCONNECTED:
         {
             CORE_WARNING("MqttClient: disconnected");
-            _instance->_connected = false;
+            instance->_connected = false;
         }
         break;
 
@@ -234,9 +220,9 @@ void MqttClient::EventHandler(
             std::string topic(event->topic, event->topic_len);
             std::string payload(event->data, event->data_len);
 
-            if (_instance->_globalCallback) 
+            if (instance->_globalCallback) 
             {
-                _instance->_globalCallback(topic, payload);
+                instance->_globalCallback(topic, payload);
             }
         }
         break;

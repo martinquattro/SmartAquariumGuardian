@@ -12,26 +12,10 @@
 
 namespace Services {
 
-PowerController* PowerController::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-PowerController* PowerController::GetInstance()
+//----private------------------------------------------------------------------
+bool PowerController::OnInit()
 {
-    return _instance;
-}
-
-//----static-------------------------------------------------------------------
-void PowerController::Init()
-{
-    CORE_INFO("Initializing PowerController...");
-    
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("PowerController already initialized!");
-        return;
-    }
-
-    _instance = new PowerController();
+    return true;
 }
 
 //-----------------------------------------------------------------------------

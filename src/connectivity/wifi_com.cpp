@@ -17,34 +17,19 @@
 
 namespace Connectivity {
 
-WiFiCom* WiFiCom::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-WiFiCom* WiFiCom::GetInstance()
+//----private------------------------------------------------------------------
+bool WiFiCom::OnInit()
 {
-    return _instance;
+    _state = State::IDLE;
+    _ssid = "Cuchitril 2.4GHz";
+    _password = "Defensa5232022";
+    _connected = false;
+
+    return true;
 }
 
-//----static-------------------------------------------------------------------
-void WiFiCom::Init()
-{
-    CORE_INFO("Initializing WiFiCom...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("WiFiCom already initialized!");
-        return;
-    }
-
-    _instance = new WiFiCom();
-    _instance->_state = State::IDLE;
-    _instance->_ssid = "Cuchitril 2.4GHz";
-    _instance->_password = "Defensa5232022";
-    _instance->_connected = false;
-}
-
-//-----------------------------------------------------------------------------
-void WiFiCom::Update()
+//----private------------------------------------------------------------------
+void WiFiCom::OnUpdate()
 {
     switch (_state)
     {
@@ -207,6 +192,8 @@ void WiFiCom::EventHandler(
     , int32_t event_id
     , void* event_data)
 {
+    WiFiCom* instance = WiFiCom::GetInstance();
+    
     // This static handler is used for both WIFI_EVENT and IP_EVENT
     if (event_base == WIFI_EVENT)
     {
@@ -222,11 +209,11 @@ void WiFiCom::EventHandler(
             {
                 CORE_WARNING("WIFI_EVENT_STA_DISCONNECTED");
 
-                if (WiFiCom::_instance)
+                if (instance)
                 {
-                    WiFiCom::_instance->_connected = false;
-                    WiFiCom::_instance->_got_ip = false;
-                    WiFiCom::_instance->_state = State::CONNECTING;
+                    instance->_connected = false;
+                    instance->_got_ip = false;
+                    instance->_state = State::CONNECTING;
                     // attempt reconnect (non-blocking)
                     esp_wifi_connect();
                 }
@@ -249,12 +236,12 @@ void WiFiCom::EventHandler(
             char ip_str[16] = {0};
             esp_ip4addr_ntoa(&event->ip_info.ip, ip_str, sizeof(ip_str));
             CORE_INFO("Got IP: %s", ip_str);
-            
-            if (WiFiCom::_instance) 
+
+            if (instance) 
             {
-                WiFiCom::_instance->_got_ip = true;
-                WiFiCom::_instance->_connected = true;
-                WiFiCom::_instance->_state = State::CONNECTED;
+                instance->_got_ip = true;
+                instance->_connected = true;
+                instance->_state = State::CONNECTED;
             }
         }
     }

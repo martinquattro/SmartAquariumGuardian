@@ -7,46 +7,28 @@
 
 #include "src/services/storage_service.h"
 
-#include "src/services/memory/eeprom_memory.h"
 #include "framework/common_defs.h"
 #include <vector>
 #include <cstring>
 
 namespace Services {
 
-StorageService* StorageService::_instance = nullptr;
-
-//----static-------------------------------------------------------------------
-StorageService* StorageService::GetInstance() 
+//----private------------------------------------------------------------------
+bool StorageService::OnInit()
 {
-    if (_instance == nullptr) _instance = new StorageService();
-    return _instance;
-}
+    _eepromMemory = Services::EepromMemory::GetInstance();
 
-//----static-------------------------------------------------------------------
-void StorageService::Init()
-{
-    CORE_INFO("Initializing StorageService...");
-
-    if (_instance != nullptr)
-    {
-        CORE_ERROR("FoodFeeder already initialized!");
-        return;
-    }
-
-    _instance = new StorageService();
-
-    Services::EepromMemory::Init();
-
-    if (!_instance->LoadConfigInternal())
+    if (!LoadConfigInternal())
     {
         CORE_WARNING("Could not load config from EEPROM. Using defaults.");
-        _instance->SaveConfigInternal();
+        SaveConfigInternal();
     }
     else
     {
-        CORE_INFO("Memory config loaded successfully: %s", _instance->_configCache.ToJson().c_str());
+        CORE_INFO("Memory config loaded successfully: %s", _configCache.ToJson().c_str());
     }
+
+    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -139,7 +121,7 @@ bool StorageService::SaveConfigInternal()
     std::vector<uint8_t> buffer(jsonStr.begin(), jsonStr.end());
     buffer.push_back('\0');
 
-    bool success = Services::EepromMemory::GetInstance()->WriteBytes(
+    bool success = _eepromMemory->WriteBytes(
         CONFIG_START_ADDR, 
         buffer.data(), 
         buffer.size()
@@ -165,7 +147,7 @@ bool StorageService::LoadConfigInternal()
     CORE_INFO("Loading config from EEPROM...");
 
     std::vector<uint8_t> buffer(MAX_CONFIG_SIZE);
-    if (!Services::EepromMemory::GetInstance()->ReadBytes(CONFIG_START_ADDR, buffer.data(), MAX_CONFIG_SIZE))
+    if (!_eepromMemory->ReadBytes(CONFIG_START_ADDR, buffer.data(), MAX_CONFIG_SIZE))
     {
         return false;
     }

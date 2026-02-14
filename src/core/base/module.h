@@ -44,11 +44,11 @@ class Module
          */
         bool Init()
         {
-            CORE_INFO("Initializing %s...", GetModuleName());
-
+            CORE_INFO("%s Initializing...", GetModuleName());
+            
             if (!OnInit())
             {
-                CORE_ERROR("Failed to initialize %s", GetModuleName());
+                CORE_ERROR("%s Failed to initialize", GetModuleName());
                 return false;
             }
 
@@ -67,19 +67,19 @@ class Module
             OnUpdate();
         }
 
-        /**
-         * @brief Get the module name for logging and debugging.
-         *        Must be implemented by derived classes.
-         * @return const char* Human-readable module name (e.g., "WaterMonitor").
-         */
-        virtual const char* GetModuleName() const = 0;
-
     protected:
 
         /**
          * @brief Protected constructor to prevent direct instantiation.
          */
         Module() = default;
+
+        /**
+         * @brief Get the module name for logging and debugging.
+         *        Must be implemented by derived classes.
+         * @return const char* Human-readable module name (e.g., "WaterMonitor").
+         */
+        virtual const char* GetModuleName() const = 0;
 
         /**
          * @brief Pure virtual initialization method.
