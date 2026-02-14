@@ -10,8 +10,6 @@
 
 #include "framework/util/delay.h"
 #include "lib/nlohmann_json/json.hpp"
-#include "src/connectivity/mqtt_client.h"
-#include "src/connectivity/wifi_com.h"
 #include "src/core/base/manager.h"
 #include "src/managers/comms/rpc_handler.h"
 #include <functional>
@@ -19,6 +17,10 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+
+namespace Connectivity { class WiFiCom; }
+namespace Connectivity { class MqttClient; }
+namespace Connectivity { class APPortal; }
 
 namespace Managers {
 
@@ -76,6 +78,9 @@ class NetworkController : public Base::Singleton<NetworkController>
             SETUP_MQTT_CLIENT,
             IDLE,
             SEND_TELEMETRY,
+            DESTROY_WIFI_STATION,   //!< WiFi connection failed, destroy station before starting AP portal
+            START_ACCESS_POINT,
+            WAITING_FOR_ACCESS_POINT,
             ERROR
         };
 
@@ -87,8 +92,12 @@ class NetworkController : public Base::Singleton<NetworkController>
         /*!
         * @brief Updates the internal state of the NetworkController.
         * @param newState  The new state to transition to.
+        * @param delayMs   Optional delay in milliseconds before the state transition takes effect.
+         * Note: This method also starts the internal delay timer if a delay is specified.
+         *       The OnUpdate() method will check this timer and perform the state transition when the delay has elapsed.
+         *       This allows for non-blocking delays between state transitions.
         */
-        void ChangeState(const State newState);
+        void ChangeState(const State newState, const int delayMs = -1);
 
         /*!
         * @brief Dispatch incoming MQTT messages to appropriate handlers.
@@ -136,14 +145,21 @@ class NetworkController : public Base::Singleton<NetworkController>
         static constexpr const char* RPC_RESPONSE_TOPIC = "v1/devices/me/rpc/response/";
         static constexpr const char* ATTRIBUTES_TOPIC   = "v1/devices/me/attributes";
 
+        static constexpr uint32_t WIFI_CONNECTION_TIMEOUT_MS = 30000;  //!< 30 seconds
+        static constexpr uint32_t TIME_SYNC_TIMEOUT_MS = 10000;         //!< 10 seconds
+        static constexpr uint32_t MQTT_CLIENT_TIMEOUT_MS = 10000;       //!< 10 seconds
+
         //---------------------------------------------
 
         Connectivity::WiFiCom* _wifiCom;
         Connectivity::MqttClient* _mqttClient;
+        Connectivity::APPortal* _apPortal;
 
         State _state;
         Delay _telemetrySendDelay;
+        Delay _delayTimeout;
         std::map<std::string, std::unique_ptr<Handlers::IRpcHandler>> _rpcHandlers;
+        
 };
 
 } // namespace Managers

@@ -80,6 +80,15 @@ class IStorageService
 {
     public:
 
+        //! Save WiFi credentials
+        virtual bool SaveWifiCredentialsInStorage(const std::string& ssid, const std::string& password) = 0;
+
+        //! Get WiFi SSID
+        virtual std::string GetWifiSsidFromStorage() const = 0;
+
+        //! Get WiFi Password
+        virtual std::string GetWifiPasswordFromStorage() const = 0;
+
         //! Save timezone at EEPROM
         virtual bool SaveTimezoneInStorage(const std::string& tz) = 0;
 

@@ -105,6 +105,13 @@ bool StorageService::RemoveFeedingScheduleFromStorage(const int slotIndex)
     }   
 }
 
+//-----------------------------------------------------------------------------
+bool StorageService::SetDefaultConfig()
+{
+    _configCache = MemoryConfigData();
+    return SaveConfigInternal();
+}
+
 //----private------------------------------------------------------------------
 bool StorageService::SaveConfigInternal()
 {

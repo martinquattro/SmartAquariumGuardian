@@ -85,6 +85,38 @@ auto GuardianProxy::InitTimeSync(const char* timezone) const -> Result
 }
 
 //----IStorageService-----------------------------------------------------------
+auto GuardianProxy::SaveWifiCredentialsInStorage(const std::string& ssid, const std::string& password) -> bool
+{
+    bool successSsid = Services::StorageService::GetInstance()->Set<std::string>(
+        Services::FieldId::WIFI_SSID,
+        ssid
+    );
+
+    bool successPassword = Services::StorageService::GetInstance()->Set<std::string>(
+        Services::FieldId::WIFI_PASSWORD,
+        password
+    );
+
+    return (successSsid && successPassword);
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::GetWifiSsidFromStorage() const -> std::string
+{
+    return Services::StorageService::GetInstance()->Get<std::string>(
+        Services::FieldId::WIFI_SSID
+    );
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::GetWifiPasswordFromStorage() const -> std::string
+{
+    return Services::StorageService::GetInstance()->Get<std::string>(
+        Services::FieldId::WIFI_PASSWORD
+    );
+}
+
+//----IStorageService-----------------------------------------------------------
 auto GuardianProxy::SaveTimezoneInStorage(const std::string& tz) -> bool
 {
     return Services::StorageService::GetInstance()->Set<std::string>(

@@ -19,9 +19,18 @@ namespace Connectivity {
 
 class WiFiCom : public Base::Singleton<WiFiCom>,
                 public Base::Driver
-
 {
     public:
+
+        enum class State 
+        {
+            IDLE,
+            INIT,
+            CONNECTING,
+            CONNECTED,
+            DISCONNECTING,
+            ERROR
+        };
 
         /*!
         * @brief Check if connected to WiFi
@@ -38,6 +47,24 @@ class WiFiCom : public Base::Singleton<WiFiCom>,
         * @brief Disconnect from WiFi
         */
         void Disconnect();
+
+        /*!
+        * @brief Set WiFi credentials to use for connection.
+        * @param ssid WiFi SSID
+        * @param password WiFi password
+        * Note: This does not trigger a reconnect. Call Start() after this to connect with new credentials.
+        */
+        void SetCredentials(const std::string& ssid, const std::string& password)
+        {
+            _ssid = ssid;
+            _password = password;
+        }
+
+        /**
+         * @brief Get the current state of the WiFiCom.
+         * @return Current state as a State enum value.
+         */
+        State GetState() const { return _state; }
 
     private:
 
@@ -61,16 +88,6 @@ class WiFiCom : public Base::Singleton<WiFiCom>,
         *        This method should be called periodically to update the system state.
         */
         void OnUpdate() override;
-
-        enum class State 
-        {
-            IDLE,
-            INIT,
-            CONNECTING,
-            CONNECTED,
-            DISCONNECTING,
-            ERROR
-        };
 
         auto _Start() -> State;
         void _Stop();
@@ -103,7 +120,7 @@ class WiFiCom : public Base::Singleton<WiFiCom>,
         std::string _password;
         std::atomic<bool> _got_ip;
         std::atomic<bool> _connected;
-        void* _netif; // forward-declare type to avoid exposing esp-netif here
+        esp_netif_t* _netif; // forward-declare type to avoid exposing esp-netif here
     };
 
 } // namespace Connectivity

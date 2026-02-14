@@ -9,6 +9,7 @@
 
 #include "framework/common_defs.h"
 #include "include/config.h"
+#include "src/connectivity/ap_portal.h"
 #include "src/connectivity/mqtt_client.h"
 #include "src/connectivity/wifi_com.h"
 #include "src/core/guardian_proxy.h"
@@ -25,14 +26,23 @@ bool NetworkController::OnInit()
 {
     _state = State::INIT;
     _telemetrySendDelay.Start(Config::TELEMETRY_SEND_INTERVAL_MS);
+
     RegisterRpcHandlers();
 
     _wifiCom = Connectivity::WiFiCom::GetInstance();
     _mqttClient = Connectivity::MqttClient::GetInstance();
+    _apPortal = Connectivity::APPortal::GetInstance();
 
-    return (_wifiCom->Init() &&
-            _mqttClient->Init()
+    bool success = _wifiCom->Init();
+    success &= _mqttClient->Init();
+    success &= _apPortal->Init();
+
+    _wifiCom->SetCredentials(
+        Core::GuardianProxy::GetInstance()->GetWifiSsidFromStorage(),
+        Core::GuardianProxy::GetInstance()->GetWifiPasswordFromStorage()
     );
+
+    return success;
 }
 
 //----private------------------------------------------------------------------
@@ -40,19 +50,31 @@ void NetworkController::OnUpdate()
 {
     _wifiCom->Update();
     _mqttClient->Update();
+    _apPortal->Update();
 
     switch (_state)
     {
         case State::INIT:
         {
-            ChangeState(State::START_WIFI);
+            ChangeState(State::START_WIFI, 1000); // Start WiFi after short delay to allow system to stabilize
         }
         break;
         
         case State::START_WIFI:
         {
-            _wifiCom->Start();
-            ChangeState(State::WAITING_FOR_WIFI);
+            if (_delayTimeout.HasFinished())
+            {
+                if (_apPortal->GetState() != Connectivity::APPortal::State::IDLE)
+                {
+                    CORE_WARNING("NetworkController: AP Portal is active, cannot start WiFi connection");
+                    ChangeState(State::START_WIFI, 1000); // Retry after short delay
+                }
+                else
+                {
+                    _wifiCom->Start();
+                    ChangeState(State::WAITING_FOR_WIFI, WIFI_CONNECTION_TIMEOUT_MS);
+                }
+            }
         }
         break;
 
@@ -62,21 +84,32 @@ void NetworkController::OnUpdate()
             {
                 ChangeState(State::START_TIME_SYNC);
             }
+            else if (_delayTimeout.HasFinished())
+            {
+                CORE_WARNING("WiFi connection timeout, starting AP Portal");
+                _wifiCom->Disconnect(); // Ensure we are disconnected before starting portal
+
+                ChangeState(State::START_ACCESS_POINT, 1000); // Start AP portal after short delay
+            }
         }
         break;
 
         case State::START_TIME_SYNC:
         {
             Core::GuardianProxy::GetInstance()->InitTimeSync();
-            ChangeState(State::WAITING_FOR_TIME_SYNC);
+            ChangeState(State::WAITING_FOR_TIME_SYNC, TIME_SYNC_TIMEOUT_MS);
         }
         break;
 
         case State::WAITING_FOR_TIME_SYNC:
         {
-            // TODO - add timeout and error handling
             if (Core::GuardianProxy::GetInstance()->IsTimeSynced())
             {
+                ChangeState(State::START_MQTT_CLIENT);
+            }
+            else if (_delayTimeout.HasFinished())
+            {
+                CORE_WARNING("Time synchronization timeout, proceeding without time sync");
                 ChangeState(State::START_MQTT_CLIENT);
             }
         }
@@ -85,7 +118,7 @@ void NetworkController::OnUpdate()
         case State::START_MQTT_CLIENT:
         {
             _mqttClient->Start();
-            ChangeState(State::WAITING_FOR_MQTT_CLIENT);
+            ChangeState(State::WAITING_FOR_MQTT_CLIENT, MQTT_CLIENT_TIMEOUT_MS);
         }
         break;
 
@@ -95,6 +128,11 @@ void NetworkController::OnUpdate()
             {
                 ChangeState(State::SETUP_MQTT_CLIENT);
             }
+            else if (_delayTimeout.HasFinished())
+            {
+                CORE_WARNING("MQTT client connection timeout, proceeding without MQTT");
+                ChangeState(State::IDLE);
+            }
         }
         break;
 
@@ -103,10 +141,6 @@ void NetworkController::OnUpdate()
             _mqttClient->Subscribe(
                 RPC_REQUEST_TOPIC
             );
-
-            // _mqttClient->Subscribe(
-            //     ATTRIBUTES_TOPIC
-            // );
 
             _mqttClient->SetMessageCallback(
                 [this](const std::string& topic, const std::string& payload)
@@ -130,8 +164,8 @@ void NetworkController::OnUpdate()
             }
             else
             {
-                CORE_WARNING("NetworkController lost connection");
-                ChangeState(State::ERROR);
+                CORE_WARNING("Lost connection");
+                ChangeState(State::START_WIFI);
             }
         }
         break;
@@ -143,10 +177,62 @@ void NetworkController::OnUpdate()
         }
         break;
 
+
+        case State::START_ACCESS_POINT:
+        {
+            if (_delayTimeout.HasFinished())
+            {
+                if (_wifiCom->GetState() != Connectivity::WiFiCom::State::IDLE)
+                {
+                    CORE_WARNING("NetworkController: Still connected to WiFi, cannot start AP Portal");
+                    ChangeState(State::START_ACCESS_POINT, 1000); // Retry after short delay
+                }
+                else
+                {
+                    CORE_INFO("NetworkController: Starting AP Portal for WiFi configuration");
+                    _apPortal->Start();
+                    ChangeState(State::WAITING_FOR_ACCESS_POINT, 1000); // Check for credentials after short delay to allow portal to start
+                }
+            }
+        }
+        break;
+
+        case State::WAITING_FOR_ACCESS_POINT:
+        {
+            // Check if WiFi credentials were received from portal
+            if (_apPortal->GetState() == Connectivity::APPortal::State::WIFI_CREDENTIALS_RECEIVED)
+            {
+                std::string ssid, password;
+                Result result = _apPortal->GetWifiCredentials(ssid, password);
+                
+                if (result.success && !ssid.empty() && !password.empty())
+                {
+                    CORE_INFO("NetworkController: New WiFi credentials received from portal - SSID: %s", 
+                             ssid.c_str());
+                    
+                    // Apply new credentials
+                    _wifiCom->SetCredentials(ssid, password);
+                    
+                    // Save to storage for persistence
+                    Core::GuardianProxy::GetInstance()->SaveWifiCredentialsInStorage(ssid, password);
+                    
+                    // Stop portal and retry WiFi
+                    _apPortal->Stop();
+                    
+                    ChangeState(State::START_WIFI, 2000);
+                }
+                else
+                {
+                    CORE_WARNING("NetworkController: Invalid credentials from portal");
+                    _apPortal->ResetState();
+                }
+            }
+        }
+        break;
+
         case State::ERROR:
         {
-            // Error state - do nothing
-            return;
+            CORE_ERROR("NetworkController is in ERROR state. Manual intervention required.");
         }
         break;
 
@@ -182,9 +268,10 @@ void NetworkController::RegisterRpcHandlers()
 }
 
 //----private------------------------------------------------------------------
-void NetworkController::ChangeState(const State newState)
+void NetworkController::ChangeState(const State newState, const int delayMs)
 {
     _state = newState;
+    _delayTimeout.Start(delayMs);
 }
 
 //----private------------------------------------------------------------------

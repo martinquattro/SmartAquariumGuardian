@@ -21,8 +21,8 @@ namespace Connectivity {
 bool WiFiCom::OnInit()
 {
     _state = State::IDLE;
-    _ssid = "Cuchitril 2.4GHz";
-    _password = "Defensa5232022";
+    _ssid = "";
+    _password = "";
     _connected = false;
 
     return true;
@@ -103,7 +103,6 @@ void WiFiCom::Disconnect()
     if (_state == State::CONNECTED || _state == State::CONNECTING)
     {
         _state = State::DISCONNECTING;
-        // actual stop will be done in Update() or destructor
     }
 }
 
@@ -131,8 +130,10 @@ auto WiFiCom::_Start() -> State
     }
 
     // create default wifi station
-    esp_netif_t* netif = esp_netif_create_default_wifi_sta();
-    _netif = netif;
+    if (_netif == nullptr)
+    {
+        _netif = esp_netif_create_default_wifi_sta();
+    }
 
     // Initialize WiFi with default config
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
@@ -174,13 +175,13 @@ auto WiFiCom::_Start() -> State
 //----private------------------------------------------------------------------
 void WiFiCom::_Stop()
 {
-    CORE_INFO("stopping wifi stack");
+    CORE_INFO("Stopping wifi station");
 
     esp_wifi_disconnect();
     esp_wifi_stop();
     esp_wifi_deinit();
 
-    _state = State::INIT;
+    _state = State::IDLE;
     _got_ip = false;
     _connected = false;
 }

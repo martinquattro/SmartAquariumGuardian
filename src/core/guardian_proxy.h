@@ -70,6 +70,15 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
 
     // IStorageService -----------------------------------------------------------
 
+        //! Save WiFi credentials
+        auto SaveWifiCredentialsInStorage(const std::string& ssid, const std::string& password) -> bool override;
+
+        //! Get WiFi SSID
+        auto GetWifiSsidFromStorage() const -> std::string override;
+
+        //! Get WiFi Password
+        auto GetWifiPasswordFromStorage() const -> std::string override;
+        
         //! Save timezone at EEPROM
         auto SaveTimezoneInStorage(const std::string& tz) -> bool override;
 

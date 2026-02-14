@@ -14,9 +14,6 @@
 
 namespace Services {
 
-// template<typename T> struct is_vector : std::false_type {};
-// template<typename T, typename A> struct is_vector<std::vector<T, A>> : std::true_type {};
-
 struct FeedingScheduleEntry
 {
     int _min = 0;           //!< Minutes after midnight (0-1439)
@@ -33,6 +30,7 @@ struct FeedingScheduleEntry
 
 using FeeddingScheduleList = std::vector<FeedingScheduleEntry>;
 
+//-----------------------------------------------------------------------------
 inline void to_json(nlohmann::json& j, const FeedingScheduleEntry& e) 
 {
     j = nlohmann::json
@@ -44,6 +42,7 @@ inline void to_json(nlohmann::json& j, const FeedingScheduleEntry& e)
     };
 }
 
+//-----------------------------------------------------------------------------
 inline void from_json(const nlohmann::json& j, FeedingScheduleEntry& e)
 {
     e._min = j.value("_min", 0);
@@ -52,11 +51,13 @@ inline void from_json(const nlohmann::json& j, FeedingScheduleEntry& e)
     e._enabled = j.value("_enabled", false);
 }
 
-#define CONFIG_FIELDS                                                                     \
+#define CONFIG_FIELDS                                                                      \
+    X(std::string,          WIFI_SSID,        _wifiSsid,            "wifiSsid", "")        \
+    X(std::string,          WIFI_PASSWORD,    _wifiPassword,        "wifiPass", "")        \
     X(std::string,          TIMEZONE,         _timezone,            "tz",       "UTC0")    \
     X(float,                TEMP_MIN,         _tempLimitMin,        "tMin",     20.0f)     \
     X(bool,                 TEMP_MIN_ENABLED, _tempLimitMinEnabled, "tMinEn",   false)     \
-    X(float,                TEMP_MAX,         _tempLimitMax,        "tMax",     28.0f)     \
+    X(float,                TEMP_MAX,         _tempLimitMax,        "tMax",     25.0f)     \
     X(bool,                 TEMP_MAX_ENALED,  _tempLimitMaxEnabled, "tMaxEn",   false)     \
     X(FeeddingScheduleList, FEEDING_SCHEDULE, _feedingSchedule,     "feedSch",  {})
 
