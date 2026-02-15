@@ -36,6 +36,11 @@ extern lv_obj_t * ui_lblTempLimitMax;
 extern lv_obj_t * ui_panelHeader;
 extern lv_obj_t * ui_lblTime;
 extern lv_obj_t * ui_panelIcons;
+extern lv_obj_t * ui_imgBatteryFull;
+extern lv_obj_t * ui_imgBatteryHigh;
+extern lv_obj_t * ui_imgBatteryMedium;
+extern lv_obj_t * ui_imgBatteryLow;
+extern lv_obj_t * ui_imgBatteryCritical;
 extern lv_obj_t * ui_imgAPActive;
 extern lv_obj_t * ui_imgWifiOn;
 extern lv_obj_t * ui_imgWiFiOff;
@@ -54,6 +59,7 @@ extern lv_obj_t * ui_leftDosesPanel;
 extern lv_obj_t * ui_lblLeftDoses;
 extern lv_obj_t * ui_lblDosesLeft;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_imgBatteryLow;
 
 #ifdef __cplusplus
 } /*extern "C"*/

@@ -36,6 +36,12 @@ bool UserInterface::OnInit()
     // Initialize UI elements
     _time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
 
+    _batteryFullIcon = new Drivers::GraphicDisplay::UIElement(ui_imgBatteryFull);
+    _batteryHighIcon = new Drivers::GraphicDisplay::UIElement(ui_imgBatteryHigh);
+    _batteryMediumIcon = new Drivers::GraphicDisplay::UIElement(ui_imgBatteryMedium);
+    _batteryLowIcon = new Drivers::GraphicDisplay::UIElement(ui_imgBatteryLow);
+    _batteryCriticalIcon = new Drivers::GraphicDisplay::UIElement(ui_imgBatteryCritical);
+
     _wifiIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgWiFiOff);
     _wifiIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgWifiOn);
 
@@ -64,13 +70,7 @@ void UserInterface::OnUpdate()
 {
     // Power status
     {
-        const auto powerMode = Core::GuardianProxy::GetInstance()->GetCurrentMode();
-        const auto batteryLevel = Core::GuardianProxy::GetInstance()->GetBatteryLevel();
-
-        CORE_INFO("Power Mode: %s, Battery Level: %d%",
-                  powerMode == Services::PowerController::Mode::MODE_USB_POWERED ? "USB Powered" : "Battery Powered",
-                  static_cast<int>(batteryLevel)
-        );
+        UpdatePowerIndicator();
     }
 
     // Connection status
@@ -221,6 +221,41 @@ void UserInterface::OnUpdate()
         // Doses left today
         std::sprintf(buffer, "%d", feederStatus.remainingDosesToday);
         _dosesLeft->SetText(buffer);
+    }
+}
+
+//----private------------------------------------------------------------------
+void UserInterface::UpdatePowerIndicator()
+{
+    static Services::PowerController::BatteryLevel lastBatteryLevel = Services::PowerController::BatteryLevel::_size;
+    static Services::PowerController::Mode lastPowerMode = Services::PowerController::Mode::_size;
+
+    const auto powerMode = Core::GuardianProxy::GetInstance()->GetCurrentMode();
+    const auto batteryLevel = Core::GuardianProxy::GetInstance()->GetBatteryLevel();
+
+    if (lastBatteryLevel != batteryLevel || lastPowerMode != powerMode)
+    {
+        lastBatteryLevel = batteryLevel;
+        lastPowerMode = powerMode;
+
+        _batteryFullIcon->Hide();
+        _batteryHighIcon->Hide();
+        _batteryMediumIcon->Hide();
+        _batteryLowIcon->Hide();
+        _batteryCriticalIcon->Hide();
+
+        if (powerMode == Services::PowerController::Mode::MODE_BATTERY_POWERED)
+        {
+            switch (batteryLevel)
+            {
+                case Services::PowerController::BatteryLevel::LEVEL_FULL:               _batteryFullIcon->Show();                  break;
+                case Services::PowerController::BatteryLevel::LEVEL_HIGH:               _batteryHighIcon->Show();                  break;
+                case Services::PowerController::BatteryLevel::LEVEL_MEDIUM:             _batteryMediumIcon->Show();                break;
+                case Services::PowerController::BatteryLevel::LEVEL_LOW:                _batteryLowIcon->Show();                   break;
+                case Services::PowerController::BatteryLevel::LEVEL_CRITICAL:           _batteryCriticalIcon->Show();              break;
+                default:                                                                                                           break;
+            }
+        }
     }
 }
 

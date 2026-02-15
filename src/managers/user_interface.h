@@ -49,6 +49,11 @@ class UserInterface : public Base::Singleton<UserInterface>
          */
         void OnUpdate() override;
 
+        /*!
+        * @brief Update power status indicator
+        */
+        void UpdatePowerIndicator();
+
         //---------------------------------------------
 
         UserInterface() {}
@@ -59,6 +64,12 @@ class UserInterface : public Base::Singleton<UserInterface>
         //---------------------------------------------
 
         Drivers::GraphicDisplay* _display = nullptr;
+
+        Drivers::GraphicDisplay::UIElement* _batteryFullIcon;
+        Drivers::GraphicDisplay::UIElement* _batteryHighIcon;
+        Drivers::GraphicDisplay::UIElement* _batteryMediumIcon;
+        Drivers::GraphicDisplay::UIElement* _batteryLowIcon;
+        Drivers::GraphicDisplay::UIElement* _batteryCriticalIcon;
 
         Drivers::GraphicDisplay::UIElement* _tempValue;
         Drivers::GraphicDisplay::UIElement* _tempMinValue;
@@ -75,7 +86,7 @@ class UserInterface : public Base::Singleton<UserInterface>
         Drivers::GraphicDisplay::UIElement* _cloudIconOff;
 
         Drivers::GraphicDisplay::UIElement* _apIconOn;
-        
+
         Drivers::GraphicDisplay::UIElement* _time;
 
         Drivers::GraphicDisplay::UIElement* _feederPanel;

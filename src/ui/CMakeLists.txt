@@ -7,6 +7,11 @@ SET(SOURCES components/ui_comp_panel.c
     images/ui_img_icn_tds_png.c
     images/ui_img_icn_range_arrow_png.c
     images/ui_img_icn_temp_png.c
+    images/ui_img_battery_full_alt_20dp_png.c
+    images/ui_img_battery_horiz_075_20dp_png.c
+    images/ui_img_battery_horiz_050_20dp_png.c
+    images/ui_img_battery_low_20dp_png.c
+    images/ui_img_battery_horiz_000_20dp_png.c
     images/ui_img_wifi_find_20dp_ffffff_fill0_wght400_grad0_opsz20_png.c
     images/ui_img_icn_wifi_on_png.c
     images/ui_img_icn_wifi_off_png.c

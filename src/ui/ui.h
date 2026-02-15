@@ -33,6 +33,11 @@ extern lv_obj_t * ui____initial_actions0;
 LV_IMG_DECLARE(ui_img_icn_tds_png);    // assets/icn_tds.png
 LV_IMG_DECLARE(ui_img_icn_range_arrow_png);    // assets/icn_range_arrow.png
 LV_IMG_DECLARE(ui_img_icn_temp_png);    // assets/icn_temp.png
+LV_IMG_DECLARE(ui_img_battery_full_alt_20dp_png);    // assets/battery_full_alt_20dp.png
+LV_IMG_DECLARE(ui_img_battery_horiz_075_20dp_png);    // assets/battery_horiz_075_20dp.png
+LV_IMG_DECLARE(ui_img_battery_horiz_050_20dp_png);    // assets/battery_horiz_050_20dp.png
+LV_IMG_DECLARE(ui_img_battery_low_20dp_png);    // assets/battery_low_20dp.png
+LV_IMG_DECLARE(ui_img_battery_horiz_000_20dp_png);    // assets/battery_horiz_000_20dp.png
 LV_IMG_DECLARE(
     ui_img_wifi_find_20dp_ffffff_fill0_wght400_grad0_opsz20_png);    // assets/wifi_find_20dp_FFFFFF_FILL0_wght400_GRAD0_opsz20.png
 LV_IMG_DECLARE(ui_img_icn_wifi_on_png);    // assets/icn_wifi_on.png
