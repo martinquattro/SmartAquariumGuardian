@@ -35,7 +35,7 @@ void WiFiCom::OnUpdate()
     {
         case State::IDLE:
         {
-            // nothing to do
+            // nothing to do. Wifi is disconnected at this point.
         }
         break;
 
@@ -65,11 +65,14 @@ void WiFiCom::OnUpdate()
         case State::DISCONNECTING:
         {
             _Stop();
+             _state = State::IDLE;
         }
         break;
 
         case State::ERROR:
         {
+            CORE_ERROR("WiFiCom is in ERROR state.");
+            _state = State::IDLE;
         }
         break;
 
@@ -181,7 +184,6 @@ void WiFiCom::_Stop()
     esp_wifi_stop();
     esp_wifi_deinit();
 
-    _state = State::IDLE;
     _got_ip = false;
     _connected = false;
 }

@@ -26,6 +26,12 @@ bool UserInterface::OnInit()
             Core::GuardianProxy::GetInstance()->Feed(1);
         }
     );
+
+    _display->SetOnLongPressAction([this]()
+        {
+            Core::GuardianProxy::GetInstance()->ActivateApMode();
+        }
+    );
     
     // Initialize UI elements
     _time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
@@ -172,7 +178,7 @@ void UserInterface::OnUpdate()
                   feederStatus.remainingDosesToday,
                   feederStatus.totalPerDay
         );
-        
+
         // Next feeding time
         char buffer [50];
 

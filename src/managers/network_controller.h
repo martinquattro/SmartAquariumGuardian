@@ -32,6 +32,12 @@ class NetworkController : public Base::Singleton<NetworkController>
         using Json = nlohmann::json;
 
         /*!
+        * @brief Activate AP mode for configuration.
+        * @note This will destroy the existing WiFi station connection if active and start the AP portal.
+        */
+        void ActivateApMode();
+
+        /*!
         * @brief Check if WiFi is connected.
         * @return true if connected, false otherwise.
         */
@@ -69,6 +75,7 @@ class NetworkController : public Base::Singleton<NetworkController>
         enum class State 
         {
             INIT,
+            PRE_START_WIFI,
             START_WIFI,
             WAITING_FOR_WIFI,
             START_TIME_SYNC,
@@ -78,7 +85,7 @@ class NetworkController : public Base::Singleton<NetworkController>
             SETUP_MQTT_CLIENT,
             IDLE,
             SEND_TELEMETRY,
-            DESTROY_WIFI_STATION,   //!< WiFi connection failed, destroy station before starting AP portal
+            PRE_START_ACCESS_POINT,
             START_ACCESS_POINT,
             WAITING_FOR_ACCESS_POINT,
             ERROR
@@ -145,7 +152,7 @@ class NetworkController : public Base::Singleton<NetworkController>
         static constexpr const char* RPC_RESPONSE_TOPIC = "v1/devices/me/rpc/response/";
         static constexpr const char* ATTRIBUTES_TOPIC   = "v1/devices/me/attributes";
 
-        static constexpr uint32_t WIFI_CONNECTION_TIMEOUT_MS = 30000;  //!< 30 seconds
+        static constexpr uint32_t WIFI_CONNECTION_TIMEOUT_MS = 5000;    //!< 5 seconds
         static constexpr uint32_t TIME_SYNC_TIMEOUT_MS = 10000;         //!< 10 seconds
         static constexpr uint32_t MQTT_CLIENT_TIMEOUT_MS = 10000;       //!< 10 seconds
 

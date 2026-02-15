@@ -56,10 +56,31 @@ void NetworkController::OnUpdate()
     {
         case State::INIT:
         {
-            ChangeState(State::START_WIFI, 1000); // Start WiFi after short delay to allow system to stabilize
+            ChangeState(State::PRE_START_WIFI, 500); // Start WiFi after short delay to allow system to stabilize
         }
         break;
         
+        case State::PRE_START_WIFI:
+        {
+            if (_delayTimeout.HasFinished())
+            {
+                if (_apPortal->GetState() != Connectivity::APPortal::State::IDLE)
+                {
+                    CORE_WARNING("AP Portal is active, killing portal before starting WiFi connection");
+                    _apPortal->Stop(); // Ensure portal is stopped before starting WiFi connection
+
+                    ChangeState(State::PRE_START_WIFI, 1000);
+                }
+                else
+                {
+                    ChangeState(State::START_WIFI, 1000);
+
+                    CORE_INFO("Starting WiFi connection");
+                }
+            }
+        }
+        break;
+
         case State::START_WIFI:
         {
             if (_delayTimeout.HasFinished())
@@ -67,7 +88,7 @@ void NetworkController::OnUpdate()
                 if (_apPortal->GetState() != Connectivity::APPortal::State::IDLE)
                 {
                     CORE_WARNING("NetworkController: AP Portal is active, cannot start WiFi connection");
-                    ChangeState(State::START_WIFI, 1000); // Retry after short delay
+                    ChangeState(State::PRE_START_WIFI, 1000);
                 }
                 else
                 {
@@ -87,9 +108,8 @@ void NetworkController::OnUpdate()
             else if (_delayTimeout.HasFinished())
             {
                 CORE_WARNING("WiFi connection timeout, starting AP Portal");
-                _wifiCom->Disconnect(); // Ensure we are disconnected before starting portal
 
-                ChangeState(State::START_ACCESS_POINT, 1000); // Start AP portal after short delay
+                ChangeState(State::PRE_START_ACCESS_POINT, 1000);
             }
         }
         break;
@@ -165,7 +185,7 @@ void NetworkController::OnUpdate()
             else
             {
                 CORE_WARNING("Lost connection");
-                ChangeState(State::START_WIFI);
+                ChangeState(State::PRE_START_WIFI, 1000);
             }
         }
         break;
@@ -177,15 +197,45 @@ void NetworkController::OnUpdate()
         }
         break;
 
+        case State::PRE_START_ACCESS_POINT:
+        {
+            if (_delayTimeout.HasFinished())
+            {
+                if (_mqttClient->IsConnected())
+                {
+                    CORE_WARNING("NetworkController: Still connected to MQTT broker, killing MQTT client before starting AP Portal");
+                    _mqttClient->Stop();
+
+                    ChangeState(State::PRE_START_ACCESS_POINT, 1000);
+                }
+                else if (_wifiCom->IsConnected() || _wifiCom->GetState() != Connectivity::WiFiCom::State::IDLE)
+                {
+                    CORE_WARNING("NetworkController: Still connected to WiFi, killing WiFi connection before starting AP Portal");
+                    _wifiCom->Disconnect();
+
+                    ChangeState(State::PRE_START_ACCESS_POINT, 1000);
+                }
+                else
+                {
+                    ChangeState(State::START_ACCESS_POINT, 500);
+                }
+            }
+        }
+        break;
 
         case State::START_ACCESS_POINT:
         {
             if (_delayTimeout.HasFinished())
             {
-                if (_wifiCom->GetState() != Connectivity::WiFiCom::State::IDLE)
+                if (_mqttClient->IsConnected())
+                {
+                    CORE_WARNING("NetworkController: Still connected to MQTT broker, killing MQTT client before starting AP Portal");
+                    ChangeState(State::PRE_START_ACCESS_POINT, 1000); // Retry after short delay
+                }
+                if (_wifiCom->IsConnected()  || _wifiCom->GetState() != Connectivity::WiFiCom::State::IDLE)
                 {
                     CORE_WARNING("NetworkController: Still connected to WiFi, cannot start AP Portal");
-                    ChangeState(State::START_ACCESS_POINT, 1000); // Retry after short delay
+                    ChangeState(State::PRE_START_ACCESS_POINT, 1000); // Retry after short delay
                 }
                 else
                 {
@@ -215,11 +265,8 @@ void NetworkController::OnUpdate()
                     
                     // Save to storage for persistence
                     Core::GuardianProxy::GetInstance()->SaveWifiCredentialsInStorage(ssid, password);
-                    
-                    // Stop portal and retry WiFi
-                    _apPortal->Stop();
-                    
-                    ChangeState(State::START_WIFI, 2000);
+                                        
+                    ChangeState(State::PRE_START_WIFI, 2000);
                 }
                 else
                 {
@@ -233,6 +280,7 @@ void NetworkController::OnUpdate()
         case State::ERROR:
         {
             CORE_ERROR("NetworkController is in ERROR state. Manual intervention required.");
+            ChangeState(State::IDLE);
         }
         break;
 
@@ -243,6 +291,14 @@ void NetworkController::OnUpdate()
         }
         break;
     }
+}
+
+//-----------------------------------------------------------------------------
+void NetworkController::ActivateApMode()
+{
+    CORE_INFO("Activating AP mode for configuration");
+    
+    ChangeState(State::PRE_START_ACCESS_POINT, 1000); // Start AP portal after short delay
 }
 
 //-----------------------------------------------------------------------------

@@ -61,7 +61,13 @@ class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
          * @param callback Function to call on double click.
          */
         void SetOnDoubleClickAction(TouchCallback callback);
-    
+
+         /**
+         * @brief Sets the callback function to be called on long press events.
+         * @param callback Function to call on long press.
+         */
+        void SetOnLongPressAction(TouchCallback callback);
+
     private:
 
         friend class Base::Singleton<GraphicDisplay>;
@@ -115,6 +121,7 @@ class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
         PwmOut _bklPin;
 
         TouchCallback _onDoubleClickAction = nullptr;
+        TouchCallback _onLongPressAction = nullptr;
 
         // Handles for ESP-IDF LCD panel and touch
         esp_lcd_panel_handle_t _panel_handle = nullptr;
@@ -122,8 +129,6 @@ class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
 
         // Handle for LVGL display
         lv_display_t* _lvgl_disp = nullptr;
-
-        static uint32_t _last_click_time;
 
         bool _valid = false;
 };

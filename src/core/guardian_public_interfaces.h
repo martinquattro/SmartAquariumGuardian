@@ -41,6 +41,9 @@ class INetworkController
 {
     public:
 
+        //! Activate AP mode for configuration
+        virtual auto ActivateApMode() -> void = 0;
+
         //! Check if WiFi is connected
         virtual auto IsWifiConnected() const -> bool = 0;
 

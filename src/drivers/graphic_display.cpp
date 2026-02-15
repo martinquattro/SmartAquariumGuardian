@@ -17,8 +17,6 @@ extern "C" {
 
 namespace Drivers {
 
-uint32_t GraphicDisplay::_last_click_time = 0;
-
 //-----------------------------------------------------------------------------
 GraphicDisplay::UIElement::UIElement(lv_obj_t * lv_obj) 
     : _lv_obj(lv_obj)
@@ -285,30 +283,35 @@ void GraphicDisplay::SetOnDoubleClickAction(TouchCallback callback)
     _onDoubleClickAction = callback;
 }
 
+//-----------------------------------------------------------------------------
+void GraphicDisplay::SetOnLongPressAction(TouchCallback callback)
+{
+    _onLongPressAction = callback;
+}
+
 //----private------------------------------------------------------------------
 void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
 {
     lv_event_code_t code = lv_event_get_code(e);
 
-    if (code == LV_EVENT_CLICKED)
+    if (code == LV_EVENT_DOUBLE_CLICKED)
     {
-        uint32_t current_time = lv_tick_get();
-        const uint32_t double_click_speed_ms = 300;
+        CORE_INFO(">>> LV_EVENT_DOUBLE_CLICKED detected <<<");
 
-        if (current_time - _last_click_time < double_click_speed_ms)
+        // Call the registered double click action
+        if (GraphicDisplay::GetInstance()->_onDoubleClickAction != nullptr)
         {
-            CORE_INFO(">>> Double click detected <<<");
-            _last_click_time = 0;
-
-            // Call the registered double click action
-            if (GraphicDisplay::GetInstance()->_onDoubleClickAction != nullptr)
-            {
-                GraphicDisplay::GetInstance()->_onDoubleClickAction();
-            }
+            GraphicDisplay::GetInstance()->_onDoubleClickAction();
         }
-        else
+    }
+    else if (code == LV_EVENT_LONG_PRESSED)
+    {
+        CORE_INFO(">>> LV_EVENT_LONG_PRESSED detected <<<");
+
+        // Call the registered long press action
+        if (GraphicDisplay::GetInstance()->_onLongPressAction != nullptr)
         {
-            _last_click_time = current_time;
+            GraphicDisplay::GetInstance()->_onLongPressAction();
         }
     }
 }
@@ -321,6 +324,8 @@ void GraphicDisplay::SetupTouchDetection()
     lv_obj_add_flag(top_layer, LV_OBJ_FLAG_CLICKABLE);
 
     lv_obj_add_event_cb(top_layer, OnTouchEventCallback, LV_EVENT_ALL, nullptr);
+
+    lv_indev_set_long_press_time(lv_indev_get_act(), 1400); // Set long press time to 1400ms
 
     CORE_INFO("Touch detection setup completed on TOP LAYER.");
 }

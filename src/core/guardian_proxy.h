@@ -43,6 +43,9 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
 
     // INetworkController --------------------------------------------------------
 
+        //! Activate AP mode for configuration
+        auto ActivateApMode() -> void override;
+
         //! Check if WiFi is connected
         auto IsWifiConnected() const -> bool override;
 

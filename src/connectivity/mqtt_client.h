@@ -22,6 +22,16 @@ class MqttClient : public Base::Singleton<MqttClient>,
 {
     public:
 
+        enum class State 
+        {
+            IDLE,
+            INIT,
+            CONNECTING,
+            CONNECTED,
+            DISCONNECTING,
+            ERROR
+        };
+
         using MessageCallback = std::function<void(const std::string &topic, const std::string &payload)>;
 
         /*!
@@ -33,7 +43,12 @@ class MqttClient : public Base::Singleton<MqttClient>,
         /*!
         * @brief Start MQTT connection
         */
-       void Start();
+        void Start();
+
+        /*!
+        * @brief Stop MQTT connection
+        */
+        void Stop();
 
         /*!
         * @brief Publish a message to a topic
@@ -80,16 +95,6 @@ class MqttClient : public Base::Singleton<MqttClient>,
         *        This method should be called periodically to update the system state.
         */
         void OnUpdate() override;
-
-        enum class State 
-        {
-            IDLE,
-            INIT,
-            CONNECTING,
-            CONNECTED,
-            ERROR
-        };
-
         
         //---------------------------------------------
 

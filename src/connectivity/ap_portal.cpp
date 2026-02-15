@@ -105,7 +105,6 @@ void APPortal::Stop()
 {
     if (_state == State::IDLE || _state == State::ERROR)
     {
-        CORE_WARNING("APPortal is not active, cannot stop");
         return;
     }
 

@@ -32,7 +32,7 @@ void MqttClient::OnUpdate()
     {
         case State::IDLE:
         {
-            // nothing to do
+            // nothing to do. mqtt is disconnected at this point.
         }
         break;
 
@@ -61,8 +61,16 @@ void MqttClient::OnUpdate()
         }
         break;
 
+        case State::DISCONNECTING:
+        {
+            _Stop();
+        }
+        break;
+
         case State::ERROR:
         {
+            CORE_ERROR("MqttClient is in ERROR state.");
+            _state = State::IDLE;
         }
         break;
 
@@ -87,6 +95,15 @@ void MqttClient::Start()
     if (_state == State::IDLE || _state == State::ERROR)
     {
         _state = State::INIT;
+    }
+}
+
+//-----------------------------------------------------------------------------
+void MqttClient::Stop()
+{
+    if (_state == State::CONNECTED || _state == State::CONNECTING)
+    {
+        _state = State::DISCONNECTING;
     }
 }
 
@@ -184,6 +201,7 @@ void MqttClient::_Stop()
         esp_mqtt_client_destroy(_client);
         _client = nullptr;
         _connected = false;
+        _state = State::IDLE;
 
         CORE_INFO("MqttClient stopped");
     }
@@ -212,6 +230,7 @@ void MqttClient::EventHandler(
         {
             CORE_WARNING("MqttClient: disconnected");
             instance->_connected = false;
+            instance->_state = State::IDLE;
         }
         break;
 

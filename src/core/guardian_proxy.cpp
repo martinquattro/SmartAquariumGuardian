@@ -55,6 +55,12 @@ auto GuardianProxy::GetBatteryLevel() -> Services::PowerController::BatteryLevel
 }
 
 //----INetworkController--------------------------------------------------------
+auto GuardianProxy::ActivateApMode() -> void
+{
+    Managers::NetworkController::GetInstance()->ActivateApMode();
+}
+
+//----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsWifiConnected() const -> bool
 {
     return Managers::NetworkController::GetInstance()->IsWiFiConnected();
