@@ -106,10 +106,19 @@ bool StorageService::RemoveFeedingScheduleFromStorage(const int slotIndex)
 }
 
 //-----------------------------------------------------------------------------
-bool StorageService::SetDefaultConfig()
+Result StorageService::SetDefaultConfig()
 {
     _configCache = MemoryConfigData();
-    return SaveConfigInternal();
+
+    const bool success = SaveConfigInternal();
+    if (success)
+    {
+        return Result::Success("Factory reset successful. Default config saved.");
+    }
+    else
+    {
+        return Result::Error("Factory reset failed. Could not save default config to EEPROM.");
+    }
 }
 
 //----private------------------------------------------------------------------

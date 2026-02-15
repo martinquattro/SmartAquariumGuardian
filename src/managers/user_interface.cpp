@@ -166,6 +166,13 @@ void UserInterface::OnUpdate()
     {
         const auto& feederStatus = Core::GuardianProxy::GetInstance()->GetFeederStatus();
 
+        CORE_INFO("Feeder Status - Next Feed Time: %s, Next Feed Doses: %d, Remaining Doses Today: %d, Total Per Day: %d",
+                  feederStatus.nextFeedTime.ToString().c_str(),
+                  feederStatus.nextFeedDoses,
+                  feederStatus.remainingDosesToday,
+                  feederStatus.totalPerDay
+        );
+        
         // Next feeding time
         char buffer [50];
 
@@ -173,9 +180,13 @@ void UserInterface::OnUpdate()
         {
             std::sprintf(buffer, "%s [%d]", feederStatus.nextFeedTime.ToString().c_str(), feederStatus.nextFeedDoses);
         }
-        else
+        else if (feederStatus.totalPerDay > 0)
         {
             std::sprintf(buffer, "Tomorrow");
+        }
+        else
+        {
+            std::sprintf(buffer, "---");
         }
 
         _nextFeedingTime->SetText(buffer);

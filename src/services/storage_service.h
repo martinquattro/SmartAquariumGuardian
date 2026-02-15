@@ -43,14 +43,15 @@ class StorageService : public Base::Singleton<StorageService>
 
         /*!
          * @brief Set default configuration values and save to storage.
-         * @return true if the operation was successful, false otherwise.
+         * @return Result indicating success or failure of the operation.
+         * @note This will overwrite all existing configuration data in storage.
         */
-        bool SetDefaultConfig();
+        Result SetDefaultConfig();
+
         /*!
          * @brief Get the value of a configuration field.
          * @tparam T Type of the field to get.        
         */
-       
         template<typename T>
         T Get(FieldId fieldId) const
         {

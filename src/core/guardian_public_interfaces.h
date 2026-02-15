@@ -110,6 +110,8 @@ class IStorageService
         //! Remove feeding schedule from storage
         virtual auto RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool = 0;
 
+        //! Factory reset (clear all stored data)
+        virtual auto FactoryReset() -> Result = 0;
 };
 
 //-----------------------------------------------------------------------------

@@ -235,6 +235,12 @@ auto GuardianProxy::RemoveFeedingScheduleFromStorage(const int slotIndex) -> boo
     return Services::StorageService::GetInstance()->RemoveFeedingScheduleFromStorage(slotIndex);
 }
 
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::FactoryReset() -> Result
+{
+    return Services::StorageService::GetInstance()->SetDefaultConfig();
+}
+
 //----IUserInterface------------------------------------------------------------
 void GuardianProxy::UpdateFeedingStatusIndicator(bool isFeeding)
 {

@@ -251,4 +251,18 @@ class SetTimezoneHandler : public IRpcHandler
         };
 };
 
+//-----------------------------------------------------------------------------
+class FactoryResetHandler : public IRpcHandler 
+{
+    public:
+
+        static constexpr const char* NAME = "factoryReset";
+
+        //!
+        Result Handle(const std::string& payload) override 
+        {
+            const auto result = Core::GuardianProxy::GetInstance()->FactoryReset();
+            return result;
+        }
+};
 } // namespace Handlers

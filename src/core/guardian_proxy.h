@@ -99,6 +99,9 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
         
         //! Remove feeding schedule from storage
         auto RemoveFeedingScheduleFromStorage(const int slotIndex) -> bool override;
+
+        //! Factory reset (clear all stored data)
+        auto FactoryReset() -> Result override;
         
     // IUserInterface --------------------------------------------------------
 

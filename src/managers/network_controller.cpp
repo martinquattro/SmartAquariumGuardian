@@ -265,8 +265,9 @@ void NetworkController::RegisterRpcHandlers()
     _rpcHandlers[Handlers::DeleteFeedingScheduleHandler::NAME]  = std::make_unique<Handlers::DeleteFeedingScheduleHandler>();
     _rpcHandlers[Handlers::FeedNowHandler::NAME]                = std::make_unique<Handlers::FeedNowHandler>();
     _rpcHandlers[Handlers::SetTimezoneHandler::NAME]            = std::make_unique<Handlers::SetTimezoneHandler>();
+    _rpcHandlers[Handlers::FactoryResetHandler::NAME]           = std::make_unique<Handlers::FactoryResetHandler>();
 }
-
+    
 //----private------------------------------------------------------------------
 void NetworkController::ChangeState(const State newState, const int delayMs)
 {
