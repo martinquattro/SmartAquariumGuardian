@@ -74,6 +74,8 @@ class UserInterface : public Base::Singleton<UserInterface>
         Drivers::GraphicDisplay::UIElement* _cloudIconOn;
         Drivers::GraphicDisplay::UIElement* _cloudIconOff;
 
+        Drivers::GraphicDisplay::UIElement* _apIconOn;
+        
         Drivers::GraphicDisplay::UIElement* _time;
 
         Drivers::GraphicDisplay::UIElement* _feederPanel;

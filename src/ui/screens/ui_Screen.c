@@ -28,6 +28,7 @@ lv_obj_t * ui_lblTempLimitMax = NULL;
 lv_obj_t * ui_panelHeader = NULL;
 lv_obj_t * ui_lblTime = NULL;
 lv_obj_t * ui_panelIcons = NULL;
+lv_obj_t * ui_imgAPActive = NULL;
 lv_obj_t * ui_imgWifiOn = NULL;
 lv_obj_t * ui_imgWiFiOff = NULL;
 lv_obj_t * ui_imgCloudOn = NULL;
@@ -52,7 +53,7 @@ void ui_Screen_screen_init(void)
 {
     ui_Screen = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_Screen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_Screen, lv_color_hex(0x010952), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_Screen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Screen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(ui_Screen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_main_stop(ui_Screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -331,6 +332,14 @@ void ui_Screen_screen_init(void)
     lv_obj_set_style_text_letter_space(ui_panelIcons, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui_panelIcons, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_imgAPActive = lv_image_create(ui_panelIcons);
+    lv_image_set_src(ui_imgAPActive, &ui_img_wifi_find_20dp_ffffff_fill0_wght400_grad0_opsz20_png);
+    lv_obj_set_width(ui_imgAPActive, LV_SIZE_CONTENT);   /// 20
+    lv_obj_set_height(ui_imgAPActive, LV_SIZE_CONTENT);    /// 20
+    lv_obj_set_align(ui_imgAPActive, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_imgAPActive, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_imgAPActive, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
     ui_imgWifiOn = lv_image_create(ui_panelIcons);
     lv_image_set_src(ui_imgWifiOn, &ui_img_icn_wifi_on_png);
     lv_obj_set_width(ui_imgWifiOn, LV_SIZE_CONTENT);   /// 24
@@ -556,6 +565,7 @@ void ui_Screen_screen_destroy(void)
     ui_panelHeader = NULL;
     ui_lblTime = NULL;
     ui_panelIcons = NULL;
+    ui_imgAPActive = NULL;
     ui_imgWifiOn = NULL;
     ui_imgWiFiOff = NULL;
     ui_imgCloudOn = NULL;

@@ -49,6 +49,12 @@ class NetworkController : public Base::Singleton<NetworkController>
         */
         bool IsMqttClientConnected() const;
 
+        /*!
+        * @brief Check if AP Portal is active.
+        * @return true if AP Portal is active, false otherwise.
+        */
+        bool IsApPortalActive() const;
+
     private:
 
         friend class Base::Singleton<NetworkController>;

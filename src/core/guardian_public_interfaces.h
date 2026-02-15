@@ -49,6 +49,9 @@ class INetworkController
 
         //! Check if MQTT client is connected
         virtual auto IsMqttConnected() const -> bool = 0;
+
+        //! Check AP Portal state
+        virtual auto IsApPortalActive() const -> bool = 0;
 };
 
 //-----------------------------------------------------------------------------

@@ -36,6 +36,7 @@ extern lv_obj_t * ui_lblTempLimitMax;
 extern lv_obj_t * ui_panelHeader;
 extern lv_obj_t * ui_lblTime;
 extern lv_obj_t * ui_panelIcons;
+extern lv_obj_t * ui_imgAPActive;
 extern lv_obj_t * ui_imgWifiOn;
 extern lv_obj_t * ui_imgWiFiOff;
 extern lv_obj_t * ui_imgCloudOn;

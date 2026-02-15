@@ -72,6 +72,12 @@ auto GuardianProxy::IsMqttConnected() const -> bool
     return Managers::NetworkController::GetInstance()->IsMqttClientConnected();
 }
 
+//----INetworkController--------------------------------------------------------
+auto GuardianProxy::IsApPortalActive() const -> bool
+{
+    return Managers::NetworkController::GetInstance()->IsApPortalActive();
+}
+
 //----IRealTimeClock------------------------------------------------------------
 auto GuardianProxy::GetDateTime(Utils::DateTime& time) const -> bool
 {

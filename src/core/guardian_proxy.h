@@ -52,6 +52,9 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
         //! Check if MQTT client is connected
         auto IsMqttConnected() const -> bool override;
 
+        //! Check AP Portal state
+        auto IsApPortalActive() const -> bool override;
+
     // IPowerController --------------------------------------------------------
 
         //! Get current power mode

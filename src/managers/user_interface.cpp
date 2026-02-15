@@ -42,6 +42,8 @@ bool UserInterface::OnInit()
     _cloudIconOff = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOff);
     _cloudIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgCloudOn);
 
+    _apIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgAPActive);
+
     _tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
 
     _tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
@@ -75,16 +77,30 @@ void UserInterface::OnUpdate()
     {
         bool wifiOk = Core::GuardianProxy::GetInstance()->IsWifiConnected();
         bool cloudOk = Core::GuardianProxy::GetInstance()->IsMqttConnected();
+        bool apPortalOk = Core::GuardianProxy::GetInstance()->IsApPortalActive();
 
         if (!wifiOk)
         {   
-            _wifiIconOff->Show();
-            _wifiIconOn->Hide();
-            _cloudIconOff->Show();
-            _cloudIconOn->Hide();
+            if (apPortalOk)
+            {
+                _apIconOn->Show();
+                _wifiIconOff->Hide();
+                _wifiIconOn->Hide();
+                _cloudIconOff->Hide();
+                _cloudIconOn->Hide();
+            }
+            else
+            {
+                _apIconOn->Hide();
+                _wifiIconOff->Show();
+                _wifiIconOn->Hide();
+                _cloudIconOff->Show();
+                _cloudIconOn->Hide();
+            }
         }
         else if (!cloudOk)
         {
+            _apIconOn->Hide();
             _wifiIconOff->Hide();
             _wifiIconOn->Show();
             _cloudIconOff->Show();
@@ -92,6 +108,7 @@ void UserInterface::OnUpdate()
         }
         else
         {
+            _apIconOn->Hide();
             _wifiIconOff->Hide();
             _wifiIconOn->Show();
             _cloudIconOff->Hide();

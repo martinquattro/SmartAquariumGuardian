@@ -313,6 +313,12 @@ bool NetworkController::IsMqttClientConnected() const
     return _mqttClient->IsConnected();
 }
 
+//-----------------------------------------------------------------------------
+bool NetworkController::IsApPortalActive() const
+{
+    return (_apPortal->GetState() != Connectivity::APPortal::State::IDLE);
+}
+
 //----private------------------------------------------------------------------
 void NetworkController::RegisterRpcHandlers()
 {
