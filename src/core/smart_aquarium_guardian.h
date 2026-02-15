@@ -14,9 +14,7 @@
 class SmartAquariumGuardian : public Base::Singleton<SmartAquariumGuardian>,
                               public Base::Manager
 {
-    public:
-
-    private:
+    protected:
 
         friend class Base::Singleton<SmartAquariumGuardian>;
 
@@ -39,7 +37,7 @@ class SmartAquariumGuardian : public Base::Singleton<SmartAquariumGuardian>,
          */
         void OnUpdate() override;
 
-        //---------------------------------------------
+    private:
 
         SmartAquariumGuardian() {}
         ~SmartAquariumGuardian() = default;

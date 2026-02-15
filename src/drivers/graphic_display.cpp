@@ -265,8 +265,6 @@ bool GraphicDisplay::OnInit()
         lvgl_port_unlock();
     }
 
-    SetBrightness(80); // Set default brightness to 80%
-
     _valid = true;
     return true;
 }
@@ -287,6 +285,17 @@ void GraphicDisplay::SetOnDoubleClickAction(TouchCallback callback)
 void GraphicDisplay::SetOnLongPressAction(TouchCallback callback)
 {
     _onLongPressAction = callback;
+}
+
+//-----------------------------------------------------------------------------
+void GraphicDisplay::SetBrightness(uint8_t brightness)
+{
+    // Clamp brightness to 0-100%
+    brightness = (brightness > 100) ? 100 : brightness;
+
+    float duty = static_cast<float>(brightness) / 100.0f;
+
+    _bklPin.SetDuty(duty);
 }
 
 //----private------------------------------------------------------------------
@@ -328,17 +337,6 @@ void GraphicDisplay::SetupTouchDetection()
     lv_indev_set_long_press_time(lv_indev_get_act(), 1400); // Set long press time to 1400ms
 
     CORE_INFO("Touch detection setup completed on TOP LAYER.");
-}
-
-//----private------------------------------------------------------------------
-void GraphicDisplay::SetBrightness(uint8_t brightness)
-{
-    // Clamp brightness to 0-100%
-    brightness = (brightness > 100) ? 100 : brightness;
-
-    float duty = static_cast<float>(brightness) / 100.0f;
-
-    _bklPin.SetDuty(duty);
 }
 
 //----private------------------------------------------------------------------

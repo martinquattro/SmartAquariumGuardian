@@ -73,7 +73,7 @@ class MqttClient : public Base::Singleton<MqttClient>,
         */  
         void SetMessageCallback(MessageCallback cb);
 
-    private:
+    protected:
 
         friend class Base::Singleton<MqttClient>;
 
@@ -96,7 +96,7 @@ class MqttClient : public Base::Singleton<MqttClient>,
         */
         void OnUpdate() override;
         
-        //---------------------------------------------
+    private:
 
         /*!
         * @brief Start the MQTT client and connect to the broker

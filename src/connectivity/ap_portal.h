@@ -78,7 +78,7 @@ class APPortal : public Base::Singleton<APPortal>,
         Result GetMqttCredentials(std::string& broker, uint16_t& port, 
                                    std::string& username, std::string& password) const;
 
-    private:
+    protected:
 
         friend class Base::Singleton<APPortal>;
 
@@ -94,14 +94,14 @@ class APPortal : public Base::Singleton<APPortal>,
         *       * @return bool True if initialization successful, false otherwise.
         */
         bool OnInit() override;
-
+    
         /*!
         * @brief Updates the Module state.
         *        This method should be called periodically to update the system state.
         */
         void OnUpdate() override;
 
-        //---------------------------------------------
+    private:
 
         auto _Start() -> State;
         auto _Stop() -> State;

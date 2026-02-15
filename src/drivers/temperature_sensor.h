@@ -25,7 +25,7 @@ class TemperatureSensor : public Base::Singleton<TemperatureSensor>,
          */
         float GetLastReading() const;
 
-    private:
+    protected:
 
         friend class Base::Singleton<TemperatureSensor>;
 
@@ -48,6 +48,8 @@ class TemperatureSensor : public Base::Singleton<TemperatureSensor>,
         */
         void OnUpdate() override;
 
+    private:
+    
         /**
          * @brief Get raw temperature reading from the sensor.
          * @return int16_t Raw temperature value.

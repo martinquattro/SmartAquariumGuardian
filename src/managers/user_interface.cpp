@@ -15,7 +15,7 @@
 
 namespace Managers {
 
-//----private------------------------------------------------------------------
+//----protected----------------------------------------------------------------
 bool UserInterface::OnInit()
 {
     _display = Drivers::GraphicDisplay::GetInstance();
@@ -32,6 +32,8 @@ bool UserInterface::OnInit()
             Core::GuardianProxy::GetInstance()->ActivateApMode();
         }
     );
+
+    _display->SetBrightness(80);
     
     // Initialize UI elements
     _time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
@@ -65,7 +67,7 @@ bool UserInterface::OnInit()
     return true;
 }
 
-//----private------------------------------------------------------------------
+//----protected----------------------------------------------------------------
 void UserInterface::OnUpdate()
 {
     // Power status
@@ -222,6 +224,18 @@ void UserInterface::OnUpdate()
         std::sprintf(buffer, "%d", feederStatus.remainingDosesToday);
         _dosesLeft->SetText(buffer);
     }
+}
+
+//----protected----------------------------------------------------------------
+void UserInterface::OnBatteryModeEnter()
+{
+    _display->SetBrightness(DISPLAY_BRIGHTNESS_BATTERY_MODE); // Dim the display for battery mode
+}
+
+//----protected----------------------------------------------------------------
+void UserInterface::OnBatteryModeExit()
+{
+    _display->SetBrightness(DISPLAY_BRIGHTNESS_NORMAL_MODE); // Restore brightness for normal mode
 }
 
 //----private------------------------------------------------------------------

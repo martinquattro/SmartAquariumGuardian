@@ -37,7 +37,7 @@ class EepromMemory : public Base::Singleton<EepromMemory>,
         */
         bool ReadBytes(uint16_t address, uint8_t* buffer, size_t length);
 
-    private:
+    protected:
 
         friend class Base::Singleton<EepromMemory>;
 
@@ -60,6 +60,8 @@ class EepromMemory : public Base::Singleton<EepromMemory>,
         */
         void OnUpdate() override {}
 
+    private:
+    
         /*!
          * @brief Write a full page to the EEPROM.
          * @param pageAddress   Page address to write to.

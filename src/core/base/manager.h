@@ -9,8 +9,6 @@
 
 #include "src/core/base/module.h"
 
-namespace Core { class GuardianProxy;}
-
 namespace Base {
 
 /**

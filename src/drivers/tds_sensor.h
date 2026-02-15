@@ -31,7 +31,7 @@ class TdsSensor : public Base::Singleton<TdsSensor>,
          */
         void SetTemperature(float temperature) { _temperature = temperature; }
 
-    private:
+    protected:
 
         friend class Base::Singleton<TdsSensor>;
 
@@ -54,6 +54,8 @@ class TdsSensor : public Base::Singleton<TdsSensor>,
         */
         void OnUpdate() override;
 
+    private:
+    
         /*!
         * @brief Stores an analog reading and returns the average of the stored readings.
         * @param reading The new analog reading to store.

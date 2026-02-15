@@ -55,7 +55,7 @@ class NetworkController : public Base::Singleton<NetworkController>
         */
         bool IsApPortalActive() const;
 
-    private:
+    protected:
 
         friend class Base::Singleton<NetworkController>;
 
@@ -78,6 +78,18 @@ class NetworkController : public Base::Singleton<NetworkController>
          */
         void OnUpdate() override;
 
+        /*!
+        * @brief Updates what is necessary when entering battery mode
+        */
+        void OnBatteryModeEnter() override;
+
+        /*!
+        * @brief Updates what is necessary when exiting battery mode
+        */
+        void OnBatteryModeExit() override;
+
+    private:
+
         enum class State 
         {
             INIT,
@@ -94,6 +106,8 @@ class NetworkController : public Base::Singleton<NetworkController>
             PRE_START_ACCESS_POINT,
             START_ACCESS_POINT,
             WAITING_FOR_ACCESS_POINT,
+            STOP,
+            NO_CONNECTIONS,
             ERROR
         };
 

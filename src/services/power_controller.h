@@ -46,7 +46,7 @@ class PowerController : public Base::Singleton<PowerController>
          */
         auto GetBatteryLevel() -> BatteryLevel;
 
-    private:
+    protected:
 
         friend class Base::Singleton<PowerController>;
 
@@ -63,7 +63,7 @@ class PowerController : public Base::Singleton<PowerController>
          */
         bool OnInit() override;
 
-        //---------------------------------------------
+    private:
 
         PowerController();
         ~PowerController() = default;

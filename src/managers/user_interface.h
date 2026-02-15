@@ -26,7 +26,7 @@ class UserInterface : public Base::Singleton<UserInterface>
         */
         void UpdateFeedingStatusIndicator(bool isFeeding);
 
-    private:
+    protected:
 
         friend class Base::Singleton<UserInterface>;
 
@@ -50,16 +50,32 @@ class UserInterface : public Base::Singleton<UserInterface>
         void OnUpdate() override;
 
         /*!
-        * @brief Update power status indicator
+        * @brief Updates what is necessary when entering battery mode
         */
+        void OnBatteryModeEnter() override;
+
+        /*!
+        * @brief Updates what is necessary when exiting battery mode
+        */
+        void OnBatteryModeExit() override;
+
+    private:
+
+        /*!
+         * @brief Update power status indicator
+         */
         void UpdatePowerIndicator();
 
-        //---------------------------------------------
 
         UserInterface() {}
         ~UserInterface() = default;
         UserInterface(const UserInterface&) = delete;
         UserInterface& operator=(const UserInterface&) = delete;
+
+        //---------------------------------------------
+
+        static constexpr int DISPLAY_BRIGHTNESS_BATTERY_MODE = 20;
+        static constexpr int DISPLAY_BRIGHTNESS_NORMAL_MODE = 80;
 
         //---------------------------------------------
 

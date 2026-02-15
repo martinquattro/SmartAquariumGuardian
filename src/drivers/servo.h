@@ -26,7 +26,7 @@ class Servo : public Base::Singleton<Servo>,
          */
         void FadeToAngle(float angle, uint32_t timeMs);
 
-    private:
+    protected:
 
         friend class Base::Singleton<Servo>;
 
@@ -49,7 +49,7 @@ class Servo : public Base::Singleton<Servo>,
         */
         void OnUpdate() override;
 
-        //---------------------------------------------
+    protected:
 
         Servo();
         ~Servo() = default;

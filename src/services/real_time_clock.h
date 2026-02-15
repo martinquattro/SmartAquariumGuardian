@@ -57,7 +57,7 @@ class RealTimeClock : public Base::Singleton<RealTimeClock>
         */
         static void TimeSyncCallback(struct ::timeval *tv);
 
-    private:
+    protected:
 
         friend class Base::Singleton<RealTimeClock>;
 
@@ -74,6 +74,8 @@ class RealTimeClock : public Base::Singleton<RealTimeClock>
          */
         bool OnInit() override;
 
+    private:
+    
         /**
          * @brief Convert decimal to BCD format.
          * @param val   Decimal value (0-99).

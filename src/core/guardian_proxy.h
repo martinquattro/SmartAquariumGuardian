@@ -131,7 +131,7 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
         //! Check if temperature reading is out of limits
         auto IsTemperatureOutOfLimits() const -> bool override;
 
-    private:
+    protected:
 
         friend class Base::Singleton<GuardianProxy>;
 
@@ -154,7 +154,7 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
          */
         void OnUpdate() override {}
 
-        //---------------------------------------------
+    private:
 
         GuardianProxy() = default;
         ~GuardianProxy() = default;

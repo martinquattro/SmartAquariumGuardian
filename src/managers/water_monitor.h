@@ -58,7 +58,7 @@ class WaterMonitor : public Base::Singleton<WaterMonitor>
         */
         bool IsTemperatureOutOfLimits() const;
 
-    private:
+    protected:
 
         friend class Base::Singleton<WaterMonitor>;
 
@@ -81,7 +81,7 @@ class WaterMonitor : public Base::Singleton<WaterMonitor>
          */
         void OnUpdate() override;
 
-        //---------------------------------------------
+    private:
 
         WaterMonitor() {}
         ~WaterMonitor() = default;

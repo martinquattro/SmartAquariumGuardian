@@ -66,7 +66,7 @@ class WiFiCom : public Base::Singleton<WiFiCom>,
          */
         State GetState() const { return _state; }
 
-    private:
+    protected:
 
         friend class Base::Singleton<WiFiCom>;
 
@@ -89,6 +89,8 @@ class WiFiCom : public Base::Singleton<WiFiCom>,
         */
         void OnUpdate() override;
 
+    private:
+    
         auto _Start() -> State;
         void _Stop();
         

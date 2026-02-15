@@ -11,6 +11,8 @@
 #include "framework/common_defs.h"
 #include "src/core/base/singleton.h"
 
+namespace Services { class PowerController; }
+
 namespace Base {
 
 /**
@@ -61,9 +63,24 @@ class Module
          *        Calls OnUpdate() internally.
          *        Only implemented by Managers and Services.
          *        Drivers typically don't need this.
+         *        Automatically detects battery mode changes and calls appropriate handlers.
          */
         void Update()
         {
+            bool enteredBatteryMode = false;
+            bool exitedBatteryMode = false;
+            
+            _CheckBatteryModeChange(enteredBatteryMode, exitedBatteryMode);
+            
+            if (enteredBatteryMode)
+            {
+                OnBatteryModeEnter();
+            }
+            else if (exitedBatteryMode)
+            {
+                OnBatteryModeExit();
+            }
+            
             OnUpdate();
         }
 
@@ -72,7 +89,7 @@ class Module
         /**
          * @brief Protected constructor to prevent direct instantiation.
          */
-        Module() = default;
+        Module() : _lastBatteryMode(false) {}
 
         /**
          * @brief Get the module name for logging and debugging.
@@ -97,13 +114,38 @@ class Module
          */
         virtual void OnUpdate() {}
 
+        /**
+         * @brief Optional callback for entering battery mode.
+         *        This can be used to reduce power consumption when running on battery.
+         *        Default implementation does nothing (empty).
+         */
+        virtual void OnBatteryModeEnter() {}
+
+        /**
+         * @brief Optional callback for exiting battery mode.
+         *        This can be used to restore normal operation when switching back to main power.
+         *        Default implementation does nothing (empty).
+         */
+        virtual void OnBatteryModeExit() {}
+
     private:
+
+        /**
+         * @brief Check battery mode and update flags if state changed.
+         *        Sets enteredBatteryMode=true if transitioning to battery mode.
+         *        Sets exitedBatteryMode=true if transitioning out of battery mode.
+         * @param enteredBatteryMode Output: true if just entered battery mode
+         * @param exitedBatteryMode Output: true if just exited battery mode
+         */
+        void _CheckBatteryModeChange(bool& enteredBatteryMode, bool& exitedBatteryMode);
 
         // Prevent copying and moving
         Module(const Module&) = delete;
         Module& operator=(const Module&) = delete;
         Module(Module&&) = delete;
         Module& operator=(Module&&) = delete;
+
+        bool _lastBatteryMode;
 };
 
 } // namespace Base

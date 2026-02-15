@@ -61,7 +61,7 @@ class FoodFeeder :   public Base::Singleton<FoodFeeder>
         */
         auto GetFeederStatus() const -> FeederStatus;
 
-    private:
+    protected:
 
         friend class Base::Singleton<FoodFeeder>;
 
@@ -84,6 +84,8 @@ class FoodFeeder :   public Base::Singleton<FoodFeeder>
          */
         void OnUpdate() override;
 
+    private:
+    
         /*!
         * @brief Perform the feeding sequence for the specified dose.
         * @param dose Amount of food to dispense.

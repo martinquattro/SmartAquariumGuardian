@@ -68,7 +68,13 @@ class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
          */
         void SetOnLongPressAction(TouchCallback callback);
 
-    private:
+        /**
+        * @brief Sets the display brightness.
+        * @param brightness Brightness level percentage.
+        */
+        void SetBrightness(uint8_t brightness);
+
+    protected:
 
         friend class Base::Singleton<GraphicDisplay>;
 
@@ -91,11 +97,11 @@ class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
         */
         void OnUpdate() override;
 
+    private:
+
         void SetupTouchDetection();
         static void OnTouchTimer(lv_timer_t* timer);
         static void OnTouchEventCallback(lv_event_t* e);
-
-        void SetBrightness(uint8_t brightness);
 
         //---------------------------------------------
         

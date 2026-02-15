@@ -284,12 +284,70 @@ void NetworkController::OnUpdate()
         }
         break;
 
+        case State::STOP:
+        {
+            if (_delayTimeout.HasFinished())
+            {
+                if (_mqttClient->IsConnected())
+                {
+                    CORE_WARNING("NetworkController: Still connected to MQTT broker, killing MQTT client");
+                    _mqttClient->Stop();
+
+                    ChangeState(State::STOP, 1000);
+                }
+                else if (_wifiCom->IsConnected() || _wifiCom->GetState() != Connectivity::WiFiCom::State::IDLE)
+                {
+                    CORE_WARNING("NetworkController: Still connected to WiFi, killing WiFi connection.");
+                    _wifiCom->Disconnect();
+
+                    ChangeState(State::STOP, 1000);
+                }
+                else if (_apPortal->GetState() != Connectivity::APPortal::State::IDLE)
+                {
+                    CORE_WARNING("NetworkController: Still connected to AP Portal, killing AP Portal.");
+                    _apPortal->Stop();
+
+                    ChangeState(State::STOP, 1000);
+                }
+                else
+                {
+                    CORE_INFO("NetworkController: All connections stopped successfully");
+                    ChangeState(State::NO_CONNECTIONS);
+                }
+            }
+        }
+        break;
+
+        case State::NO_CONNECTIONS:
+        {
+            // Do nothing, just stay idle with no connections until battery mode is exited
+        }
+        break;
+
         default:
         {
             CORE_ERROR("NetworkController in unknown state");
             ChangeState(State::ERROR);
         }
         break;
+    }
+}
+
+//----protected----------------------------------------------------------------
+void NetworkController::OnBatteryModeEnter()
+{
+    if (_state != State::STOP)
+    {
+        ChangeState(State::STOP, 5000); // Stop all network activity when entering battery mode.
+    }
+}
+
+//----protected----------------------------------------------------------------
+void NetworkController::OnBatteryModeExit()
+{
+    if (_state == State::IDLE)
+    {
+        ChangeState(State::INIT); 
     }
 }
 
