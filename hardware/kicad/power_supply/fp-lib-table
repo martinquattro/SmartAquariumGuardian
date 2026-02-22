@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "PowerSupply")(type "KiCad")(uri "${KIPRJMOD}/lib/PowerSupply.pretty/")(options "")(descr ""))
+  (lib (name "JLCPCB")(type "KiCad")(uri "${KIPRJMOD}/lib/EasyEDA.pretty")(options "")(descr ""))
+)
