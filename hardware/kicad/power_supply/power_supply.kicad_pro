@@ -37,9 +37,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.27,
-          "width": 2.54
+          "drill": 0.3,
+          "height": 0.5,
+          "width": 0.5
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -48,11 +48,46 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.0
         }
       },
-      "diff_pair_dimensions": [],
-      "drc_exclusions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
+      "drc_exclusions": [
+        [
+          "extra_footprint|118804000|103734000|75bb87c7-14e2-4a84-b680-06963c8a830a|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "extra_footprint|119254000|85184000|c0721dba-44b1-4286-abea-60669824a98f|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "extra_footprint|142304000|103734000|b09ab8a7-e66d-4cc1-ad36-8fd6cd86eb8a|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "extra_footprint|157204000|84984000|4b78e73f-06fa-4173-a459-5f9a8aea5a45|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "extra_footprint|170304000|103234000|4203be16-f1b0-4bb6-9058-d123b56ff44b|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "silk_edge_clearance|116304000|89734000|aeb37ede-aa64-4eef-bf2b-836649b55b79|deb38c30-c6b2-4992-be1b-e8dacd56e844",
+          ""
+        ],
+        [
+          "silk_edge_clearance|116304000|98734000|aeb37ede-aa64-4eef-bf2b-836649b55b79|71c1d126-d178-453b-b6f4-d5f1bc74dc6a",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -141,7 +176,7 @@
           "td_onpthpad": true,
           "td_onroundshapesonly": false,
           "td_onsmdpad": true,
-          "td_ontrackend": false,
+          "td_ontrackend": true,
           "td_onvia": true
         }
       ],
@@ -180,7 +215,13 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
+      "track_widths": [
+        0.0,
+        0.3,
+        0.5,
+        0.8,
+        1.0
+      ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -207,7 +248,12 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -473,18 +519,67 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.25,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "clearance": 0.25,
+        "name": "Power",
+        "pcb_color": "rgb(62, 0, 255)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.8,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
       }
     ],
     "meta": {
       "version": 4
     },
     "net_colors": null,
-    "netclass_assignments": null,
-    "netclass_patterns": []
+    "netclass_assignments": {
+      "Net-(BT1-+)": [
+        "Power"
+      ],
+      "Net-(D1-K)": [
+        "Power"
+      ],
+      "Net-(D4-A)": [
+        "Power"
+      ],
+      "Net-(D4-K)": [
+        "Power"
+      ],
+      "Net-(J2-Vout)": [
+        "Power"
+      ],
+      "Net-(JP2-A)": [
+        "Power"
+      ],
+      "Net-(JP3-B)": [
+        "Power"
+      ]
+    },
+    "netclass_patterns": [
+      {
+        "netclass": "Power",
+        "pattern": "V_{in}"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "V_{bat}"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "V_{out}"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "GND"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -607,7 +702,7 @@
       "include_excluded_from_bom": true,
       "name": "",
       "sort_asc": true,
-      "sort_field": "${ITEM_NUMBER}"
+      "sort_field": "Datasheet"
     },
     "connection_grid_size": 50.0,
     "drawing": {
