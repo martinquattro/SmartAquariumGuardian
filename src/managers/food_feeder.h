@@ -108,8 +108,8 @@ class FoodFeeder :   public Base::Singleton<FoodFeeder>
         static constexpr const int MINUTES_IN_A_DAY = 1440;
         static constexpr const int MIN_FEED_DOSE = 1;
         static constexpr const int MAX_FEED_DOSE = 5;
-        static constexpr const float FEEDER_OPEN_ANGLE = 180.0;
-        static constexpr const float FEEDER_CLOSED_ANGLE = 0.0f;
+        static constexpr const float FEEDER_OPEN_ANGLE = 0.0;
+        static constexpr const float FEEDER_CLOSED_ANGLE = 180.0f;
         static constexpr const int FEEDER_MOVE_TIME_MS = 1000;
         static constexpr const int FEEDER_WAIT_TIME_MS = 300;
 
