@@ -4748,7 +4748,7 @@
 				)
 			)
 		)
-		(property "Footprint" "JLCPCB:IND-SMD_2P-L5.0-W5.0"
+		(property "Footprint" "PowerSupply:IND-SMD_2P-L5.0-W5.0"
 			(at 173.99 62.23 0)
 			(effects
 				(font
@@ -4825,7 +4825,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+		(property "Footprint" "PowerSupply:PinHeader_1x02_P2.54mm_Vertical"
 			(at 147.32 62.23 0)
 			(effects
 				(font
@@ -4905,7 +4905,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "PowerSupply:C_0402_1005Metric"
 			(at 115.57 133.35 0)
 			(effects
 				(font
@@ -4985,7 +4985,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm_ThermalVias"
+		(property "Footprint" "PowerSupply:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm_ThermalVias"
 			(at 137.922 152.4 0)
 			(effects
 				(font
@@ -5084,7 +5084,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+		(property "Footprint" "PowerSupply:C_1206_3216Metric"
 			(at 208.28 72.39 0)
 			(effects
 				(font
@@ -5161,7 +5161,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+		(property "Footprint" "PowerSupply:SOT-23"
 			(at 120.015 59.69 0)
 			(effects
 				(font
@@ -5247,7 +5247,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 125.73 134.62 0)
 			(effects
 				(font
@@ -5326,7 +5326,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SMA"
+		(property "Footprint" "PowerSupply:D_SMA"
 			(at 125.095 67.31 0)
 			(effects
 				(font
@@ -5403,7 +5403,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+		(property "Footprint" "PowerSupply:PinHeader_1x02_P2.54mm_Vertical"
 			(at 44.45 119.38 0)
 			(effects
 				(font
@@ -5482,7 +5482,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm"
+		(property "Footprint" "PowerSupply:Pin_D1.3mm_L11.0mm"
 			(at 247.65 62.23 0)
 			(effects
 				(font
@@ -5556,7 +5556,7 @@
 				)
 			)
 		)
-		(property "Footprint" "JLCPCB:TYPE-C-SMD_TYPE-C-6P"
+		(property "Footprint" "PowerSupply:TYPE-C-SMD_TYPE-C-6P"
 			(at 44.45 73.66 0)
 			(effects
 				(font
@@ -5649,7 +5649,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+		(property "Footprint" "PowerSupply:C_1206_3216Metric"
 			(at 162.56 74.93 0)
 			(effects
 				(font
@@ -5729,7 +5729,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
+		(property "Footprint" "PowerSupply:LED_0805_2012Metric"
 			(at 167.64 119.38 0)
 			(effects
 				(font
@@ -5815,7 +5815,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SMA"
+		(property "Footprint" "PowerSupply:D_SMA"
 			(at 193.04 57.785 0)
 			(effects
 				(font
@@ -5894,7 +5894,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm"
+		(property "Footprint" "PowerSupply:Pin_D1.3mm_L11.0mm"
 			(at 190.5 85.09 0)
 			(effects
 				(font
@@ -5970,7 +5970,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 129.54 77.47 0)
 			(effects
 				(font
@@ -6048,7 +6048,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_EH_B2B-EH-A_1x02_P2.50mm_Vertical"
+		(property "Footprint" "PowerSupply:JST_EH_B2B-EH-A_1x02_P2.50mm_Vertical"
 			(at 38.1 129.286 90)
 			(effects
 				(font
@@ -6152,7 +6152,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Fuse:Fuse_BelFuse_0ZRE0005FF_L8.3mm_W3.8mm"
+		(property "Footprint" "PowerSupply:Fuse_BelFuse_0ZRE0005FF_L8.3mm_W3.8mm"
 			(at 234.95 64.008 90)
 			(effects
 				(font
@@ -6360,7 +6360,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-6_HandSoldering"
+		(property "Footprint" "PowerSupply:TSOT-23-6_HandSoldering"
 			(at 180.34 76.2 0)
 			(effects
 				(font
@@ -6452,7 +6452,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 58.42 88.9 0)
 			(effects
 				(font
@@ -6531,7 +6531,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical"
+		(property "Footprint" "PowerSupply:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical"
 			(at 267.97 59.69 0)
 			(effects
 				(font
@@ -6683,7 +6683,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
+		(property "Footprint" "PowerSupply:LED_0805_2012Metric"
 			(at 158.75 119.38 0)
 			(effects
 				(font
@@ -6837,7 +6837,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm"
+		(property "Footprint" "PowerSupply:Pin_D1.3mm_L11.0mm"
 			(at 146.05 62.23 0)
 			(effects
 				(font
@@ -6914,7 +6914,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 167.64 125.73 0)
 			(effects
 				(font
@@ -6994,7 +6994,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 158.75 125.73 0)
 			(effects
 				(font
@@ -7073,7 +7073,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 199.39 67.31 0)
 			(effects
 				(font
@@ -7152,7 +7152,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 199.39 77.47 0)
 			(effects
 				(font
@@ -7232,7 +7232,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "PowerSupply:C_0402_1005Metric"
 			(at 175.26 130.81 0)
 			(effects
 				(font
@@ -7311,7 +7311,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "PowerSupply:R_0805_2012Metric"
 			(at 63.5 88.9 0)
 			(effects
 				(font
@@ -7455,7 +7455,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+		(property "Footprint" "PowerSupply:PinHeader_1x02_P2.54mm_Vertical"
 			(at 67.31 68.58 0)
 			(effects
 				(font

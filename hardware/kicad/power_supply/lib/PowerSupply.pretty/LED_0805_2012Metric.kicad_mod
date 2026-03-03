@@ -8,7 +8,7 @@
 	(property "Reference" "REF**"
 		(at 2.65 -0.064 0)
 		(layer "F.SilkS")
-		(uuid "7444ac58-82e9-4ae8-b2a0-58bbddc4cff6")
+		(uuid "8f52c04e-48bf-4213-bf82-ea9407d65756")
 		(effects
 			(font
 				(size 1 1)
@@ -19,7 +19,7 @@
 	(property "Value" "GREEN"
 		(at 0 1.65 0)
 		(layer "F.Fab")
-		(uuid "d0bd5913-2f2f-498a-a968-2bf2ab3c3b43")
+		(uuid "628094a4-8d07-4fa6-afc1-37d0ac82e6ce")
 		(effects
 			(font
 				(size 1 1)
@@ -31,7 +31,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "ec0bdaea-0626-4198-afe4-7f22bdba0fec")
+		(uuid "bdb6b30b-95ab-4b4d-85bd-a0184e436941")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -43,7 +43,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "40083ffd-3bc8-43cb-8827-520adfcdfcdf")
+		(uuid "953c619a-72cf-41ca-9472-d120d9d1b80f")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -56,7 +56,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "3dd4d9c5-5f0c-45c0-ae6b-038bc5d822b1")
+		(uuid "f3ee750f-364b-4289-8cfb-daa2b1c82db8")
 		(effects
 			(font
 				(size 1 1)
@@ -69,7 +69,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "693784ab-1e00-4483-b0b8-beb3429398d9")
+		(uuid "7638fb0f-421a-4b89-81d5-a61a968d80c6")
 		(effects
 			(font
 				(size 1 1)
@@ -86,7 +86,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "d29c3f0a-5d4f-44a6-8588-1151a85ff80d")
+		(uuid "d57454b0-3d83-432f-b77e-8903a5f07f55")
 	)
 	(fp_line
 		(start -1.685 0.96)
@@ -96,7 +96,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "8f8f2a63-d9ff-477f-b361-967488ef140e")
+		(uuid "8362ad31-9c84-470e-a8d3-379b6edd708b")
 	)
 	(fp_line
 		(start 1 -0.96)
@@ -106,7 +106,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "abd697b4-eda4-4bc1-aa9c-69544e93ed90")
+		(uuid "998800e4-b373-465b-bc66-949f40415e05")
 	)
 	(fp_rect
 		(start -1.68 -0.95)
@@ -117,7 +117,7 @@
 		)
 		(fill no)
 		(layer "F.CrtYd")
-		(uuid "8391bf95-fd73-4280-a044-2ef12bbc2a3b")
+		(uuid "0e7632e7-9094-45a8-aefd-b1fb521a7a3f")
 	)
 	(fp_line
 		(start -1 -0.3)
@@ -127,7 +127,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "801cc4a5-5515-4da5-8c14-194285276f23")
+		(uuid "d1bb8d0e-8d37-443b-9ea9-f940d839414a")
 	)
 	(fp_line
 		(start -1 0.6)
@@ -137,7 +137,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "761d20e1-81b0-4ee0-bd28-3e01009e9584")
+		(uuid "d3d07d98-d321-45dc-b0f7-4f1900cac12f")
 	)
 	(fp_line
 		(start -0.7 -0.6)
@@ -147,7 +147,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "d132d387-6c93-419a-8dc9-06378dc86b13")
+		(uuid "fbf433df-0ff8-448a-a0de-3555612f6060")
 	)
 	(fp_line
 		(start 1 -0.6)
@@ -157,7 +157,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "6a8319eb-f9d7-42ed-b9ad-84d6e6c3d45e")
+		(uuid "b4f591fe-7b91-46f8-b4af-bcc986668e16")
 	)
 	(fp_line
 		(start 1 0.6)
@@ -167,12 +167,12 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "f81a71a2-aadf-49fb-aabd-9dbc678ecda8")
+		(uuid "6bd9a9ac-ff4d-41ca-a977-5f77a7c290ca")
 	)
 	(fp_text user "${REFERENCE}"
 		(at 0 0 0)
 		(layer "F.Fab")
-		(uuid "969b77e7-efe9-4774-b6db-7fd0456b45df")
+		(uuid "f26dea42-db16-4880-b761-0b7095791be8")
 		(effects
 			(font
 				(size 0.5 0.5)
@@ -185,14 +185,36 @@
 		(size 0.975 1.4)
 		(layers "F.Cu" "F.Mask" "F.Paste")
 		(roundrect_rratio 0.25)
-		(uuid "6b0177ac-d727-4565-9a36-28944fbdfa55")
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "ef8e0d1e-e0c3-48ae-97ed-a9f27a8c0b21")
 	)
 	(pad "2" smd roundrect
 		(at 0.9375 0)
 		(size 0.975 1.4)
 		(layers "F.Cu" "F.Mask" "F.Paste")
 		(roundrect_rratio 0.25)
-		(uuid "e6d9d6cb-e0b7-4098-9507-9954de788037")
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "9752c84d-a393-4d2a-b4e4-da288612f01c")
 	)
 	(embedded_fonts no)
 	(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0805_2012Metric.step"

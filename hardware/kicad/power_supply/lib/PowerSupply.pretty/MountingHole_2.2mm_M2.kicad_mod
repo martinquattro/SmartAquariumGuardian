@@ -9,7 +9,7 @@
 		(at 0 -3.15 0)
 		(layer "F.SilkS")
 		(hide yes)
-		(uuid "0d88d3d6-04fe-4cda-a2d0-2129171fe7a5")
+		(uuid "70c75b3b-e2ca-42ac-a5f2-b0a1ef50eff2")
 		(effects
 			(font
 				(size 1 1)
@@ -20,7 +20,7 @@
 	(property "Value" "MountingHole_2.2mm_M2"
 		(at 0 3.15 0)
 		(layer "F.Fab")
-		(uuid "320e182c-3c0a-4e36-bbdb-dd42f34839a8")
+		(uuid "a3cf502c-78ac-489c-acfb-9730f3318404")
 		(effects
 			(font
 				(size 1 1)
@@ -32,7 +32,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "2a6fc084-cf4d-49b7-b32b-d3631c37b61f")
+		(uuid "4452de0a-7066-4dff-ae4c-e5b8c4c5f5df")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -44,7 +44,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "b21292a1-77b2-43a0-9050-c416f3d22dcc")
+		(uuid "9ebdbfd2-7d1d-4a56-92c1-d9b345781c6b")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -62,7 +62,7 @@
 		)
 		(fill no)
 		(layer "Cmts.User")
-		(uuid "3c5f6542-86af-4859-9014-6b7a2e1fcb49")
+		(uuid "96a3e4f8-f1d8-46e4-b3a6-80ac52baccbf")
 	)
 	(fp_circle
 		(center 0 0)
@@ -73,12 +73,12 @@
 		)
 		(fill no)
 		(layer "F.CrtYd")
-		(uuid "1da40242-251e-454b-a520-d3ba0520e5bb")
+		(uuid "dc79c081-8ded-45a7-9579-656baea1dfca")
 	)
 	(fp_text user "${REFERENCE}"
 		(at 0 0 0)
 		(layer "F.Fab")
-		(uuid "f3438f7c-ae7f-4172-ba14-195a3a2cdc6d")
+		(uuid "9903d86b-4bcf-4d77-a5a7-6ebf2338ec80")
 		(effects
 			(font
 				(size 1 1)
@@ -92,7 +92,7 @@
 		(drill 1.152)
 		(layers "*.Cu" "*.Mask")
 		(solder_mask_margin 0.148)
-		(uuid "8ea5bec3-f1cf-4acc-bafb-5373916e581b")
+		(uuid "13aa03fb-c56b-470f-9eaa-aa379ac5a5c5")
 	)
 	(embedded_fonts no)
 )

@@ -8,7 +8,7 @@
 	(property "Reference" "REF**"
 		(at -3.4 -0.9 0)
 		(layer "F.SilkS")
-		(uuid "fd7100b7-1305-497d-bd94-e3d4caa6ed5e")
+		(uuid "e6594b39-5ae1-4d18-94bc-45495d8b0ba2")
 		(effects
 			(font
 				(size 1 1)
@@ -19,7 +19,7 @@
 	(property "Value" "out"
 		(at 0 -2.05 0)
 		(layer "F.Fab")
-		(uuid "41ab5a9f-70cc-44f8-ae34-a2fb32759106")
+		(uuid "f134b6a5-9057-4760-b095-2505dc72f503")
 		(effects
 			(font
 				(size 1 1)
@@ -32,7 +32,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "8ee590a7-7cfa-490e-8a14-6a3efb8719bd")
+		(uuid "80117f9c-ad21-4843-9125-5556e29beebe")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -45,7 +45,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "410921ec-d669-4a60-8315-3ca4dbcdc6ee")
+		(uuid "11068f1d-7f66-4574-8c60-d61f6c8746a2")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -58,7 +58,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "2ff6aa73-8ec7-4466-83f9-23a2c3c34e63")
+		(uuid "c62b0bd6-fa9c-4204-8219-1c73eb616408")
 		(effects
 			(font
 				(size 1 1)
@@ -76,7 +76,7 @@
 		)
 		(fill no)
 		(layer "F.SilkS")
-		(uuid "c1e5e516-dc1b-4202-8d41-cd6857e4842e")
+		(uuid "354ae786-6e1d-42ba-ac5c-7d5218794461")
 	)
 	(fp_circle
 		(center 0 0)
@@ -87,7 +87,7 @@
 		)
 		(fill no)
 		(layer "F.CrtYd")
-		(uuid "1ace0ac1-0da8-4370-8eaf-258b75dd2304")
+		(uuid "741ab426-02a0-4971-8f3b-f8c9e2b72252")
 	)
 	(fp_circle
 		(center 0 0)
@@ -98,7 +98,7 @@
 		)
 		(fill no)
 		(layer "F.Fab")
-		(uuid "751d6045-fbc0-4726-a191-dd88c4e17ea4")
+		(uuid "4a13bed7-f0f4-46be-8d26-f4c707a8437e")
 	)
 	(fp_circle
 		(center 0 0)
@@ -109,12 +109,12 @@
 		)
 		(fill no)
 		(layer "F.Fab")
-		(uuid "d9fdb4c2-f597-4c72-8520-0fe9efcf446b")
+		(uuid "3fb08b8c-a117-4eed-ac94-9b182138d59b")
 	)
 	(fp_text user "${REFERENCE}"
 		(at 0 2.4 0)
 		(layer "F.Fab")
-		(uuid "6976eb72-62d9-4b66-95bd-5fb1556bb02a")
+		(uuid "4e0031ea-f21a-4796-a1f6-57374cdb915d")
 		(effects
 			(font
 				(size 1 1)
@@ -128,7 +128,18 @@
 		(drill 1.3)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "0e762ded-29e9-4fa5-9866-93ffae3a3ef6")
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "0e5caed7-bd51-4f31-af72-e00bfd43ab93")
 	)
 	(embedded_fonts no)
 	(model "${KICAD9_3DMODEL_DIR}/Connector_Pin.3dshapes/Pin_D1.3mm_L11.0mm.step"

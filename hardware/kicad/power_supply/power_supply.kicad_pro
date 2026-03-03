@@ -72,6 +72,10 @@
           ""
         ],
         [
+          "extra_footprint|148054000|103234000|6ec5455d-e139-4b3c-8588-e3588b33af5c|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
           "extra_footprint|157204000|84984000|4b78e73f-06fa-4173-a459-5f9a8aea5a45|00000000-0000-0000-0000-000000000000",
           ""
         ],
@@ -586,7 +590,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "gerbers",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -702,7 +706,7 @@
       "include_excluded_from_bom": true,
       "name": "",
       "sort_asc": true,
-      "sort_field": "Datasheet"
+      "sort_field": "Reference"
     },
     "connection_grid_size": 50.0,
     "drawing": {
