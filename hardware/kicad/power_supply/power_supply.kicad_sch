@@ -4757,7 +4757,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C9389.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C9389.pdf"
 			(at 173.99 62.23 0)
 			(effects
 				(font
@@ -4914,7 +4914,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C15525.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C15525.pdf"
 			(at 115.57 133.35 0)
 			(effects
 				(font
@@ -4994,7 +4994,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C16581.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C16581.pdf"
 			(at 138.43 154.94 0)
 			(effects
 				(font
@@ -5093,7 +5093,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C12891.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C12891.pdf"
 			(at 208.28 72.39 0)
 			(effects
 				(font
@@ -5172,7 +5172,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C15127.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C15127.pdf"
 			(at 121.92 59.69 0)
 			(effects
 				(font
@@ -5256,7 +5256,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C17526.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C17526.pdf"
 			(at 125.73 134.62 0)
 			(effects
 				(font
@@ -5335,7 +5335,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C8678.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C8678.pdf"
 			(at 129.54 67.31 0)
 			(effects
 				(font
@@ -5565,7 +5565,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C456012.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C456012.pdf"
 			(at 40.64 76.2 0)
 			(effects
 				(font
@@ -5658,7 +5658,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C12891.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C12891.pdf"
 			(at 162.56 74.93 0)
 			(effects
 				(font
@@ -5738,7 +5738,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C2297.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C2297.pdf"
 			(at 167.64 119.38 0)
 			(effects
 				(font
@@ -5824,7 +5824,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C8678.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C8678.pdf"
 			(at 193.04 62.23 0)
 			(effects
 				(font
@@ -5979,7 +5979,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C17475.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C17475.pdf"
 			(at 129.54 77.47 0)
 			(effects
 				(font
@@ -6371,7 +6371,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C84817.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C84817.pdf"
 			(at 172.72 58.42 0)
 			(effects
 				(font
@@ -6461,7 +6461,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C27834.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C27834.pdf"
 			(at 58.42 88.9 0)
 			(effects
 				(font
@@ -6692,7 +6692,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C84256.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C84256.pdf"
 			(at 158.75 119.38 0)
 			(effects
 				(font
@@ -6923,7 +6923,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C17513.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C17513.pdf"
 			(at 167.64 125.73 0)
 			(effects
 				(font
@@ -7003,7 +7003,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C17513.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C17513.pdf"
 			(at 158.75 125.73 0)
 			(effects
 				(font
@@ -7082,7 +7082,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C17422.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C17422.pdf"
 			(at 199.39 67.31 0)
 			(effects
 				(font
@@ -7161,7 +7161,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C149504.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C149504.pdf"
 			(at 199.39 77.47 0)
 			(effects
 				(font
@@ -7241,7 +7241,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C15525.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C15525.pdf"
 			(at 175.26 130.81 0)
 			(effects
 				(font
@@ -7320,7 +7320,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "${KIPRJMOD}/lib/datasheets/C27834.pdf"
+		(property "Datasheet" "${KIPRJMOD}/datasheets/C27834.pdf"
 			(at 63.5 88.9 0)
 			(effects
 				(font

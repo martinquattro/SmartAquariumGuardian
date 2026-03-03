@@ -22,10 +22,10 @@ bool PowerController::OnInit()
 auto PowerController::GetCurrentMode() -> Mode
 {
     // Read USB detect pin state
-    if (_usbDetectPin.Read() == OFF)
-    {
-        return Mode::MODE_BATTERY_POWERED;
-    }
+    // if (_usbDetectPin.Read() == OFF)
+    // {
+    //     return Mode::MODE_BATTERY_POWERED;
+    // }
     return Mode::MODE_USB_POWERED;
 }
 
