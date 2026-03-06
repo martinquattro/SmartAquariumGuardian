@@ -574,7 +574,7 @@
       "plot": "gerbers/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "../../../../Users/marti/OneDrive - fi.uba.ar/Escritorio/temp/smart_aquarium_guardian.step",
+      "step": "smart_aquarium_guardian.step",
       "svg": "",
       "vrml": ""
     },
