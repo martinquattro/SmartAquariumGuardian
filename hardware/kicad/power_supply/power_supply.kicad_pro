@@ -82,14 +82,6 @@
         [
           "extra_footprint|170304000|103234000|4203be16-f1b0-4bb6-9058-d123b56ff44b|00000000-0000-0000-0000-000000000000",
           ""
-        ],
-        [
-          "silk_edge_clearance|116304000|89734000|aeb37ede-aa64-4eef-bf2b-836649b55b79|deb38c30-c6b2-4992-be1b-e8dacd56e844",
-          ""
-        ],
-        [
-          "silk_edge_clearance|116304000|98734000|aeb37ede-aa64-4eef-bf2b-836649b55b79|71c1d126-d178-453b-b6f4-d5f1bc74dc6a",
-          ""
         ]
       ],
       "meta": {
@@ -593,7 +585,7 @@
       "plot": "gerbers",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "power_supply.step",
       "svg": "",
       "vrml": ""
     },
