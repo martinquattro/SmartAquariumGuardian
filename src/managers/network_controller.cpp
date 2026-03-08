@@ -353,7 +353,7 @@ void NetworkController::OnBatteryModeEnter()
 //----protected----------------------------------------------------------------
 void NetworkController::OnBatteryModeExit()
 {
-    if (_state == State::IDLE)
+    if (_state == State::NO_CONNECTIONS)
     {
         ChangeState(State::INIT); 
     }

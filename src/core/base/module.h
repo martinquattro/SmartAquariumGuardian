@@ -10,6 +10,7 @@
 
 #include "framework/common_defs.h"
 #include "src/core/base/singleton.h"
+#include <cstdint>
 
 namespace Services { class PowerController; }
 
@@ -74,10 +75,12 @@ class Module
             
             if (enteredBatteryMode)
             {
+                CORE_INFO("%s entering battery mode", GetModuleName());
                 OnBatteryModeEnter();
             }
             else if (exitedBatteryMode)
             {
+                CORE_INFO("%s exiting battery mode", GetModuleName());
                 OnBatteryModeExit();
             }
             
@@ -134,6 +137,7 @@ class Module
          * @brief Check battery mode and update flags if state changed.
          *        Sets enteredBatteryMode=true if transitioning to battery mode.
          *        Sets exitedBatteryMode=true if transitioning out of battery mode.
+         *        Ignores flickering during a recovery period after each detected change.
          * @param enteredBatteryMode Output: true if just entered battery mode
          * @param exitedBatteryMode Output: true if just exited battery mode
          */
@@ -146,6 +150,8 @@ class Module
         Module& operator=(Module&&) = delete;
 
         bool _lastBatteryMode;
+        uint64_t _batteryModeRecoveryEndUs = 0;  //!< esp_timer timestamp; 0 = not in recovery
+        static constexpr uint32_t BATTERY_MODE_RECOVERY_MS = 1000;  //!< Ignore changes for 1s after a transition
 };
 
 } // namespace Base
