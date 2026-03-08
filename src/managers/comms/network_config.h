@@ -27,21 +27,26 @@ namespace NetworkConfig
         inline constexpr const char* RESULT_ERROR   = "error";
     }
 
-    namespace SharedAttributes
+    //! Keys for telemetry (time-series sensor data) - published to v1/devices/me/telemetry
+    namespace TelemetryKeys
     {
-        inline constexpr const char* TEMPERATURE                = "temperature";
-        inline constexpr const char* TDS                        = "tds";
-        inline constexpr const char* TEMP_LIMIT_MAX             = "temp_limit_max";
-        inline constexpr const char* TEMP_LIMIT_MAX_ENABLED     = "temp_limit_max_enabled";
-        inline constexpr const char* TEMP_LIMIT_MIN             = "temp_limit_min";
-        inline constexpr const char* TEMP_LIMIT_MIN_ENABLED     = "temp_limit_min_enabled";
-        inline constexpr const char* TDS_LIMIT_MAX              = "tds_limit_max";
-        inline constexpr const char* TDS_LIMIT_MIN              = "tds_limit_min";
-        inline constexpr const char* TIMEZONE                   = "system_timezone";
-        inline constexpr const char* FEED_DOSE                  = "dose";
-        inline constexpr const char* FEED_TIME                  = "time_min";
-        inline constexpr const char* FEED_SLOT_ID               = "slot_index";
-        inline constexpr const char* FEED_ENABLED               = "enabled";
+        inline constexpr const char* TEMPERATURE = "temperature";
+        inline constexpr const char* TDS        = "tds";
+    }
 
+    //! Keys for client attributes (device config) - published to v1/devices/me/attributes
+    //! Dashboard reads CLIENT_SCOPE. Same names used in RPC params for consistency.
+    namespace ClientAttributes
+    {
+        inline constexpr const char* TIMEZONE                = "system_timezone";
+        inline constexpr const char* TEMP_LIMIT_MIN          = "temp_limit_min";
+        inline constexpr const char* TEMP_LIMIT_MIN_ENABLED  = "temp_limit_min_enabled";
+        inline constexpr const char* TEMP_LIMIT_MAX          = "temp_limit_max";
+        inline constexpr const char* TEMP_LIMIT_MAX_ENABLED  = "temp_limit_max_enabled";
+        inline constexpr const char* FEEDING_SCHEDULE        = "feeding_schedule";
+        inline constexpr const char* FEED_DOSE               = "dose";
+        inline constexpr const char* FEED_TIME               = "time_min";
+        inline constexpr const char* FEED_SLOT_ID            = "slot_index";
+        inline constexpr const char* FEED_ENABLED            = "enabled";
     }
 }

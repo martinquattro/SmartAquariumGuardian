@@ -14,14 +14,15 @@
 #include "src/connectivity/wifi_com.h"
 #include "src/core/guardian_proxy.h"
 #include "src/core/guardian_public_interfaces.h"
+
+#include "src/managers/comms/cloud_payloads.h"
 #include "src/managers/comms/json_parser.h"
 #include "src/managers/comms/network_config.h"
-#include "src/managers/comms/telemetry_data.h"
 #include "src/services/storage_service.h"
 
 namespace Managers {
 
-//----private------------------------------------------------------------------
+//----protected----------------------------------------------------------------
 bool NetworkController::OnInit()
 {
     _state = State::INIT;
@@ -45,7 +46,7 @@ bool NetworkController::OnInit()
     return success;
 }
 
-//----private------------------------------------------------------------------
+//----protected----------------------------------------------------------------
 void NetworkController::OnUpdate()
 {
     _wifiCom->Update();
@@ -168,6 +169,13 @@ void NetworkController::OnUpdate()
                     DispatchMqttMessage(topic, payload);
                 }
             );
+
+            const auto result = SendClientAttributes();
+            if (!result.success)
+            {
+                CORE_ERROR("Failed to send client attributes: %s", result.responseMessage.value().c_str());
+                ChangeState(State::ERROR);
+            }
 
             ChangeState(State::IDLE);
         }
@@ -377,6 +385,12 @@ bool NetworkController::IsApPortalActive() const
     return (_apPortal->GetState() != Connectivity::APPortal::State::IDLE);
 }
 
+//-----------------------------------------------------------------------------
+Result NetworkController::SyncDevice()
+{
+    return SendClientAttributes();
+}
+
 //----private------------------------------------------------------------------
 void NetworkController::RegisterRpcHandlers()
 {
@@ -386,6 +400,7 @@ void NetworkController::RegisterRpcHandlers()
     _rpcHandlers[Handlers::FeedNowHandler::NAME]                = std::make_unique<Handlers::FeedNowHandler>();
     _rpcHandlers[Handlers::SetTimezoneHandler::NAME]            = std::make_unique<Handlers::SetTimezoneHandler>();
     _rpcHandlers[Handlers::FactoryResetHandler::NAME]           = std::make_unique<Handlers::FactoryResetHandler>();
+    _rpcHandlers[Handlers::SyncDeviceHandler::NAME]             = std::make_unique<Handlers::SyncDeviceHandler>();
 }
     
 //----private------------------------------------------------------------------
@@ -470,6 +485,23 @@ void NetworkController::DispatchRpcRequest(const std::string& topic, const std::
               , responseJson.dump().c_str()
             );
         }
+
+        if (result.success && _mqttClient->IsConnected())
+        {
+            const std::string& methodName = method.value();
+            if (methodName == Handlers::SetTempLimitsHandler::NAME ||
+                methodName == Handlers::AddFeedingScheduleHandler::NAME ||
+                methodName == Handlers::DeleteFeedingScheduleHandler::NAME ||
+                methodName == Handlers::SetTimezoneHandler::NAME ||
+                methodName == Handlers::FactoryResetHandler::NAME)
+            {
+                const auto result = SendClientAttributes();
+                if (!result.success)
+                {
+                    CORE_ERROR("Failed to send client attributes: %s", result.responseMessage.value().c_str());
+                }
+            }
+        }
     }
     else
     {
@@ -496,8 +528,8 @@ void NetworkController::SendTelemtry()
     CORE_INFO("Sending telemetry data...");
 
     // Get telemetry data
-    Comms::TelemetryData telemetryData;
-    const std::string payload = telemetryData.ToJsonString();
+    Comms::TelemetryPayload telemetryPayload;
+    const std::string payload = telemetryPayload.ToJsonString();
 
     // Publish telemetry data
     const bool success = _mqttClient->Publish(
@@ -513,6 +545,35 @@ void NetworkController::SendTelemtry()
     else
     {
         CORE_ERROR("Failed to send telemetry data");
+    }
+}
+
+//----private------------------------------------------------------------------
+Result NetworkController::SendClientAttributes()
+{
+    if (!_mqttClient->IsConnected())
+    {
+        CORE_WARNING("Cannot send client attributes: MQTT not connected");
+        return Result::Error("MQTT not connected");
+    }
+
+    CORE_INFO("Sending client attributes to ThingsBoard...");
+
+    Comms::ClientAttributesPayload attributesPayload;
+    const std::string payload = attributesPayload.ToJsonString();
+    CORE_INFO("Client attributes to send: %s", payload.c_str());
+
+    const bool success = _mqttClient->Publish(ATTRIBUTES_TOPIC, payload);
+
+    if (success)
+    {
+        CORE_INFO("Client attributes sent successfully");
+        return Result::Success("Client attributes sent successfully");
+    }
+    else
+    {
+        CORE_ERROR("Failed to send client attributes");
+        return Result::Error("Failed to send client attributes");
     }
 }
 

@@ -8,6 +8,7 @@
 #ifndef NETWORK_CONTROLLER_H
 #define NETWORK_CONTROLLER_H
 
+#include "framework/common_defs.h"
 #include "framework/util/delay.h"
 #include "lib/nlohmann_json/json.hpp"
 #include "src/core/base/manager.h"
@@ -54,6 +55,12 @@ class NetworkController : public Base::Singleton<NetworkController>
         * @return true if AP Portal is active, false otherwise.
         */
         bool IsApPortalActive() const;
+
+        /*!
+        * @brief Sync device with server.
+        * @return Result indicating success or failure.
+        */
+        Result SyncDevice();
 
     protected:
 
@@ -150,6 +157,14 @@ class NetworkController : public Base::Singleton<NetworkController>
         * @brief Send telemetry data to the MQTT broker.
         */
         void SendTelemtry();
+
+        /*!
+        * @brief Publish device config as Client Attributes to ThingsBoard.
+        *        Called on MQTT connect and after config-changing RPCs.
+        *        Enables Device-led Source of Truth (dashboard reads CLIENT_SCOPE).
+        * @return Result indicating success or failure.
+        */
+        Result SendClientAttributes();
 
         /*!
         * @brief Extracts the request ID from the RPC request URL.

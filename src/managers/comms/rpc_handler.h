@@ -47,8 +47,8 @@ class SetTempLimitsHandler : public IRpcHandler
                 return Result::Error("Internal error: Invalid JSON payload.");
             }
 
-            const auto minEnabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN_ENABLED);
-            const auto maxEnabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MAX_ENABLED);
+            const auto minEnabledOpt = parser.GetParam<bool>(NetworkConfig::ClientAttributes::TEMP_LIMIT_MIN_ENABLED);
+            const auto maxEnabledOpt = parser.GetParam<bool>(NetworkConfig::ClientAttributes::TEMP_LIMIT_MAX_ENABLED);
 
             if (!minEnabledOpt.has_value() || !maxEnabledOpt.has_value())
             {
@@ -61,8 +61,8 @@ class SetTempLimitsHandler : public IRpcHandler
             float tempMin = 0.0f;
             float tempMax = 0.0f;
 
-            const auto tempMinOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MIN);
-            const auto tempMaxOpt = parser.GetParam<float>(NetworkConfig::SharedAttributes::TEMP_LIMIT_MAX);
+            const auto tempMinOpt = parser.GetParam<float>(NetworkConfig::ClientAttributes::TEMP_LIMIT_MIN);
+            const auto tempMaxOpt = parser.GetParam<float>(NetworkConfig::ClientAttributes::TEMP_LIMIT_MAX);
 
             if (minEnabled)
             {
@@ -113,10 +113,10 @@ class AddFeedingScheduleHandler : public IRpcHandler
                 return Result::Error("Internal error: Invalid JSON payload.");
             }
 
-            const auto slotIdOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_SLOT_ID);
-            const auto timeMinutesOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_TIME);
-            const auto doseOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_DOSE);
-            const auto enabledOpt = parser.GetParam<bool>(NetworkConfig::SharedAttributes::FEED_ENABLED);
+            const auto slotIdOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::FEED_SLOT_ID);
+            const auto timeMinutesOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::FEED_TIME);
+            const auto doseOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::FEED_DOSE);
+            const auto enabledOpt = parser.GetParam<bool>(NetworkConfig::ClientAttributes::FEED_ENABLED);
 
             if (!enabledOpt.has_value())
             {
@@ -174,7 +174,7 @@ class DeleteFeedingScheduleHandler : public IRpcHandler
                 return Result::Error("Internal error: Invalid JSON payload.");
             }
 
-            const auto slotIdOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_SLOT_ID);
+            const auto slotIdOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::FEED_SLOT_ID);
 
             if (!slotIdOpt.has_value())
             {
@@ -210,7 +210,7 @@ class FeedNowHandler : public IRpcHandler
 
             int doses = 0;
 
-            const auto dosesOpt = parser.GetParam<int>(NetworkConfig::SharedAttributes::FEED_DOSE);
+            const auto dosesOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::FEED_DOSE);
             if (!dosesOpt.has_value())
             {
                 return Result::Error("Dose parameter missing");
@@ -239,7 +239,7 @@ class SetTimezoneHandler : public IRpcHandler
                 return Result::Error("Invalid JSON payload.");
             }
 
-            const auto timezone = parser.GetParam<std::string>(NetworkConfig::SharedAttributes::TIMEZONE);
+            const auto timezone = parser.GetParam<std::string>(NetworkConfig::ClientAttributes::TIMEZONE);
             
             if (!timezone.has_value())
             {
@@ -262,6 +262,21 @@ class FactoryResetHandler : public IRpcHandler
         Result Handle(const std::string& payload) override 
         {
             const auto result = Core::GuardianProxy::GetInstance()->FactoryReset();
+            return result;
+        }
+};
+
+//-----------------------------------------------------------------------------
+class SyncDeviceHandler : public IRpcHandler 
+{
+    public:
+
+        static constexpr const char* NAME = "syncDevice";
+
+        //!
+        Result Handle(const std::string& payload) override 
+        {
+            const auto result = Core::GuardianProxy::GetInstance()->SyncDevice();
             return result;
         }
 };

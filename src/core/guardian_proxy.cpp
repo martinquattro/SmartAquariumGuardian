@@ -78,6 +78,12 @@ auto GuardianProxy::IsApPortalActive() const -> bool
     return Managers::NetworkController::GetInstance()->IsApPortalActive();
 }
 
+//----INetworkController--------------------------------------------------------
+auto GuardianProxy::SyncDevice() -> Result
+{
+    return Managers::NetworkController::GetInstance()->SyncDevice();
+}
+
 //----IRealTimeClock------------------------------------------------------------
 auto GuardianProxy::GetDateTime(Utils::DateTime& time) const -> bool
 {

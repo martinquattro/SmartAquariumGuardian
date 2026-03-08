@@ -55,6 +55,9 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
         //! Check AP Portal state
         auto IsApPortalActive() const -> bool override;
 
+        //! Sync device with server
+        auto SyncDevice() -> Result override;
+
     // IPowerController --------------------------------------------------------
 
         //! Get current power mode

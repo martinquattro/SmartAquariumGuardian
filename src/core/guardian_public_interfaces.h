@@ -52,6 +52,9 @@ class INetworkController
 
         //! Check AP Portal state
         virtual auto IsApPortalActive() const -> bool = 0;
+
+        //! Sync device with server
+        virtual auto SyncDevice() -> Result = 0;
 };
 
 //-----------------------------------------------------------------------------
