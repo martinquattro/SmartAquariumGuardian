@@ -92,6 +92,31 @@ bool WiFiCom::IsConnected() const
 }
 
 //-----------------------------------------------------------------------------
+std::string WiFiCom::GetSsid() const
+{
+    if (!_connected.load())
+    {
+        return "";
+    }
+    return _ssid;
+}
+
+//-----------------------------------------------------------------------------
+int8_t WiFiCom::GetRssi() const
+{
+    if (!_connected.load())
+    {
+        return 0;
+    }
+    int rssi = 0;
+    if (esp_wifi_sta_get_rssi(&rssi) == ESP_OK)
+    {
+        return rssi;
+    }
+    return 0;
+}
+
+//-----------------------------------------------------------------------------
 void WiFiCom::Start()
 {
     if (_state == State::IDLE || _state == State::ERROR)

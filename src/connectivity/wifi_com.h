@@ -39,6 +39,18 @@ class WiFiCom : public Base::Singleton<WiFiCom>,
         bool IsConnected() const;
 
         /*!
+        * @brief Get the SSID of the currently connected AP.
+        * @return SSID string when connected, empty string otherwise.
+        */
+        std::string GetSsid() const;
+
+        /*!
+        * @brief Get the RSSI (signal strength) of the current connection.
+        * @return RSSI in dBm when connected, 0 otherwise.
+        */
+        int8_t GetRssi() const;
+
+        /*!
         * @brief Start WiFi connection
         */
         void Start();

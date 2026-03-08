@@ -67,6 +67,18 @@ auto GuardianProxy::IsWifiConnected() const -> bool
 }
 
 //----INetworkController--------------------------------------------------------
+auto GuardianProxy::GetWifiSsid() const -> std::string
+{
+    return Managers::NetworkController::GetInstance()->GetWifiSsid();
+}
+
+//----INetworkController--------------------------------------------------------
+auto GuardianProxy::GetWifiRssi() const -> int8_t
+{
+    return Managers::NetworkController::GetInstance()->GetWifiRssi();
+}
+
+//----INetworkController--------------------------------------------------------
 auto GuardianProxy::IsMqttConnected() const -> bool
 {
     return Managers::NetworkController::GetInstance()->IsMqttClientConnected();

@@ -49,6 +49,12 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
         //! Check if WiFi is connected
         auto IsWifiConnected() const -> bool override;
 
+        //! Get connected WiFi SSID
+        auto GetWifiSsid() const -> std::string override;
+
+        //! Get WiFi RSSI in dBm
+        auto GetWifiRssi() const -> int8_t override;
+
         //! Check if MQTT client is connected
         auto IsMqttConnected() const -> bool override;
 

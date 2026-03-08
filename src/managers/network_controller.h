@@ -45,6 +45,18 @@ class NetworkController : public Base::Singleton<NetworkController>
         bool IsWiFiConnected() const;
 
         /*!
+        * @brief Get connected WiFi SSID.
+        * @return SSID when connected, empty string otherwise.
+        */
+        std::string GetWifiSsid() const;
+
+        /*!
+        * @brief Get WiFi RSSI in dBm.
+        * @return RSSI when connected, 0 otherwise.
+        */
+        int8_t GetWifiRssi() const;
+
+        /*!
         * @brief Check if MQTT client is connected.
         * @return true if connected, false otherwise.
         */

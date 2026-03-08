@@ -201,6 +201,7 @@ void NetworkController::OnUpdate()
         case State::SEND_TELEMETRY:
         {
             SendTelemtry();
+            SendClientAttributes();
             ChangeState(State::IDLE);
         }
         break;
@@ -371,6 +372,18 @@ void NetworkController::ActivateApMode()
 bool NetworkController::IsWiFiConnected() const
 {
     return _wifiCom->IsConnected();
+}
+
+//-----------------------------------------------------------------------------
+std::string NetworkController::GetWifiSsid() const
+{
+    return _wifiCom->GetSsid();
+}
+
+//-----------------------------------------------------------------------------
+int8_t NetworkController::GetWifiRssi() const
+{
+    return _wifiCom->GetRssi();
 }
 
 //-----------------------------------------------------------------------------

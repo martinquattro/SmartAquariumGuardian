@@ -47,6 +47,12 @@ class INetworkController
         //! Check if WiFi is connected
         virtual auto IsWifiConnected() const -> bool = 0;
 
+        //! Get connected WiFi SSID (empty when disconnected)
+        virtual auto GetWifiSsid() const -> std::string = 0;
+
+        //! Get WiFi RSSI in dBm (0 when disconnected)
+        virtual auto GetWifiRssi() const -> int8_t = 0;
+
         //! Check if MQTT client is connected
         virtual auto IsMqttConnected() const -> bool = 0;
 

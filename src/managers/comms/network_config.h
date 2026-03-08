@@ -48,5 +48,8 @@ namespace NetworkConfig
         inline constexpr const char* FEED_TIME               = "time_min";
         inline constexpr const char* FEED_SLOT_ID            = "slot_index";
         inline constexpr const char* FEED_ENABLED            = "enabled";
+        inline constexpr const char* WIFI_SSID               = "wifi_ssid";
+        inline constexpr const char* WIFI_RSSI               = "wifi_rssi";
+        inline constexpr const char* DEVICE_TIME             = "device_time";
     }
 }

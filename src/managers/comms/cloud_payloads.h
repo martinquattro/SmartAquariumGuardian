@@ -9,8 +9,10 @@
 
 #include "src/core/guardian_proxy.h"
 #include "src/managers/comms/network_config.h"
-#include "lib/nlohmann_json/json.hpp"
 #include "src/services/memory/memory_config_data.h"
+#include "src/utils/date_time.h"
+#include "lib/nlohmann_json/json.hpp"
+#include <iomanip>
 #include <string>
 
 namespace Comms {
@@ -55,9 +57,22 @@ class ClientAttributesPayload
         ClientAttributesPayload()
         {
             auto* proxy = Core::GuardianProxy::GetInstance();
+            
             _timezone = proxy->GetTimezoneFromStorage();
             proxy->GetTempLimitsFromStorage(_minTemp, _minEnabled, _maxTemp, _maxEnabled);
             _scheduleList = proxy->GetFeedingScheduleFromStorage();
+            _wifiSsid = proxy->GetWifiSsid();
+            _wifiRssi = proxy->GetWifiRssi();
+
+            Utils::DateTime dt;
+            if (proxy->GetDateTime(dt))
+            {
+                _deviceTime = dt.ToString();
+            }
+            else
+            {
+                _deviceTime = "--:--";
+            }
         }
 
         std::string ToJsonString() const
@@ -82,6 +97,10 @@ class ClientAttributesPayload
             }
             doc[NetworkConfig::ClientAttributes::FEEDING_SCHEDULE] = scheduleArray;
 
+            doc[NetworkConfig::ClientAttributes::WIFI_SSID] = _wifiSsid;
+            doc[NetworkConfig::ClientAttributes::WIFI_RSSI] = _wifiRssi;
+            doc[NetworkConfig::ClientAttributes::DEVICE_TIME] = _deviceTime;
+
             return doc.dump();
         }
 
@@ -93,6 +112,9 @@ class ClientAttributesPayload
         float _maxTemp = 0.0f;
         bool _maxEnabled = false;
         Services::FeeddingScheduleList _scheduleList;
+        std::string _wifiSsid;
+        int8_t _wifiRssi = 0;
+        std::string _deviceTime;
 };
 
 } // namespace Comms
