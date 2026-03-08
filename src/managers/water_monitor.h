@@ -58,6 +58,27 @@ class WaterMonitor : public Base::Singleton<WaterMonitor>
         */
         bool IsTemperatureOutOfLimits() const;
 
+        /*!
+        * @brief Sets the TDS limits.
+        * @param minTds Minimum TDS limit (ppm).
+        * @param isMinLimitEnabled Flag indicating if the minimum limit is enabled.
+        * @param maxTds Maximum TDS limit (ppm).
+        * @param isMaxLimitEnabled Flag indicating if the maximum limit is enabled.
+        * @return Result Result indicating success or failure.
+        */
+        Result SetTdsLimits(const int minTds, const bool isMinLimitEnabled, const int maxTds, const bool isMaxLimitEnabled);
+
+        /*!
+        * @brief Gets the TDS limits.
+        */
+        void GetTdsLimits(int& minTds, bool& isMinLimitEnabled, int& maxTds, bool& isMaxLimitEnabled) const;
+
+        /*!
+        * @brief Checks if the TDS reading is out of limits.
+        * @return bool True if out of limits, false otherwise.
+        */
+        bool IsTdsOutOfLimits() const;
+
     protected:
 
         friend class Base::Singleton<WaterMonitor>;
@@ -92,6 +113,9 @@ class WaterMonitor : public Base::Singleton<WaterMonitor>
 
         static constexpr float MIN_TEMP_VALID_VALUE = 10.0f;
         static constexpr float MAX_TEMP_VALID_VALUE = 40.0f;
+
+        static constexpr int MIN_TDS_VALID_VALUE = 0;
+        static constexpr int MAX_TDS_VALID_VALUE = 2000;
 
         //---------------------------------------------
 

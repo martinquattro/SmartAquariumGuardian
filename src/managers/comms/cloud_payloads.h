@@ -57,9 +57,10 @@ class ClientAttributesPayload
         ClientAttributesPayload()
         {
             auto* proxy = Core::GuardianProxy::GetInstance();
-            
+
             _timezone = proxy->GetTimezoneFromStorage();
             proxy->GetTempLimitsFromStorage(_minTemp, _minEnabled, _maxTemp, _maxEnabled);
+            proxy->GetTdsLimitsFromStorage(_minTds, _tdsMinEnabled, _maxTds, _tdsMaxEnabled);
             _scheduleList = proxy->GetFeedingScheduleFromStorage();
             _wifiSsid = proxy->GetWifiSsid();
             _wifiRssi = proxy->GetWifiRssi();
@@ -84,6 +85,11 @@ class ClientAttributesPayload
             doc[NetworkConfig::ClientAttributes::TEMP_LIMIT_MIN_ENABLED] = _minEnabled;
             doc[NetworkConfig::ClientAttributes::TEMP_LIMIT_MAX] = _maxTemp;
             doc[NetworkConfig::ClientAttributes::TEMP_LIMIT_MAX_ENABLED] = _maxEnabled;
+
+            doc[NetworkConfig::ClientAttributes::TDS_LIMIT_MIN] = _minTds;
+            doc[NetworkConfig::ClientAttributes::TDS_LIMIT_MIN_ENABLED] = _tdsMinEnabled;
+            doc[NetworkConfig::ClientAttributes::TDS_LIMIT_MAX] = _maxTds;
+            doc[NetworkConfig::ClientAttributes::TDS_LIMIT_MAX_ENABLED] = _tdsMaxEnabled;
 
             Json scheduleArray = Json::array();
             for (const auto& e : _scheduleList)
@@ -111,6 +117,10 @@ class ClientAttributesPayload
         bool _minEnabled = false;
         float _maxTemp = 0.0f;
         bool _maxEnabled = false;
+        int _minTds = 0;
+        bool _tdsMinEnabled = false;
+        int _maxTds = 500;
+        bool _tdsMaxEnabled = false;
         Services::FeeddingScheduleList _scheduleList;
         std::string _wifiSsid;
         int8_t _wifiRssi = 0;

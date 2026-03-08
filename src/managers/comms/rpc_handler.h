@@ -98,6 +98,71 @@ class SetTempLimitsHandler : public IRpcHandler
 };
 
 //-----------------------------------------------------------------------------
+class SetTdsLimitsHandler : public IRpcHandler
+{
+    public:
+
+        static constexpr const char* NAME = "setTdsLimits";
+
+        Result Handle(const std::string& payload) override
+        {
+            Utils::JsonPayloadParser parser(payload);
+            if (!parser.IsValid())
+            {
+                return Result::Error("Internal error: Invalid JSON payload.");
+            }
+
+            const auto minEnabledOpt = parser.GetParam<bool>(NetworkConfig::ClientAttributes::TDS_LIMIT_MIN_ENABLED);
+            const auto maxEnabledOpt = parser.GetParam<bool>(NetworkConfig::ClientAttributes::TDS_LIMIT_MAX_ENABLED);
+
+            if (!minEnabledOpt.has_value() || !maxEnabledOpt.has_value())
+            {
+                return Result::Error("Missing required 'enabled' flags for limits.");
+            }
+
+            bool minEnabled = minEnabledOpt.value();
+            bool maxEnabled = maxEnabledOpt.value();
+
+            int tdsMin = 0;
+            int tdsMax = 0;
+
+            const auto tdsMinOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::TDS_LIMIT_MIN);
+            const auto tdsMaxOpt = parser.GetParam<int>(NetworkConfig::ClientAttributes::TDS_LIMIT_MAX);
+
+            if (minEnabled)
+            {
+                if (!tdsMinOpt.has_value())
+                {
+                    return Result::Error("Min limit is enabled but value is invalid or missing (cannot be null).");
+                }
+                tdsMin = tdsMinOpt.value();
+            }
+            else
+            {
+                if (tdsMinOpt.has_value())
+                    tdsMin = tdsMinOpt.value();
+            }
+
+            if (maxEnabled)
+            {
+                if (!tdsMaxOpt.has_value())
+                {
+                    return Result::Error("Max limit is enabled but value is invalid or missing (cannot be null).");
+                }
+                tdsMax = tdsMaxOpt.value();
+            }
+            else
+            {
+                if (tdsMaxOpt.has_value())
+                    tdsMax = tdsMaxOpt.value();
+            }
+
+            const auto result = Core::GuardianProxy::GetInstance()->SetTdsLimits(tdsMin, minEnabled, tdsMax, maxEnabled);
+            return result;
+        }
+};
+
+//-----------------------------------------------------------------------------
 class AddFeedingScheduleHandler : public IRpcHandler 
 {
     public:

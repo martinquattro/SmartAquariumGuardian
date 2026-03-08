@@ -145,7 +145,7 @@ class StorageService : public Base::Singleton<StorageService>
         //---------------------------------------------
 
         static constexpr uint16_t CONFIG_START_ADDR = 0x0000;
-        static constexpr size_t MAX_CONFIG_SIZE = 512;
+        static constexpr size_t MAX_CONFIG_SIZE = 1024;
 
         //---------------------------------------------
 

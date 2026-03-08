@@ -408,6 +408,7 @@ Result NetworkController::SyncDevice()
 void NetworkController::RegisterRpcHandlers()
 {
     _rpcHandlers[Handlers::SetTempLimitsHandler::NAME]          = std::make_unique<Handlers::SetTempLimitsHandler>();
+    _rpcHandlers[Handlers::SetTdsLimitsHandler::NAME]           = std::make_unique<Handlers::SetTdsLimitsHandler>();
     _rpcHandlers[Handlers::AddFeedingScheduleHandler::NAME]     = std::make_unique<Handlers::AddFeedingScheduleHandler>();
     _rpcHandlers[Handlers::DeleteFeedingScheduleHandler::NAME]  = std::make_unique<Handlers::DeleteFeedingScheduleHandler>();
     _rpcHandlers[Handlers::FeedNowHandler::NAME]                = std::make_unique<Handlers::FeedNowHandler>();
@@ -503,6 +504,7 @@ void NetworkController::DispatchRpcRequest(const std::string& topic, const std::
         {
             const std::string& methodName = method.value();
             if (methodName == Handlers::SetTempLimitsHandler::NAME ||
+                methodName == Handlers::SetTdsLimitsHandler::NAME ||
                 methodName == Handlers::AddFeedingScheduleHandler::NAME ||
                 methodName == Handlers::DeleteFeedingScheduleHandler::NAME ||
                 methodName == Handlers::SetTimezoneHandler::NAME ||

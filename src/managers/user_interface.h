@@ -94,6 +94,8 @@ class UserInterface : public Base::Singleton<UserInterface>
 
         Drivers::GraphicDisplay::UIElement* _tdsValue;
         Drivers::GraphicDisplay::UIElement* _tdsMinValue;
+        Drivers::GraphicDisplay::UIElement* _tdsMaxValue;
+        Drivers::GraphicDisplay::UIElement* _tdsPanel;
 
         Drivers::GraphicDisplay::UIElement* _wifiIconOn;
         Drivers::GraphicDisplay::UIElement* _wifiIconOff;

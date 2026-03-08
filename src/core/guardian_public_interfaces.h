@@ -116,6 +116,12 @@ class IStorageService
         //! Get temperature limits from storage
         virtual auto GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void = 0;
 
+        //! Save TDS limits in storage
+        virtual auto SaveTdsLimitsInStorage(int minTds, bool minEnabled, int maxTds, bool maxEnabled) -> bool = 0;
+
+        //! Get TDS limits from storage
+        virtual auto GetTdsLimitsFromStorage(int& minTds, bool& minEnabled, int& maxTds, bool& maxEnabled) const -> void = 0;
+
         //! Save feeding schedule in storage
         virtual auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool = 0;
 
@@ -157,6 +163,15 @@ class IWaterMonitor
 
         //! Check if temperature reading is out of limits
         virtual auto IsTemperatureOutOfLimits() const -> bool = 0;
+
+        //! Set TDS limits
+        virtual auto SetTdsLimits(const int minTds, const bool isMinLimitEnabled, const int maxTds, const bool isMaxLimitEnabled) -> Result = 0;
+
+        //! Get TDS limits
+        virtual auto GetTdsLimits(int& minTds, bool& isMinLimitEnabled, int& maxTds, bool& isMaxLimitEnabled) const -> void = 0;
+
+        //! Check if TDS reading is out of limits
+        virtual auto IsTdsOutOfLimits() const -> bool = 0;
 };
 
 } // namespace Core

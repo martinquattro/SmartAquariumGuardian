@@ -122,4 +122,82 @@ bool WaterMonitor::IsTemperatureOutOfLimits() const
     return false;
 }
 
+//-----------------------------------------------------------------------------
+Result WaterMonitor::SetTdsLimits(const int minTds, const bool isMinLimitEnabled, const int maxTds, const bool isMaxLimitEnabled)
+{
+    CORE_INFO("WaterMonitor: Request to set TDS limits -> Min: %d (En:%d), Max: %d (En:%d)",
+              minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+
+    if (isMinLimitEnabled && isMaxLimitEnabled)
+    {
+        if (minTds >= maxTds)
+        {
+            CORE_ERROR("WaterMonitor Validation Error: Min TDS (%d) cannot be >= Max TDS (%d) when both are enabled.", minTds, maxTds);
+            return Result::Error("Invalid limits: Minimum must be less than Maximum.");
+        }
+    }
+
+    if (isMinLimitEnabled)
+    {
+        if (minTds < MIN_TDS_VALID_VALUE || minTds > MAX_TDS_VALID_VALUE)
+        {
+            CORE_ERROR("WaterMonitor Validation Error: Min TDS (%d) out of valid range [%d, %d].", minTds, MIN_TDS_VALID_VALUE, MAX_TDS_VALID_VALUE);
+            return Result::Error("Invalid minimum TDS limit.");
+        }
+    }
+
+    if (isMaxLimitEnabled)
+    {
+        if (maxTds < MIN_TDS_VALID_VALUE || maxTds > MAX_TDS_VALID_VALUE)
+        {
+            CORE_ERROR("WaterMonitor Validation Error: Max TDS (%d) out of valid range [%d, %d].", maxTds, MIN_TDS_VALID_VALUE, MAX_TDS_VALID_VALUE);
+            return Result::Error("Invalid maximum TDS limit.");
+        }
+    }
+
+    const bool success = Core::GuardianProxy::GetInstance()->SaveTdsLimitsInStorage(minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+
+    if (success)
+    {
+        CORE_INFO("WaterMonitor: All TDS limit parameters saved successfully.");
+        return Result::Success("TDS limits updated successfully.");
+    }
+    else
+    {
+        CORE_ERROR("WaterMonitor Storage Error: Failed to save TDS parameters.");
+        return Result::Error("Internal Error: Could not save settings to permanent memory.");
+    }
+}
+
+//-----------------------------------------------------------------------------
+void WaterMonitor::GetTdsLimits(int& minTds, bool& isMinLimitEnabled, int& maxTds, bool& isMaxLimitEnabled) const
+{
+    Core::GuardianProxy::GetInstance()->GetTdsLimitsFromStorage(minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+}
+
+//-----------------------------------------------------------------------------
+bool WaterMonitor::IsTdsOutOfLimits() const
+{
+    int minTds = 0, maxTds = 0;
+    bool isMinLimitEnabled = false, isMaxLimitEnabled = false;
+
+    GetTdsLimits(minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+
+    const int currentTds = GetTdsReading();
+
+    if (isMinLimitEnabled && (currentTds < minTds))
+    {
+        CORE_INFO("TDS reading %d is below the minimum limit of %d.", currentTds, minTds);
+        return true;
+    }
+
+    if (isMaxLimitEnabled && (currentTds > maxTds))
+    {
+        CORE_INFO("TDS reading %d is above the maximum limit of %d.", currentTds, maxTds);
+        return true;
+    }
+
+    return false;
+}
+
 } // namespace Managers

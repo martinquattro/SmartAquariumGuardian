@@ -53,6 +53,9 @@ bool UserInterface::OnInit()
     _apIconOn = new Drivers::GraphicDisplay::UIElement(ui_imgAPActive);
 
     _tdsValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsValue);
+    _tdsMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsLimitMax);
+    _tdsMinValue = new Drivers::GraphicDisplay::UIElement(ui_lblTdsLimitMin);
+    _tdsPanel = new Drivers::GraphicDisplay::UIElement(ui_panelTdsAlert);
 
     _tempValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempValue);
     _tempMaxValue = new Drivers::GraphicDisplay::UIElement(ui_lblTempLimitMax);
@@ -177,7 +180,7 @@ void UserInterface::OnUpdate()
         }
     }
 
-    // TDS reading
+    // TDS Panel
     {
         char buffer [50];
 
@@ -185,6 +188,46 @@ void UserInterface::OnUpdate()
         std::sprintf(buffer, "%d", tdsReading);
 
         _tdsValue->SetText(buffer);
+
+        // TDS limits
+        int minTds = 0, maxTds = 0;
+        bool isMinLimitEnabled = false, isMaxLimitEnabled = false;
+
+        Core::GuardianProxy::GetInstance()->GetTdsLimits(minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+
+        if (isMinLimitEnabled)
+        {
+            std::sprintf(buffer, "%d ppm", minTds);
+        }
+        else
+        {
+            std::sprintf(buffer, "---"); 
+        }
+        
+        _tdsMinValue->SetText(buffer);
+
+        if (isMaxLimitEnabled)
+        {
+            std::sprintf(buffer, "%d ppm", maxTds);
+        }
+        else
+        {
+            std::sprintf(buffer, "---"); 
+        }
+
+        _tdsMaxValue->SetText(buffer);
+
+        // Panel state
+        if (Core::GuardianProxy::GetInstance()->IsTdsOutOfLimits())
+        {
+            // Alert state
+            _tdsPanel->SetState1();
+        }
+        else
+        {
+            // Normal state
+            _tdsPanel->ClearState1();
+        }
     }
 
     // Feeder

@@ -59,6 +59,10 @@ inline void from_json(const nlohmann::json& j, FeedingScheduleEntry& e)
     X(bool,                 TEMP_MIN_ENABLED, _tempLimitMinEnabled, "tMinEn",   false)     \
     X(float,                TEMP_MAX,         _tempLimitMax,        "tMax",     25.0f)     \
     X(bool,                 TEMP_MAX_ENALED,  _tempLimitMaxEnabled, "tMaxEn",   false)     \
+    X(int,                  TDS_MIN,          _tdsLimitMin,         "tdsMin",   0)         \
+    X(bool,                 TDS_MIN_ENABLED,  _tdsLimitMinEnabled,  "tdsMinEn", false)     \
+    X(int,                  TDS_MAX,          _tdsLimitMax,         "tdsMax",   500)       \
+    X(bool,                 TDS_MAX_ENABLED,  _tdsLimitMaxEnabled,  "tdsMaxEn", false)     \
     X(FeeddingScheduleList, FEEDING_SCHEDULE, _feedingSchedule,     "feedSch",  {})
 
 enum class FieldId 

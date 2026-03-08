@@ -210,6 +210,52 @@ auto GuardianProxy::GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, f
 }
 
 //----IStorageService-----------------------------------------------------------
+auto GuardianProxy::SaveTdsLimitsInStorage(int minTds, bool minEnabled, int maxTds, bool maxEnabled) -> bool
+{
+    bool successMin = Services::StorageService::GetInstance()->Set<int>(
+        Services::FieldId::TDS_MIN,
+        minTds
+    );
+
+    bool successMinEn = Services::StorageService::GetInstance()->Set<bool>(
+        Services::FieldId::TDS_MIN_ENABLED,
+        minEnabled
+    );
+
+    bool successMax = Services::StorageService::GetInstance()->Set<int>(
+        Services::FieldId::TDS_MAX,
+        maxTds
+    );
+
+    bool successMaxEn = Services::StorageService::GetInstance()->Set<bool>(
+        Services::FieldId::TDS_MAX_ENABLED,
+        maxEnabled
+    );
+
+    return (successMin && successMinEn && successMax && successMaxEn);
+}
+
+//----IStorageService-----------------------------------------------------------
+auto GuardianProxy::GetTdsLimitsFromStorage(int& minTds, bool& minEnabled, int& maxTds, bool& maxEnabled) const -> void
+{
+    minTds = Services::StorageService::GetInstance()->Get<int>(
+        Services::FieldId::TDS_MIN
+    );
+
+    minEnabled = Services::StorageService::GetInstance()->Get<bool>(
+        Services::FieldId::TDS_MIN_ENABLED
+    );
+
+    maxTds = Services::StorageService::GetInstance()->Get<int>(
+        Services::FieldId::TDS_MAX
+    );
+
+    maxEnabled = Services::StorageService::GetInstance()->Get<bool>(
+        Services::FieldId::TDS_MAX_ENABLED
+    );
+}
+
+//----IStorageService-----------------------------------------------------------
 auto GuardianProxy::SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool
 {
     auto scheduleList = Services::StorageService::GetInstance()->Get<Services::FeeddingScheduleList>(
@@ -305,6 +351,24 @@ auto GuardianProxy::GetTemperatureLimits(float& minTemp, bool& isMinLimitEnabled
 auto GuardianProxy::IsTemperatureOutOfLimits() const -> bool
 {
     return Managers::WaterMonitor::GetInstance()->IsTemperatureOutOfLimits();
+}
+
+//----IWaterMonitor-------------------------------------------------------------
+auto GuardianProxy::SetTdsLimits(const int minTds, const bool isMinLimitEnabled, const int maxTds, const bool isMaxLimitEnabled) -> Result
+{
+    return Managers::WaterMonitor::GetInstance()->SetTdsLimits(minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+}
+
+//----IWaterMonitor-------------------------------------------------------------
+auto GuardianProxy::GetTdsLimits(int& minTds, bool& isMinLimitEnabled, int& maxTds, bool& isMaxLimitEnabled) const -> void
+{
+    Managers::WaterMonitor::GetInstance()->GetTdsLimits(minTds, isMinLimitEnabled, maxTds, isMaxLimitEnabled);
+}
+
+//----IWaterMonitor-------------------------------------------------------------
+auto GuardianProxy::IsTdsOutOfLimits() const -> bool
+{
+    return Managers::WaterMonitor::GetInstance()->IsTdsOutOfLimits();
 }
 
 } // namespace Core

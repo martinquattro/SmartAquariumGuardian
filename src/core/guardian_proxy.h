@@ -106,6 +106,12 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
         //! Get temperature limits from storage
         auto GetTempLimitsFromStorage(float& minTemp, bool& minEnabled, float& maxTemp, bool& maxEnabled) const -> void override;
 
+        //! Save TDS limits in storage
+        auto SaveTdsLimitsInStorage(int minTds, bool minEnabled, int maxTds, bool maxEnabled) -> bool override;
+
+        //! Get TDS limits from storage
+        auto GetTdsLimitsFromStorage(int& minTds, bool& minEnabled, int& maxTds, bool& maxEnabled) const -> void override;
+
         //! Save feeding schedule in storage
         auto SaveFeedingScheduleInStorage(const int timeMinutesAfterMidnight, const int slotIndex, const int dose, const bool enabled) -> bool override;
     
@@ -139,6 +145,15 @@ class GuardianProxy : public Base::Singleton<GuardianProxy>,
 
         //! Check if temperature reading is out of limits
         auto IsTemperatureOutOfLimits() const -> bool override;
+
+        //! Set TDS limits
+        auto SetTdsLimits(const int minTds, const bool isMinLimitEnabled, const int maxTds, const bool isMaxLimitEnabled) -> Result override;
+
+        //! Get TDS limits
+        auto GetTdsLimits(int& minTds, bool& isMinLimitEnabled, int& maxTds, bool& isMaxLimitEnabled) const -> void override;
+
+        //! Check if TDS reading is out of limits
+        auto IsTdsOutOfLimits() const -> bool override;
 
     protected:
 
