@@ -31,8 +31,6 @@ class APPortal : public Base::Singleton<APPortal>,
             INIT,
             LISTENING_WIFI_CONFIG,
             WIFI_CREDENTIALS_RECEIVED,
-            LISTENING_MQTT_CONFIG,
-            MQTT_CREDENTIALS_RECEIVED,
             STOP,
             ERROR
         };
@@ -67,17 +65,6 @@ class APPortal : public Base::Singleton<APPortal>,
          */
         Result GetWifiCredentials(std::string& ssid, std::string& password) const;
 
-        /*!
-         * @brief Get received MQTT credentials.
-         * @param broker Output parameter for MQTT broker address.
-         * @param port Output parameter for MQTT port.
-         * @param username Output parameter for MQTT username.
-         * @param password Output parameter for MQTT password.
-         * @return Result indicating success or failure.
-         */
-        Result GetMqttCredentials(std::string& broker, uint16_t& port, 
-                                   std::string& username, std::string& password) const;
-
     protected:
 
         friend class Base::Singleton<APPortal>;
@@ -109,7 +96,6 @@ class APPortal : public Base::Singleton<APPortal>,
         // HTTP Request Handlers
         static esp_err_t HandleGetRoot(httpd_req_t* req);
         static esp_err_t HandlePostCredentials(httpd_req_t* req);
-        static esp_err_t HandlePostMqttCredentials(httpd_req_t* req);
         static esp_err_t HandleGetWifiNetworks(httpd_req_t* req);
         static esp_err_t HandleGetStatus(httpd_req_t* req);
 
@@ -142,12 +128,6 @@ class APPortal : public Base::Singleton<APPortal>,
         // Wi-Fi credentials
         std::string _configuredSsid;
         std::string _configuredPassword;
-
-        // MQTT Broker credentials
-        std::string _mqttBroker;
-        uint16_t _mqttPort;
-        std::string _mqttUsername;
-        std::string _mqttPassword;
 };
 
 } // namespace Connectivity

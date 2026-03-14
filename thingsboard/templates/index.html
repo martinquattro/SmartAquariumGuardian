@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian - Device Registration</title>
+    <style>
+        :root {
+            --bg-color: #1a222c;
+            --card-bg: #242c38;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aabf;
+            --input-bg: #151a22;
+            --border-color: #333d4b;
+            --btn-primary: #0d6efd;
+            --btn-hover: #0b5ed7;
+            --success: #198754;
+            --error: #dc3545;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-primary); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card { background-color: var(--card-bg); padding: 40px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 420px; text-align: center; }
+        
+        .logo-container { width: 80px; height: 80px; background-color: var(--input-bg); border-radius: 50%; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border-color); }
+        .logo-container img { max-width: 100%; border-radius: 50%; display: none; /* remove display:none when you add the img src */ }
+        .logo-text { font-size: 12px; color: var(--text-secondary); }
+
+        h2 { margin: 0 0 10px 0; font-size: 24px; font-weight: 600; }
+        p { color: var(--text-secondary); font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+        
+        .form-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
+        
+        input { width: 100%; padding: 12px 15px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
+        input:focus { outline: none; border-color: var(--btn-primary); }
+        input[readonly] { color: #6c757d; cursor: not-allowed; opacity: 0.7; }
+        
+        button { background-color: var(--btn-primary); color: white; border: none; padding: 14px 20px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: background-color 0.2s; }
+        button:hover { background-color: var(--btn-hover); }
+        button:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        #message { margin-top: 20px; font-size: 14px; font-weight: 500; padding: 10px; border-radius: 8px; display: none; }
+        .success { background-color: rgba(25, 135, 84, 0.2); color: #47b27b; border: 1px solid var(--success); display: block !important; }
+        .error { background-color: rgba(220, 53, 69, 0.2); color: #ea868f; border: 1px solid var(--error); display: block !important; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo-container">
+        <span class="logo-text">LOGO</span>
+        </div>
+
+    <h2>Smart Aquarium Guardian</h2>
+    <p>Enter your email to link this device and access your control dashboard.</p>
+    
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="deviceId">Device ID (Hardware Address)</label>
+            <input type="text" id="deviceId" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="userEmail">Account Email</label>
+            <input type="email" id="userEmail" required placeholder="your@email.com">
+        </div>
+        
+        <button type="submit" id="submitBtn">Link Device</button>
+    </form>
+    
+    <div id="message"></div>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const deviceIdParam = urlParams.get('device_id');
+    const msgDiv = document.getElementById('message');
+    const btn = document.getElementById('submitBtn');
+    
+    if (deviceIdParam) {
+        document.getElementById('deviceId').value = deviceIdParam;
+    } else {
+        msgDiv.textContent = "Error: Invalid QR Code (Missing Device ID).";
+        msgDiv.className = "error";
+        btn.disabled = true;
+    }
+
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('userEmail').value;
+        const deviceId = document.getElementById('deviceId').value;
+        
+        btn.innerText = "Linking...";
+        btn.disabled = true;
+        msgDiv.className = ""; 
+        msgDiv.style.display = "none";
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, device_id: deviceId })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                msgDiv.textContent = "Success! Please check your email to activate your account.";
+                msgDiv.className = "success";
+                document.getElementById('registrationForm').reset();
+            } else {
+                msgDiv.textContent = `Registration Failed: ${result.error || 'Unknown error'}`;
+                msgDiv.className = "error";
+                btn.innerText = "Try Again";
+                btn.disabled = false;
+            }
+        } catch (error) {
+            msgDiv.textContent = "Connection error. Please try again later.";
+            msgDiv.className = "error";
+            btn.innerText = "Try Again";
+            btn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>

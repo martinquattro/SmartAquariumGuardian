@@ -17,8 +17,8 @@ namespace Connectivity {
 //----private------------------------------------------------------------------
 bool MqttClient::OnInit()
 {
-    _brokerUri = "mqtt://192.168.0.51:1883";
-    _username = "Ltew0gHjxRjGTSxYj85t";
+    _brokerUri = Config::MQTT_CLIENT_BROKER_URI;
+    _username = Config::MQTT_CLIENT_USER_NAME;
     _state = State::IDLE;
     _connected = false;
 

@@ -52,6 +52,9 @@ static constexpr PinName USB_DETECT_PIN = PinName::P25;
 // This pin is used to indicate the system status or for debugging purposes
 static constexpr PinName BUILTIN_LED = PinName::P2;
 
+static constexpr const char* MQTT_CLIENT_BROKER_URI = "mqtt://192.168.0.51:1883";
+static constexpr const char* MQTT_CLIENT_USER_NAME = "Ltew0gHjxRjGTSxYj85t";
+
 } // namespace Config
 
 #endif // CONFIG_H

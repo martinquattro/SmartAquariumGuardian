@@ -1,7 +1,7 @@
 /*!****************************************************************************
  * @file    ap_portal_html.h
  * @brief   HTML content for AP Portal web interface.
- *          Embedded HTML/CSS/JavaScript for WiFi and MQTT configuration.
+ * Embedded HTML/CSS/JavaScript for WiFi configuration.
  * @author  Quattrone Martin
  * @date    Feb 2026
  *******************************************************************************/
@@ -17,361 +17,106 @@ static const char* HTML_PORTAL = R"html(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guardian - WiFi Setup</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-color: #1a222c;
+            --card-bg: #242c38;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aabf;
+            --input-bg: #151a22;
+            --border-color: #333d4b;
+            --btn-primary: #0d6efd;
+            --btn-hover: #0b5ed7;
+            --btn-secondary: #333d4b;
+            --success: #198754;
+            --error: #dc3545;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-primary); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+        .container { background-color: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 420px; width: 100%; padding: 40px 30px; }
         
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            max-width: 500px;
-            width: 100%;
-            padding: 30px;
-        }
+        /* Placeholder for your Logo */
+        .logo-container { width: 80px; height: 80px; background-color: var(--input-bg); border-radius: 50%; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border-color); }
+        .logo-text { font-size: 12px; color: var(--text-secondary); }
+
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 24px; margin-bottom: 8px; font-weight: 600; }
+        .header p { color: var(--text-secondary); font-size: 14px; line-height: 1.5; }
         
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-weight: 500; font-size: 13px; }
         
-        .header h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px 15px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 15px; transition: border-color 0.3s ease; }
+        input:focus { outline: none; border-color: var(--btn-primary); }
         
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
+        .networks-list { max-height: 180px; overflow-y: auto; border: 1px solid var(--border-color); background-color: var(--input-bg); border-radius: 8px; margin-bottom: 20px; }
+        .network-item { padding: 12px 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s ease; display: flex; justify-content: space-between; align-items: center; }
+        .network-item:hover { background-color: var(--border-color); }
+        .network-item.selected { background-color: rgba(13, 110, 253, 0.2); border-left: 3px solid var(--btn-primary); }
+        .network-ssid { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .network-rssi { font-size: 12px; color: var(--text-secondary); }
         
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #e0e0e0;
-            margin-bottom: 30px;
-        }
+        button { width: 100%; padding: 14px 20px; background-color: var(--btn-primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; margin-top: 10px; }
+        button:hover { background-color: var(--btn-hover); }
+        button:disabled { opacity: 0.7; cursor: not-allowed; }
         
-        .tab-button {
-            flex: 1;
-            padding: 15px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #999;
-            transition: all 0.3s ease;
-        }
+        .button-secondary { background-color: var(--btn-secondary); font-size: 14px; padding: 10px; margin-top: 0; margin-bottom: 10px; }
+        .button-secondary:hover { background-color: #434f61; }
         
-        .tab-button.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
+        .message { padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; display: none; text-align: center; }
+        .message.show { display: block; }
+        .message.success { background-color: rgba(25, 135, 84, 0.2); color: #47b27b; border: 1px solid var(--success); }
+        .message.error { background-color: rgba(220, 53, 69, 0.2); color: #ea868f; border: 1px solid var(--error); }
         
-        .tab-button:hover {
-            color: #667eea;
-        }
+        .status { padding: 12px 15px; background-color: var(--input-bg); border-radius: 8px; border-left: 4px solid var(--btn-primary); margin-bottom: 25px; font-size: 14px; }
+        .status-connected { border-left-color: var(--success); }
+        .status-disconnected { border-left-color: var(--error); }
         
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        input[type="text"],
-        input[type="password"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
-        }
-        
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .networks-list {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        
-        .network-item {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .network-item:hover {
-            background: #f5f5f5;
-        }
-        
-        .network-item.selected {
-            background: #e8eef7;
-        }
-        
-        .network-info {
-            flex: 1;
-        }
-        
-        .network-ssid {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 4px;
-        }
-        
-        .network-rssi {
-            font-size: 12px;
-            color: #999;
-        }
-        
-        .signal-strength {
-            display: inline-block;
-            width: 20px;
-            height: 12px;
-            background: linear-gradient(90deg, #667eea 0%, #667eea var(--strength), #ddd var(--strength), #ddd 100%);
-            border-radius: 2px;
-        }
-        
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .button-secondary {
-            background: #f0f0f0;
-            color: #333;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        
-        .button-secondary:hover {
-            background: #e0e0e0;
-            box-shadow: none;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            color: #667eea;
-            font-size: 14px;
-            padding: 20px;
-        }
-        
-        .loading.show {
-            display: block;
-        }
-        
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ddd;
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .message {
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-        
-        .message.show {
-            display: block;
-        }
-        
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .status {
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 5px;
-            border-left: 4px solid #667eea;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .status-connected {
-            border-left-color: #28a745;
-            background: #f0f9f7;
-        }
-        
-        .status-disconnected {
-            border-left-color: #dc3545;
-            background: #fdf8f8;
-        }
-        
-        .help-text {
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
-        }
+        .loading { display: none; text-align: center; color: var(--text-secondary); font-size: 14px; padding: 20px; }
+        .loading.show { display: block; }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="logo-container">
+            <span class="logo-text">LOGO</span>
+        </div>
+
         <div class="header">
-            <h1>Guardian</h1>
-            <p>Configure your Smart Aquarium</p>
+            <h1>Guardian Setup</h1>
+            <p>Connect your device to the local network</p>
         </div>
         
         <div id="statusContainer" class="status status-disconnected">
             <strong>Status:</strong> <span id="statusText">Waiting for configuration...</span>
         </div>
         
-        <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('wifi')">WiFi</button>
-            <button class="tab-button" onclick="switchTab('mqtt')">MQTT</button>
+        <div id="wifiMessage" class="message"></div>
+        
+        <div class="form-group">
+            <label>Select your WiFi network:</label>
+            <button class="button-secondary" id="scanBtn" onclick="scanNetworks()">🔄 Scan networks</button>
+            <div id="loadingWifi" class="loading">Scanning networks... please wait.</div>
+            <div id="networksList" class="networks-list" style="display:none;"></div>
         </div>
         
-        <div id="wifi" class="tab-content active">
-            <div id="wifiMessage" class="message"></div>
-            
-            <div class="form-group">
-                <label>Select your WiFi network:</label>
-                <button class="button-secondary" onclick="scanNetworks()">🔄 Scan networks</button>
-                <div id="loadingWifi" class="loading">
-                    <span class="spinner"></span>Scanning networks...
-                </div>
-                <div id="networksList" class="networks-list" style="display:none;"></div>
-            </div>
-            
-            <div class="form-group">
-                <label for="ssid">SSID or network name:</label>
-                <input type="text" id="ssid" placeholder="Your WiFi network name">
-                <div class="help-text">Enter manually if your network doesn't appear</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">WiFi Password:</label>
-                <input type="password" id="password" placeholder="Your network password">
-            </div>
-            
-            <button onclick="saveWifiCredentials()">Save and Connect</button>
+        <div class="form-group">
+            <label for="ssid">SSID (Network Name):</label>
+            <input type="text" id="ssid" placeholder="Your WiFi network name">
         </div>
         
-        <div id="mqtt" class="tab-content">
-            <div id="mqttMessage" class="message"></div>
-            
-            <div class="form-group">
-                <label for="broker">MQTT Broker Address:</label>
-                <input type="text" id="broker" placeholder="mqtt.example.com or 192.168.1.100">
-                <div class="help-text">Optional - configure later if preferred</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="port">MQTT Port:</label>
-                <input type="number" id="port" placeholder="1883" value="1883" min="1" max="65535">
-            </div>
-            
-            <div class="form-group">
-                <label for="username">Username (optional):</label>
-                <input type="text" id="username" placeholder="Broker username">
-            </div>
-            
-            <div class="form-group">
-                <label for="mqttPassword">Password (optional):</label>
-                <input type="password" id="mqttPassword" placeholder="Broker password">
-            </div>
-            
-            <button onclick="saveMqttCredentials()">Save MQTT Configuration</button>
+        <div class="form-group">
+            <label for="password">WiFi Password:</label>
+            <input type="password" id="password" placeholder="Leave empty if open network">
         </div>
+        
+        <button id="connectBtn" onclick="saveWifiCredentials()">Save and Connect</button>
     </div>
     
     <script>
-        function switchTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            const buttons = document.querySelectorAll('.tab-button');
-            
-            tabs.forEach(tab => tab.classList.remove('active'));
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-        
-        function showMessage(elementId, message, type) {
-            const msgEl = document.getElementById(elementId);
+        function showMessage(message, type) {
+            const msgEl = document.getElementById('wifiMessage');
             msgEl.textContent = message;
             msgEl.className = `message show ${type}`;
             setTimeout(() => msgEl.classList.remove('show'), 5000);
@@ -380,32 +125,31 @@ static const char* HTML_PORTAL = R"html(
         function scanNetworks() {
             const loading = document.getElementById('loadingWifi');
             const list = document.getElementById('networksList');
+            const btn = document.getElementById('scanBtn');
             
             loading.classList.add('show');
             list.style.display = 'none';
+            btn.disabled = true;
             
             fetch('/api/wifi-networks')
                 .then(r => r.json())
                 .then(data => {
                     loading.classList.remove('show');
+                    btn.disabled = false;
                     
                     if (!data.networks || data.networks.length === 0) {
-                        showMessage('wifiMessage', 'No WiFi networks found', 'error');
+                        showMessage('No WiFi networks found', 'error');
                         return;
                     }
                     
                     list.innerHTML = '';
                     data.networks.forEach(network => {
-                        const strength = Math.max(20, Math.min(100, network.rssi + 100)) + '%';
                         const item = document.createElement('div');
                         item.className = 'network-item';
                         item.innerHTML = `
                             <div class="network-info">
                                 <div class="network-ssid">${escapeHtml(network.ssid)}</div>
-                                <div class="network-rssi">
-                                    <span class="signal-strength" style="--strength: ${strength}"></span>
-                                    ${network.rssi} dBm - Channel ${network.channel}
-                                </div>
+                                <div class="network-rssi">${network.rssi} dBm (Ch ${network.channel})</div>
                             </div>
                         `;
                         item.onclick = () => selectNetwork(network.ssid, item);
@@ -416,7 +160,8 @@ static const char* HTML_PORTAL = R"html(
                 })
                 .catch(err => {
                     loading.classList.remove('show');
-                    showMessage('wifiMessage', 'Error scanning networks: ' + err.message, 'error');
+                    btn.disabled = false;
+                    showMessage('Error scanning networks.', 'error');
                 });
         }
         
@@ -431,71 +176,39 @@ static const char* HTML_PORTAL = R"html(
         function saveWifiCredentials() {
             const ssid = document.getElementById('ssid').value.trim();
             const password = document.getElementById('password').value;
+            const btn = document.getElementById('connectBtn');
             
             if (!ssid) {
-                showMessage('wifiMessage', 'Please enter the WiFi network name', 'error');
+                showMessage('Please enter the WiFi network name', 'error');
                 return;
             }
             
-            if (!password) {
-                showMessage('wifiMessage', 'Please enter the WiFi password', 'error');
-                return;
-            }
-            
-            const payload = {
-                ssid: ssid,
-                password: password
-            };
+            btn.disabled = true;
+            btn.innerText = "Connecting...";
+
+            const payload = { ssid: ssid, password: password };
             
             fetch('/api/credentials', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        showMessage('wifiMessage', 'Credentials saved. Connecting...', 'success');
-                        updateStatus();
-                    } else {
-                        showMessage('wifiMessage', data.message || 'Unknown error', 'error');
-                    }
-                })
-                .catch(err => showMessage('wifiMessage', 'Error: ' + err.message, 'error'));
-        }
-        
-        function saveMqttCredentials() {
-            const broker = document.getElementById('broker').value.trim();
-            const port = parseInt(document.getElementById('port').value) || 1883;
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('mqttPassword').value;
-            
-            if (!broker) {
-                showMessage('mqttMessage', 'Please enter the MQTT broker address', 'error');
-                return;
-            }
-            
-            const payload = {
-                broker: broker,
-                port: port,
-                username: username,
-                password: password
-            };
-            
-            fetch('/api/mqtt-credentials', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('Credentials saved! Device is connecting...', 'success');
+                    updateStatus();
+                } else {
+                    showMessage(data.message || 'Unknown error', 'error');
+                    btn.disabled = false;
+                    btn.innerText = "Save and Connect";
+                }
             })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        showMessage('mqttMessage', 'MQTT configuration saved', 'success');
-                    } else {
-                        showMessage('mqttMessage', data.message || 'Unknown error', 'error');
-                    }
-                })
-                .catch(err => showMessage('mqttMessage', 'Error: ' + err.message, 'error'));
+            .catch(err => {
+                showMessage('Connection error.', 'error');
+                btn.disabled = false;
+                btn.innerText = "Save and Connect";
+            });
         }
         
         function updateStatus() {
@@ -522,7 +235,6 @@ static const char* HTML_PORTAL = R"html(
             return div.innerHTML;
         }
         
-        // Update status on load and periodically
         updateStatus();
         setInterval(updateStatus, 5000);
     </script>

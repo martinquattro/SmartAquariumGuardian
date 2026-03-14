@@ -28,7 +28,6 @@ bool APPortal::OnInit()
 {
     _httpServer = nullptr;
     _state = State::IDLE;
-    _mqttPort = 1883;
 
     return true;
 }
@@ -59,19 +58,6 @@ void APPortal::OnUpdate()
         case State::WIFI_CREDENTIALS_RECEIVED:
         {
             // Credentials ready for NetworkController to process
-            // Waiting for NetworkController to call ResetState() after processing
-        }
-        break;
-
-        case State::LISTENING_MQTT_CONFIG:
-        {
-            // waiting for HTTP handler to set MQTT_CREDENTIALS_RECEIVED
-        }
-        break;
-
-        case State::MQTT_CREDENTIALS_RECEIVED:
-        {
-            // MQTT credentials ready for NetworkController to process
             // Waiting for NetworkController to call ResetState() after processing
         }
         break;
@@ -153,24 +139,6 @@ Result APPortal::GetWifiCredentials(std::string& ssid, std::string& password) co
     
     ssid = _configuredSsid;
     password = _configuredPassword;
-    return Result(true, "Credentials retrieved");
-}
-
-//-----------------------------------------------------------------------------
-Result APPortal::GetMqttCredentials(std::string& broker, 
-                                    uint16_t& port, 
-                                    std::string& username, 
-                                    std::string& password) const
-{
-    if (_state != State::MQTT_CREDENTIALS_RECEIVED)
-    {
-        return Result(false, "MQTT credentials not ready");
-    }
-    
-    broker = _mqttBroker;
-    port = _mqttPort;
-    username = _mqttUsername;
-    password = _mqttPassword;
     return Result(true, "Credentials retrieved");
 }
 
@@ -261,14 +229,6 @@ void APPortal::SetupHttpServer()
         .user_ctx = this
     };
     httpd_register_uri_handler(_httpServer, &uri_post_credentials);
-
-    httpd_uri_t uri_post_mqtt = {
-        .uri = "/api/mqtt-credentials",
-        .method = HTTP_POST,
-        .handler = HandlePostMqttCredentials,
-        .user_ctx = this
-    };
-    httpd_register_uri_handler(_httpServer, &uri_post_mqtt);
 
     httpd_uri_t uri_get_status = {
         .uri = "/api/status",
@@ -424,99 +384,6 @@ esp_err_t APPortal::HandleGetWifiNetworks(httpd_req_t* req)
 }
 
 //----private------------------------------------------------------------------
-esp_err_t APPortal::HandlePostMqttCredentials(httpd_req_t* req)
-{
-    APPortal* portal = static_cast<APPortal*>(req->user_ctx);
-    
-    // Read request body
-    char buf[512] = {0};
-    int total_len = req->content_len;
-    int cur_len = 0;
-
-    while (cur_len < total_len)
-    {
-        int recv_len = httpd_req_recv(req, buf + cur_len, total_len - cur_len);
-        if (recv_len <= 0)
-        {
-            httpd_resp_send_500(req);
-            return ESP_FAIL;
-        }
-        cur_len += recv_len;
-    }
-    buf[cur_len] = '\0';
-
-    // Parse JSON using nlohmann::json
-    Json response;
-    
-    {
-        Json j = Json::parse(std::string(buf), nullptr, false);
-        
-        if (j.is_discarded())
-        {
-            response["success"] = false;
-            response["message"] = "Invalid JSON";
-            std::string json_str = response.dump();
-            httpd_resp_set_type(req, "application/json");
-            httpd_resp_send(req, json_str.c_str(), json_str.length());
-            return ESP_OK;
-        }
-
-        std::string broker, username, password;
-        uint16_t port = 1883;
-
-        // Extract fields
-        if (j.contains("broker") && j["broker"].is_string())
-        {
-            broker = j["broker"].get<std::string>();
-        }
-
-        if (j.contains("port") && j["port"].is_number())
-        {
-            port = j["port"].get<uint16_t>();
-        }
-
-        if (j.contains("username") && j["username"].is_string())
-        {
-            username = j["username"].get<std::string>();
-        }
-
-        if (j.contains("password") && j["password"].is_string())
-        {
-            password = j["password"].get<std::string>();
-        }
-
-        if (broker.empty())
-        {
-            response["success"] = false;
-            response["message"] = "Broker address required";
-            std::string json_str = response.dump();
-            httpd_resp_set_type(req, "application/json");
-            httpd_resp_send(req, json_str.c_str(), json_str.length());
-            return ESP_OK;
-        }
-
-        // Store MQTT credentials
-        portal->_mqttBroker = broker;
-        portal->_mqttPort = port;
-        portal->_mqttUsername = username;
-        portal->_mqttPassword = password;
-        portal->_state = State::MQTT_CREDENTIALS_RECEIVED;
-
-        CORE_INFO("APPortal: MQTT settings received - Broker: %s:%d, User: %s", 
-                  broker.c_str(), port, username.empty() ? "(none)" : username.c_str());
-
-        response["success"] = true;
-        response["message"] = "MQTT settings saved";
-    }
-
-    std::string json_str = response.dump();
-    httpd_resp_set_type(req, "application/json");
-    httpd_resp_send(req, json_str.c_str(), json_str.length());
-
-    return ESP_OK;
-}
-
-//----private------------------------------------------------------------------
 esp_err_t APPortal::HandleGetStatus(httpd_req_t* req)
 {
     Json response;
@@ -535,10 +402,6 @@ esp_err_t APPortal::HandleGetStatus(httpd_req_t* req)
 APPortal::APPortal() 
     : _configuredSsid("")
     , _configuredPassword("")
-    , _mqttBroker("")
-    , _mqttPort(1883)
-    , _mqttUsername("")
-    , _mqttPassword("")
 {
 }
 
