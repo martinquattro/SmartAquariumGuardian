@@ -20,8 +20,7 @@ bool FoodFeeder::OnInit()
     _servo = Drivers::Servo::GetInstance();
     _servo->Init();
 
-    // Ensure feeder is closed at startup
-    _servo->FadeToAngle(FEEDER_CLOSED_ANGLE, FEEDER_MOVE_TIME_MS);
+    _servo->SetAngle(FEEDER_CLOSED_ANGLE);
 
     return true;
 }

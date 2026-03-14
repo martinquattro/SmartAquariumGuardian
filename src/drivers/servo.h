@@ -19,6 +19,12 @@ class Servo : public Base::Singleton<Servo>,
     public:
 
         /**
+         * @brief Set servo angle immediately (no fade).
+         * @param angle Target angle [0–180°].
+         */
+        void SetAngle(float angle);
+
+        /**
          * @brief Smoothly move servo to target angle in given time.
          * 
          * @param angle Target angle [0–180°].

@@ -15,7 +15,7 @@ namespace Drivers {
 //----private------------------------------------------------------------------
 bool Servo::OnInit()
 {
-    _pwmOut.SetDuty(MIN_SAFE_DUTY);
+    SetAngle(180.0f);
     return true;
 }
 
@@ -24,6 +24,16 @@ void Servo::OnUpdate()
 {
     // For now, no periodic logic.
     // In the future, could track Fade completion or add timed sequences.
+}
+
+//-----------------------------------------------------------------------------
+void Servo::SetAngle(float angle)
+{
+    angle = std::clamp(angle, 0.0f, 180.0f);
+
+    float duty = MIN_SAFE_DUTY + (angle / 180.0f) * (MAX_SAFE_DUTY - MIN_SAFE_DUTY);
+
+    _pwmOut.SetDuty(duty);
 }
 
 //-----------------------------------------------------------------------------
