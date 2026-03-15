@@ -192,14 +192,12 @@ bool GraphicDisplay::OnInit()
 
     _lvgl_disp = lvgl_port_add_disp(&disp_cfg);
 
-    // Set default background color to black
+    // Default background white so boot sequence is: white -> splash (white + logo) -> main UI
     if (lvgl_port_lock(portMAX_DELAY))
     {
         lv_obj_t* scr = lv_scr_act();
-
-        lv_obj_set_style_bg_color(scr, lv_color_black(), LV_PART_MAIN);
+        lv_obj_set_style_bg_color(scr, lv_color_white(), LV_PART_MAIN);
         lv_obj_set_style_bg_opa(scr, LV_OPA_COVER, LV_PART_MAIN);
-
         lvgl_port_unlock();
     }
 

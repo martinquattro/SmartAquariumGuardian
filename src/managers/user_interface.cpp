@@ -33,7 +33,7 @@ bool UserInterface::OnInit()
         }
     );
 
-    _display->SetBrightness(80);
+    _display->SetBrightness(DISPLAY_BRIGHTNESS_FIRST_UPDATE);
     
     // Initialize UI elements
     _time = new Drivers::GraphicDisplay::UIElement(ui_lblTime);
@@ -266,6 +266,12 @@ void UserInterface::OnUpdate()
         // Doses left today
         std::sprintf(buffer, "%d", feederStatus.remainingDosesToday);
         _dosesLeft->SetText(buffer);
+    }
+
+    if (!_firstUpdateDone)
+    {
+        _display->SetBrightness(DISPLAY_BRIGHTNESS_NORMAL_MODE);
+        _firstUpdateDone = true;
     }
 }
 

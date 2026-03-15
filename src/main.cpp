@@ -10,10 +10,10 @@
 //-----------------------------------------------------------------------------
 extern "C" void app_main(void) 
 {
-    SmartAquariumGuardian::GetInstance()->Init();
+    SmartAquariumGuardian::GetInstance()->Init(2000);
 
     while (true) 
     {
-        SmartAquariumGuardian::GetInstance()->Update();
+        SmartAquariumGuardian::GetInstance()->Update(10);
     }
 }

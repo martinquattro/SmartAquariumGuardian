@@ -21,8 +21,6 @@
 //----private------------------------------------------------------------------
 bool SmartAquariumGuardian::OnInit()
 {
-    _delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
-
     // Create and initialize the GuardianProxy
     Core::GuardianProxy::GetInstance()->Init();
 
@@ -31,11 +29,18 @@ bool SmartAquariumGuardian::OnInit()
     Services::StorageService::GetInstance()->Init();
     Services::PowerController::GetInstance()->Init();
 
-    // Initialize managers
+    // Initialize managers (sensors first, low current)
     Managers::WaterMonitor::GetInstance()->Init();
-    Managers::FoodFeeder::GetInstance()->Init();
-    Managers::UserInterface::GetInstance()->Init();
+
+    // Display + backlight draw high current; delay after before starting network
+    Managers::UserInterface::GetInstance()->Init(300);
+
+    // Servo init can draw significant current; delay after so supply can settle
+    Managers::FoodFeeder::GetInstance()->Init(400);
+
     Managers::NetworkController::GetInstance()->Init();
+
+    _delay.Start(Config::SYSTEM_TIME_INCREMENT_MS);
 
     return true;
 }
@@ -50,18 +55,13 @@ void SmartAquariumGuardian::OnUpdate()
     {
         CORE_INFO("Starting periodic update...");
 
-        // Update managers
-        Managers::WaterMonitor::GetInstance()->Update();
-        Managers::FoodFeeder::GetInstance()->Update();
-        Managers::UserInterface::GetInstance()->Update();
+        Managers::WaterMonitor::GetInstance()->Update(100);
+        Managers::FoodFeeder::GetInstance()->Update(100);
+        Managers::UserInterface::GetInstance()->Update(100);
 
         CORE_INFO("Periodic update completed.");
     }
 
     // Always update Network Controller to handle connectivity and time sync
     Managers::NetworkController::GetInstance()->Update();
-
-    // Debounce delay to prevent flickering. 
-    // TODO - See if it can be avoid
-    TaskDelayMs(10);
 }

@@ -42,10 +42,11 @@ class Module
         /**
          * @brief Initialize the module.
          *        Prints "Initializing <module_name>..." automatically.
-         *        Calls OnInit() internally.
+         *        Calls OnInit() internally, then optionally delays.
+         * @param delayAfterMs Delay in milliseconds to apply after OnInit() (default 0).
          * @return bool True if initialization successful, false otherwise.
          */
-        bool Init()
+        bool Init(int delayAfterMs = 0)
         {
             CORE_INFO("%s Initializing...", GetModuleName());
             
@@ -56,17 +57,23 @@ class Module
             }
 
             CORE_INFO("%s initialized successfully", GetModuleName());
+
+            if (delayAfterMs > 0)
+            {
+                TaskDelayMs(delayAfterMs);
+            }
+
             return true;
         }
 
         /**
          * @brief Periodic update (optional).
-         *        Calls OnUpdate() internally.
+         *        Calls OnUpdate() internally, then optionally delays.
          *        Only implemented by Managers and Services.
-         *        Drivers typically don't need this.
          *        Automatically detects battery mode changes and calls appropriate handlers.
+         * @param delayAfterMs Delay in milliseconds to apply after OnUpdate() (default 0).
          */
-        void Update()
+        void Update(int delayAfterMs = 0)
         {
             bool enteredBatteryMode = false;
             bool exitedBatteryMode = false;
@@ -85,6 +92,11 @@ class Module
             }
             
             OnUpdate();
+
+            if (delayAfterMs > 0)
+            {
+                TaskDelayMs(delayAfterMs);
+            }
         }
 
     protected:
