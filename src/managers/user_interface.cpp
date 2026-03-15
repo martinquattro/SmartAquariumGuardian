@@ -270,6 +270,7 @@ void UserInterface::OnUpdate()
 
     if (!_firstUpdateDone)
     {
+        lv_disp_load_scr(ui_Screen);
         _display->SetBrightness(DISPLAY_BRIGHTNESS_NORMAL_MODE);
         _firstUpdateDone = true;
     }

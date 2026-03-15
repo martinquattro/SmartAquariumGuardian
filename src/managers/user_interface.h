@@ -76,7 +76,7 @@ class UserInterface : public Base::Singleton<UserInterface>
 
         static constexpr int DISPLAY_BRIGHTNESS_BATTERY_MODE = 20;
         static constexpr int DISPLAY_BRIGHTNESS_NORMAL_MODE = 80;
-        static constexpr int DISPLAY_BRIGHTNESS_FIRST_UPDATE = 5;
+        static constexpr int DISPLAY_BRIGHTNESS_FIRST_UPDATE = 50;
 
         //---------------------------------------------
 

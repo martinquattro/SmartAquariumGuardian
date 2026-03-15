@@ -256,10 +256,11 @@ bool GraphicDisplay::OnInit()
         lvgl_port_unlock();
     }
 
-    // Initialize custom UI
+    // Initialize custom UI (generated code); then ensure splash is shown first
     if (lvgl_port_lock(portMAX_DELAY))
     {
         ui_init();
+        lv_disp_load_scr(ui_SplashScreen);
         lvgl_port_unlock();
     }
 

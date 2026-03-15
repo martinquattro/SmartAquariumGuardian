@@ -20,6 +20,7 @@ extern "C" {
 
 ///////////////////// SCREENS ////////////////////
 
+#include "screens/ui_SplashScreen.h"
 #include "screens/ui_Screen.h"
 
 ///////////////////// VARIABLES ////////////////////
@@ -30,6 +31,7 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
+LV_IMG_DECLARE(ui_img_502125874);    // assets/logo (3).png
 LV_IMG_DECLARE(ui_img_icn_tds_png);    // assets/icn_tds.png
 LV_IMG_DECLARE(ui_img_icn_range_arrow_png);    // assets/icn_range_arrow.png
 LV_IMG_DECLARE(ui_img_icn_temp_png);    // assets/icn_temp.png
