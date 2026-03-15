@@ -138,7 +138,7 @@ void ui_Screen_screen_init(void)
     lv_obj_set_width(ui_lblTdsUnit, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_lblTdsUnit, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_lblTdsUnit, 57);
-    lv_obj_set_y(ui_lblTdsUnit, -13);
+    lv_obj_set_y(ui_lblTdsUnit, 6);
     lv_obj_set_align(ui_lblTdsUnit, LV_ALIGN_CENTER);
     lv_label_set_text(ui_lblTdsUnit, "ppm");
     lv_obj_set_style_text_font(ui_lblTdsUnit, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -240,7 +240,7 @@ void ui_Screen_screen_init(void)
     lv_obj_set_width(ui_lblTempUnit, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_lblTempUnit, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_lblTempUnit, 57);
-    lv_obj_set_y(ui_lblTempUnit, -13);
+    lv_obj_set_y(ui_lblTempUnit, 6);
     lv_obj_set_align(ui_lblTempUnit, LV_ALIGN_CENTER);
     lv_label_set_text(ui_lblTempUnit, "°C");
     lv_obj_set_style_text_font(ui_lblTempUnit, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);

@@ -5,7 +5,7 @@ SET(SOURCES components/ui_comp_panel.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
-    images/ui_img_502125874.c
+    images/ui_img_logo_white_130x130_png.c
     images/ui_img_icn_tds_png.c
     images/ui_img_icn_range_arrow_png.c
     images/ui_img_icn_temp_png.c

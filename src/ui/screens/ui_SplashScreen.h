@@ -17,7 +17,7 @@ extern lv_obj_t * ui_SplashScreen;
 extern lv_obj_t * ui_Spinner;
 extern lv_obj_t * ui_TitleLbl;
 extern lv_obj_t * ui_LoadingLbl;
-extern lv_obj_t * ui_Image8;
+extern lv_obj_t * ui_Logo;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus
