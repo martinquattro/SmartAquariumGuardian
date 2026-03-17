@@ -24,13 +24,13 @@ bool SmartAquariumGuardian::OnInit()
     // Create and initialize the GuardianProxy
     Core::GuardianProxy::GetInstance()->Init();
 
+    // Display + backlight draw high current; delay after before starting network
+    Managers::UserInterface::GetInstance()->Init(300);
+
     // Initialize services
     Services::RealTimeClock::GetInstance()->Init(100);
     Services::StorageService::GetInstance()->Init(100);
     Services::PowerController::GetInstance()->Init(100);
-
-    // Display + backlight draw high current; delay after before starting network
-    Managers::UserInterface::GetInstance()->Init(300);
 
     // Initialize managers (sensors first, low current)
     Managers::WaterMonitor::GetInstance()->Init(200);
