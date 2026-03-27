@@ -330,10 +330,12 @@ void UserInterface::UpdateFeedingStatusIndicator(bool isFeeding)
 
     if (isFeeding)
     {
+        _nextFeedingTime->SetText("Feeding...");
         _feederPanel->SetState1();
     }
     else
     {
+        _nextFeedingTime->SetText("---");
         _feederPanel->ClearState1();
     }
 }
