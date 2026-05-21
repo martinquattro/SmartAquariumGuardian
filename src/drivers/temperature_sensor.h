@@ -86,7 +86,7 @@ class TemperatureSensor : public Base::Singleton<TemperatureSensor>,
         static constexpr uint8_t CMD_CONVERT_T    = 0x44;
         static constexpr uint8_t CMD_READ_SCRATCH = 0xBE;
 
-        static constexpr int NUM_AVG_SAMPLES      = 10;
+        static constexpr int NUM_AVG_SAMPLES      = 12;
 
         static constexpr float MIN_TEMP_VALUE   = 0.0f;
         static constexpr float MAX_TEMP_VALUE   = 85.0f;

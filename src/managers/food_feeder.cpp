@@ -21,6 +21,7 @@ bool FoodFeeder::OnInit()
     _servo->Init();
 
     _servo->SetAngle(FEEDER_CLOSED_ANGLE);
+    _servo->Release();
 
     return true;
 }
@@ -232,6 +233,8 @@ void FoodFeeder::PerformAsyncFeedingSequence(int dose)
         // Close feeder
         servo->FadeToAngle(FEEDER_CLOSED_ANGLE, FEEDER_MOVE_TIME_MS);
         TaskDelayMs(FEEDER_MOVE_TIME_MS + FEEDER_WAIT_TIME_MS);
+
+        servo->Release();
     }
 
     CORE_INFO("Feeding sequence completed for %d doses.", dose);

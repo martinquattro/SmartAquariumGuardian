@@ -19,7 +19,7 @@ namespace Config {
 static constexpr int SYSTEM_TIME_INCREMENT_MS = 5000;
 
 // Interval for sending telemetry data to the MQTT broker
-static constexpr int TELEMETRY_SEND_INTERVAL_MS = 30000;
+static constexpr int TELEMETRY_SEND_INTERVAL_MS = 60000;
 
 // Pin definitions for the Smart Aquarium Guardian
 // These pins are used for various sensors and controls in the aquarium system

@@ -46,6 +46,12 @@ void Servo::FadeToAngle(float angle, uint32_t timeMs)
     _pwmOut.FadeToDuty(duty, timeMs);
 }
 
+//-----------------------------------------------------------------------------
+void Servo::Release()
+{
+    _pwmOut.Stop();
+}
+
 //----private------------------------------------------------------------------
 Servo::Servo()
     : _pwmOut(Config::SERVO_FEEDER_PWM_PIN, PWM_FREQUENCY)

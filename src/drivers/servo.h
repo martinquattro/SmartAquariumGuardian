@@ -32,6 +32,12 @@ class Servo : public Base::Singleton<Servo>,
          */
         void FadeToAngle(float angle, uint32_t timeMs);
 
+        /**
+         * @brief Stop PWM output so the servo is not held by a continuous signal.
+         *        Use when idle; call SetAngle/FadeToAngle before the next move.
+         */
+        void Release();
+
     protected:
 
         friend class Base::Singleton<Servo>;

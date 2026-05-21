@@ -74,7 +74,7 @@ class TdsSensor : public Base::Singleton<TdsSensor>,
 
         //---------------------------------------------
 
-        static constexpr int NUM_AVG_SAMPLES = 20;
+        static constexpr int NUM_AVG_SAMPLES = 12;
         
         static constexpr int MIN_TDS_VALUE   = 0;
         static constexpr int MAX_TDS_VALUE   = 999;

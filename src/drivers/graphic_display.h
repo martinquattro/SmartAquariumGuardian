@@ -129,6 +129,9 @@ class GraphicDisplay : public Base::Singleton<GraphicDisplay>,
         TouchCallback _onDoubleClickAction = nullptr;
         TouchCallback _onLongPressAction = nullptr;
 
+        uint32_t _lastTapTime = 0;
+        static constexpr uint32_t DOUBLE_TAP_MS = 500;
+
         // Handles for ESP-IDF LCD panel and touch
         esp_lcd_panel_handle_t _panel_handle = nullptr;
         esp_lcd_touch_handle_t _tp_handle = nullptr;

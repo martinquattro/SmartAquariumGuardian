@@ -302,14 +302,24 @@ void GraphicDisplay::OnTouchEventCallback(lv_event_t* e)
 {
     lv_event_code_t code = lv_event_get_code(e);
 
-    if (code == LV_EVENT_DOUBLE_CLICKED)
+    if (code == LV_EVENT_CLICKED)
     {
-        CORE_INFO(">>> LV_EVENT_DOUBLE_CLICKED detected <<<");
+        GraphicDisplay* self = GraphicDisplay::GetInstance();
+        const uint32_t now = lv_tick_get();
 
-        // Call the registered double click action
-        if (GraphicDisplay::GetInstance()->_onDoubleClickAction != nullptr)
+        if (self->_lastTapTime != 0 && (now - self->_lastTapTime) < DOUBLE_TAP_MS)
         {
-            GraphicDisplay::GetInstance()->_onDoubleClickAction();
+            CORE_INFO(">>> Double tap detected <<<");
+            self->_lastTapTime = 0;
+
+            if (self->_onDoubleClickAction != nullptr)
+            {
+                self->_onDoubleClickAction();
+            }
+        }
+        else
+        {
+            self->_lastTapTime = now;
         }
     }
     else if (code == LV_EVENT_LONG_PRESSED)
@@ -333,7 +343,15 @@ void GraphicDisplay::SetupTouchDetection()
 
     lv_obj_add_event_cb(top_layer, OnTouchEventCallback, LV_EVENT_ALL, nullptr);
 
-    lv_indev_set_long_press_time(lv_indev_get_act(), 1400); // Set long press time to 1400ms
+    lv_indev_t* indev = nullptr;
+    while ((indev = lv_indev_get_next(indev)) != nullptr)
+    {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_POINTER)
+        {
+            lv_indev_set_long_press_time(indev, 1400);
+            break;
+        }
+    }
 
     CORE_INFO("Touch detection setup completed on TOP LAYER.");
 }
