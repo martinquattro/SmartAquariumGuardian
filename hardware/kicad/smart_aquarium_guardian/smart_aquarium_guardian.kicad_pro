@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.3048
+          "min_clearance": 0.0
         }
       },
       "diff_pair_dimensions": [
@@ -571,7 +571,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "gerbers/",
+      "plot": "G:/Mi unidad/TESIS/SmartAquariumGuardian - Drive/shared folder - Martin Quattrone - TPP/imagenes/chapter_3/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "smart_aquarium_guardian.step",

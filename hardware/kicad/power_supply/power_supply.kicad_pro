@@ -536,6 +536,9 @@
     },
     "net_colors": null,
     "netclass_assignments": {
+      "/Boost_{OUT}": [
+        "Power"
+      ],
       "Net-(BT1-+)": [
         "Power"
       ],
@@ -582,7 +585,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "gerbers",
+      "plot": "G:/Mi unidad/TESIS/SmartAquariumGuardian - Drive/shared folder - Martin Quattrone - TPP/imagenes/chapter_3/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "power_supply.step",
@@ -729,7 +732,7 @@
     },
     "net_format_name": "",
     "page_layout_descr_file": "",
-    "plot_directory": "",
+    "plot_directory": "G:/Mi unidad/TESIS/SmartAquariumGuardian - Drive/shared folder - Martin Quattrone - TPP/imagenes/chapter_3/",
     "space_save_all_events": true,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
