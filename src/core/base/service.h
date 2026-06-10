@@ -38,7 +38,7 @@ class Service : public Module
         /**
          * @brief Services typically don't require periodic updates.
          */
-        void Update() = delete;
+        void Update(int delayAfterMs = 0) = delete;
 
     protected:
 
