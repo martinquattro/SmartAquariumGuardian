@@ -539,6 +539,9 @@
       "/Boost_{OUT}": [
         "Power"
       ],
+      "/PP_{OUT}": [
+        "Power"
+      ],
       "Net-(BT1-+)": [
         "Power"
       ],
@@ -732,7 +735,7 @@
     },
     "net_format_name": "",
     "page_layout_descr_file": "",
-    "plot_directory": "G:/Mi unidad/TESIS/SmartAquariumGuardian - Drive/shared folder - Martin Quattrone - TPP/imagenes/chapter_3/",
+    "plot_directory": "G:/Mi unidad/TESIS/SmartAquariumGuardian - Drive/shared folder - Martin Quattrone - TPP/imagenes/chapter_3/power/",
     "space_save_all_events": true,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
