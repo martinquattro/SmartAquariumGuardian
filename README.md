@@ -44,7 +44,7 @@ The system is designed for users who want to:
 
 The overall system consists of sensors, a control unit, a local display, and cloud connectivity.
 
-![System block diagram](docs/diagrams/block_diagram.png.png)
+![System block diagram](docs/diagrams/block_diagram.png)
 
 ### Main building blocks
 - Sensors: temperature, TDS, and power monitoring
