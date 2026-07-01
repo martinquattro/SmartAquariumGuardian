@@ -1,277 +1,173 @@
-
-  
-
 # Smart Aquarium Guardian
 
-  
-
-ESP32-based aquarium monitoring and automation system with real-time telemetry, scheduled feeding, and an intuitive graphical user interface.
-
-  
+Smart Aquarium Guardian is an ESP32-based IoT aquarium monitoring and automation system for hobbyists and small-scale aquariums. It combines real-time sensing, automated feeding, remote telemetry, and a local touchscreen interface to help maintain a healthy aquarium with minimal manual effort.
 
 ## Overview
 
-  
+This project monitors key aquarium conditions such as water temperature and TDS, supports scheduled feeding, and publishes telemetry to an MQTT broker such as ThingsBoard. It also provides a local user interface built with LVGL so the device can be controlled directly on the hardware.
 
-  
+The system is designed for users who want to:
+- monitor aquarium conditions in real time
+- receive alerts when values move outside safe thresholds
+- automate feeding routines
+- configure and control the device remotely
 
-Smart Aquarium Guardian is a comprehensive IoT solution for automated aquarium management. The system provides real-time monitoring of water conditions, automated feeding capabilities, and remote control via MQTT, all managed through an intuitive touchscreen interface.
+## Key Features
 
-  
+- Real-time monitoring
+  - DS18B20 temperature sensing
+  - TDS water quality measurement
+  - configurable thresholds and alerts
 
-  
+- Automated feeding
+  - servo-based food dispenser
+  - up to 10 daily feeding schedules
+  - manual feeding support
 
-## Features
+- Connectivity and telemetry
+  - Wi-Fi connectivity with automatic reconnection
+  - MQTT-based telemetry and remote control
+  - access point mode for initial device configuration
 
-  
+- User interface
+  - LVGL-based touchscreen UI
+  - live sensor values and status indicators
+  - feeding and system controls
 
-  
+- System management
+  - RTC-based time synchronization
+  - timezone-aware scheduling
+  - EEPROM-backed configuration storage
+  - battery-aware power handling
 
-### Core Functionality
+## System Architecture
 
-  
+The overall system consists of sensors, a control unit, a local display, and cloud connectivity.
 
-  
+![System block diagram](docs/diagrams/system_block_diagram.pdf)
 
-- **Real-time Water Monitoring**
+### Main building blocks
+- Sensors: temperature, TDS, and power monitoring
+- Embedded controller: ESP32 firmware and local logic
+- Actuators: servo feeder and display backlight/control
+- Connectivity: Wi-Fi, MQTT, and remote configuration
+- Cloud backend: optional ThingsBoard telemetry and command handling
 
-  
+## Firmware Architecture
 
-	- Temperature sensing via DS18B20 OneWire sensors
+The firmware is organized into logical layers for clarity and maintainability.
 
-  
+![Firmware architecture diagram](docs/diagrams/firmware_block_diagram.pdf)
 
-	- TDS (Total Dissolved Solids) water quality measurement
+### Layered structure
+- Core: shared abstractions, lifecycle patterns, and platform interfaces
+- Managers: orchestration of system behavior
+- Services: domain-specific logic such as storage and power management
+- Drivers: hardware abstraction for sensors and actuators
+- Connectivity: Wi-Fi, MQTT, and access-point configuration
 
-  
+For more details, see [src/core/README.md](src/core/README.md).
 
-	- Configurable alert thresholds with immediate notifications
+## Hardware Requirements
 
-  
+The current implementation targets an ESP32-based hardware platform and uses the following components:
 
-	- Data logging and historical tracking
+- ESP32 development board
+- DS18B20 temperature sensor
+- TDS sensor with analog input
+- servo motor for feeding mechanism
+- ILI9341 SPI display with touch support
+- optional RTC and EEPROM modules
+- USB power with battery backup support
 
-  
+## Software Stack
 
-  
+- PlatformIO
+- ESP-IDF
+- C++17
+- LVGL 9.1.0
+- MQTT
+- nlohmann-json
+- Doxygen for API documentation
 
-- **Automated Feeding System**
-
-  
-
-	- Servo-controlled food dispenser with precise dosage control
-
-  
-
-	- Up to 10 configurable daily feeding schedules
-
-  
-
-	- Manual feeding via commands
-
-  
-
-  
-
-- **Network Integration**
-
-  
-
-	- MQTT client for telemetry publishing and remote command reception
-
-  
-
-	- WiFi connectivity management with automatic reconnection
-
-  
-
-	- Real-time data synchronization
-
-  
-
-  
-
-- **Graphical User Interface**
-
-  
-
-	- LVGL 9.1.0-based touchscreen UI (ILI9341 SPI LCD, 320x240)
-
-  
-
-	- Real-time sensor value display with alert state indicators
-
-  
-
-	- Feeding status information
-
-  
-
-	- Time and connection status
-
-  
-
-  
-
-- **System Management**
-
-  
-
-	- Real-time clock synchronization (SNTP)
-
-  
-
-	- Timezone-aware scheduling
-
-  
-
-	- Non-volatile configuration storage (EEPROM)
-
-  
-
-	- Auto switch battery back-up in case of power outage
-
-  
-
-  
-
-## Building and Flashing
-
-  
+## Getting Started
 
 ### Prerequisites
 
-  
-
-- PlatformIO (https://platformio.org/)
-
-- ESP-IDF 5.1+ installed and configured
-
+- PlatformIO
+- ESP-IDF 5.1 or newer
 - Python 3.8+
+- Doxygen
 
-  
+### Clone the Repository
 
-## Project Architecture
-
-  
-
-### Core Module
-
-  
-
-The `src/core/` folder contains the foundational architecture:
-
-  
-
-- **Base Classes**: Abstract base classes for Managers, Drivers, and Services
-
-- **Singleton Pattern**: Type-safe singleton implementation using CRTP
-
-- **Module Lifecycle**: Common initialization and update patterns
-
-  
-
-For detailed information about the core architecture, patterns, and usage examples, see [`src/core/README.md`](src/core/README.md).
-
-
-  
-
-## API Documentation with Doxygen
-
-  
-
-This project uses **Doxygen** to generate professional HTML API documentation from source code comments.
-
-  
-
-  
-
-#### Quick Start
-
-  
-
-- Generate HTML doxygen doccumentation based on Doxyfile configuration
-
-```powershell
-
->doxygen Doxyfile
-
+```bash
+git clone https://github.com/your-username/SmartAquariumGuardian.git
+cd SmartAquariumGuardian
 ```
 
-- Open documentation
+### Build the Project
 
-  
-
-Generated files are seved inside ``/docs/doxygen/`` folder. HTML index can accesed through
-
+```bash
+pio run -e prod
 ```
 
-\docs\doxygen\html\index.html
+### Flash the Firmware
 
+```bash
+pio run -e prod -t upload
 ```
 
-  
+### Monitor Serial Output
 
-#### Requirements
-
-  
-
-- Doxygen (https://www.doxygen.nl/download.html)
-
-  
-
-- Graphviz (for diagrams: https://graphviz.org/download/)
-
-  
-
-  
-
-#### Build Integration
-
-  
-
-Pre-build **Python** task that automatically runs Doxygen generation on every build, to keep documentation up-to-date locally. Script path
-
+```bash
+pio device monitor
 ```
 
-\scripts\run_doxygen.py
+## Configuration
 
+Main configuration values are defined in [include/config.h](include/config.h) and [platformio.ini](platformio.ini).
+
+Common settings you may want to customize:
+- GPIO pin assignments
+- MQTT broker address and credentials
+- telemetry update interval
+- sensor thresholds
+- feeding schedules
+
+> Security note: avoid committing sensitive credentials to version control. Prefer local configuration files or environment-based secrets for deployment.
+
+## Usage
+
+After flashing the device:
+
+1. power on the ESP32
+2. connect to the device configuration access point if prompted
+3. configure Wi-Fi credentials
+4. connect to the MQTT broker or cloud backend
+5. use the local touchscreen UI or remote commands to interact with the system
+
+The device will begin monitoring sensors, publishing telemetry, and executing scheduled feeds automatically.
+
+## Project Structure
+
+- [src](src): application source code
+- [include](include): project-wide configuration headers
+- [framework](framework): shared hardware and utility abstractions
+- [components](components): third-party and project-local components
+- [docs](docs): documentation and supporting assets
+- [scripts](scripts): helper scripts such as documentation generation
+
+## Documentation
+
+API documentation is generated with Doxygen.
+
+```bash
+doxygen Doxyfile
 ```
 
-  
-
-  
+The generated documentation is placed under [docs](docs).
 
 ## License
 
-  
-
-  
-
-This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file for details.
-
-  
-
----
-
-**Project:** Smart Aquarium Guardian
-
-  
-
-**Author:** Quattrone Martin
-
-  
-
-**Created:** August 2025
-
-  
-
-**Status:** Stable Release
-
-  
-
-**IDF Version Requirement:** 5.1+
-
-  
-
-**C++ Standard:** C++17
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

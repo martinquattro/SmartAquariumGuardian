@@ -1,104 +1,70 @@
-
- 
 # Core Architecture
+
 ## Overview
 
-  
+The core module contains the foundational architecture of Smart Aquarium Guardian. It defines the reusable abstractions and patterns used throughout the firmware, including lifecycle management, communication contracts, and module coordination.
 
-  
+## Firmware Architecture Layers
 
-The `core` module contains the foundational architecture for the SmartAquariumGuardian system. It defines the base classes and patterns used throughout the application.
+The firmware is organized into a layered architecture to keep the system modular and maintainable.
 
-  
-  
+![Firmware architecture diagram](docs/diagrams/firmware_architecture.png)
 
-## Structure
+### 1. Core layer
+Provides shared infrastructure for the entire system:
+- base module lifecycle
+- singleton patterns
+- common interfaces and abstractions
 
-### `guardian_public_interfaces`
+### 2. Managers
+Coordinate high-level behavior and orchestrate other subsystems:
+- network management
+- feeding control
+- water monitoring
+- UI coordination
 
-  Defines the **external communication contract** of the system.
+### 3. Services
+Implement domain-specific functionality:
+- storage
+- power handling
+- real-time clock integration
+- configuration and persistence logic
 
--   **Pure Abstract Interface**: Acts as a strict contract declaring all system capabilities available to the outside world.
-    
--   **Decoupling**: Allows modules to interact with the system without knowledge of internal classes like `FoodFeeder` or `WaterMonitor`.
+### 4. Drivers
+Wrap hardware access in reusable abstractions:
+- temperature sensors
+- TDS sensing
+- display control
+- servo control
+- I2C and GPIO utilities
 
+### 5. Connectivity
+Handles communication with the outside world:
+- Wi-Fi setup and reconnection
+- MQTT communication
+- access-point configuration flow
 
-### `guardian_proxy`
-Implements the public interface and acts as the **gateway to the core** .
+### 6. UI
+Responsible for local interaction:
+- touchscreen input handling
+- LVGL rendering
+- status and control screens
 
--   **Facade / Proxy Pattern**: Serves as the single entry point for external commands, simplifying system complexity.
-    
--   **Command Orchestration**: Receives calls defined in `GuardianPublicInterfaces` and delegates them to the corresponding **Singleton Manager**.
-        
--   **Isolation**: Protects Managers from unnecessary direct access by upper layers, maintaining a clean and organized architecture.
+## Design Principles
 
+The architecture favors:
+- separation of concerns
+- clear module boundaries
+- dependency inversion where appropriate
+- centralized coordination through proxy or facade patterns
 
+## Key Components
 
- 
+- GuardianProxy: central entry point for system operations
+- GuardianPublicInterfaces: public contract exposed to upper layers
+- Base module abstractions: reusable building blocks for managers, drivers, and services
 
-### `base/`
+## Relationship to the Rest of the Project
 
-  
-
-Contains abstract base classes and patterns for all modules:
-
-  
-
-  
-
-- **`module.h`** - Base class for all modules (Managers, Drivers, Services)
-
-  
-
-	- Provides `Init()` and `Update()` lifecycle methods
-
-  
-
-	- Requires `GetModuleName()` implementation
-
-  
-
-  
-
-- **`singleton.h`** - Singleton CRTP template
-
-  
-
-	- Provides type-safe `GetInstance()` method for each derived class
-
-  
-
-	- Thread-safe lazy initialization (C++11)
-
-  
-
-	- One instance per class guaranteed
-
-  
-
-  
-
-- **`manager.h`** - Base for coordinators
-
-  
-
-	- Orchestrates business logic
-
-  
-
-	- Inherits from `Singleton<T>` and `Module`
-
-  
-
-  
-
-- **`driver.h`** - Base for hardware interfaces
-
-  
-
-	- Direct hardware communication
-
-  
-
-	- Inherits from `Singleton<T>` and `Module`
+The core layer provides the foundation for managers, services, and drivers. The rest of the firmware depends on these abstractions rather than directly coupling to concrete implementations.
 
