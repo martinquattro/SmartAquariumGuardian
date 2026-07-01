@@ -1,0 +1,38 @@
+var namespaces_dup =
+[
+    [ "Base", "namespace_base.html", "namespace_base" ],
+    [ "Comms", "namespace_comms.html", "namespace_comms" ],
+    [ "Config", "namespace_config.html", [
+      [ "BATTERY_ADC_PIN", "namespace_config.html#a97fc2db90fda7ef35932af664fee59af", null ],
+      [ "BUILTIN_LED", "namespace_config.html#a629da675df2f6c18ccfadafd1110630d", null ],
+      [ "DISP_BACKLIGHT_PIN", "namespace_config.html#abb83641b8df360bbb836000815d2e8a6", null ],
+      [ "DISP_CLK_PIN", "namespace_config.html#af564f7c223dda342fe503a191afb4a49", null ],
+      [ "DISP_CS_PIN", "namespace_config.html#a945b3747d19610fa5f0cebefb1dbfb74", null ],
+      [ "DISP_DC_PIN", "namespace_config.html#a557657d960cb09ab1ac37a4cddc1f727", null ],
+      [ "DISP_MISO_PIN", "namespace_config.html#a06d4136da0c5c2c1e2d38b5ab779589f", null ],
+      [ "DISP_MOSI_PIN", "namespace_config.html#af11bff418570b99d392cd1957d1f38fb", null ],
+      [ "DISP_RESET_PIN", "namespace_config.html#ace01159ee6cbd936d8225b790809d121", null ],
+      [ "DISP_TOUCH_CS_PIN", "namespace_config.html#a97de029378973e9dde329dbe49347df7", null ],
+      [ "DISP_TOUCH_IRQ_PIN", "namespace_config.html#a390e82a68caae5bde4c84a3917d918ca", null ],
+      [ "EEPROM_I2C_ADDRESS", "namespace_config.html#adc21494d8567f03132a64c92b44b651f", null ],
+      [ "I2C_SCL_PIN", "namespace_config.html#ac24091e914db689cdeb246e8b39a58ac", null ],
+      [ "I2C_SDA_PIN", "namespace_config.html#aa853ef1b257541c45ddde9e2f5f128d5", null ],
+      [ "MQTT_CLIENT_BROKER_URI", "namespace_config.html#a1e7d345a739bdb41a76d12033baa65f1", null ],
+      [ "MQTT_CLIENT_USER_NAME", "namespace_config.html#a907f4b61bcd042819cb82b4976e9cdfa", null ],
+      [ "RTC_I2C_ADDRESS", "namespace_config.html#ab9fbacf079146673333750018ad2e908", null ],
+      [ "SERVO_FEEDER_PWM_PIN", "namespace_config.html#a914d79a1ee3f75edb59278de5b8db16b", null ],
+      [ "SYSTEM_TIME_INCREMENT_MS", "namespace_config.html#adf156f465a159bc7a04a5dc6cabc0fc5", null ],
+      [ "TDS_SENSOR_ADC_PIN", "namespace_config.html#a0620c777614465909c98fc40cf101d2c", null ],
+      [ "TELEMETRY_SEND_INTERVAL_MS", "namespace_config.html#abb951566ae053caa7870184ed409aa9d", null ],
+      [ "TEMP_SENSOR_PIN", "namespace_config.html#adedaa1d1590cc9ad64215c0bb05a1dc0", null ],
+      [ "USB_DETECT_PIN", "namespace_config.html#adbfbd7d25c577a9e67456560489ab642", null ]
+    ] ],
+    [ "Connectivity", "namespace_connectivity.html", "namespace_connectivity" ],
+    [ "Core", "namespace_core.html", "namespace_core" ],
+    [ "Drivers", "namespace_drivers.html", "namespace_drivers" ],
+    [ "Handlers", "namespace_handlers.html", "namespace_handlers" ],
+    [ "Managers", "namespace_managers.html", "namespace_managers" ],
+    [ "NetworkConfig", "namespace_network_config.html", "namespace_network_config" ],
+    [ "Services", "namespace_services.html", "namespace_services" ],
+    [ "Utils", "namespace_utils.html", "namespace_utils" ]
+];

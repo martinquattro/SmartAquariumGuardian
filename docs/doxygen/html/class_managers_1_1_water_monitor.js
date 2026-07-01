@@ -1,0 +1,25 @@
+var class_managers_1_1_water_monitor =
+[
+    [ "WaterMonitor", "class_managers_1_1_water_monitor.html#a8b0ec2fc872bd16309a77ab5f10740ad", null ],
+    [ "~WaterMonitor", "class_managers_1_1_water_monitor.html#a24e15bd00134a9a10029339787b80d4b", null ],
+    [ "WaterMonitor", "class_managers_1_1_water_monitor.html#aaeb468a77171fe30920ce3c9c8932b12", null ],
+    [ "GetModuleName", "class_managers_1_1_water_monitor.html#a96af797d0b909526ee17bb041e943fb8", null ],
+    [ "GetTdsLimits", "class_managers_1_1_water_monitor.html#a64f2474756981f71cdc4f716806be639", null ],
+    [ "GetTdsReading", "class_managers_1_1_water_monitor.html#ac8a3c40bc1f6d09c01556603760180db", null ],
+    [ "GetTemperatureLimits", "class_managers_1_1_water_monitor.html#a2298ea3e8872004b89d1d1a6e0f3df7c", null ],
+    [ "GetTemperatureReading", "class_managers_1_1_water_monitor.html#ac04787d7d115c1d3542592afbd21801d", null ],
+    [ "IsTdsOutOfLimits", "class_managers_1_1_water_monitor.html#afbc23e23ff646797c7de0c286866b991", null ],
+    [ "IsTemperatureOutOfLimits", "class_managers_1_1_water_monitor.html#a107599f17450d87591a0da1778179531", null ],
+    [ "OnInit", "class_managers_1_1_water_monitor.html#a04032f15715fc609c6bbdd41e3b607a3", null ],
+    [ "OnUpdate", "class_managers_1_1_water_monitor.html#af9915aed846b30ee3314470bcb6572ee", null ],
+    [ "operator=", "class_managers_1_1_water_monitor.html#ac8a3ed668ea24bbf9c71497482af45d4", null ],
+    [ "SetTdsLimits", "class_managers_1_1_water_monitor.html#a11373a92e7c9c57bfce09dc9c41990a7", null ],
+    [ "SetTemperatureLimits", "class_managers_1_1_water_monitor.html#abe40e8e62ffc667923aba0b093355737", null ],
+    [ "Base::Singleton< WaterMonitor >", "class_managers_1_1_water_monitor.html#a35086655160ab7c22e7634ac41578728", null ],
+    [ "_tdsSensor", "class_managers_1_1_water_monitor.html#aeba59a27f15f14b4e73223aab660c3bd", null ],
+    [ "_temperatureSensor", "class_managers_1_1_water_monitor.html#a195d7d552b385b4c3343fbdebe7cd01a", null ],
+    [ "MAX_TDS_VALID_VALUE", "class_managers_1_1_water_monitor.html#a6b5544e851c3beb72ed936e458288b13", null ],
+    [ "MAX_TEMP_VALID_VALUE", "class_managers_1_1_water_monitor.html#a35b7b5738d2cd2046bda0112effa19b3", null ],
+    [ "MIN_TDS_VALID_VALUE", "class_managers_1_1_water_monitor.html#aac86f79618ebfa7171d93c41df8cb775", null ],
+    [ "MIN_TEMP_VALID_VALUE", "class_managers_1_1_water_monitor.html#a21454d80572c80c1a6da75219e3da04f", null ]
+];

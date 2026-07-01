@@ -1,0 +1,28 @@
+var class_managers_1_1_food_feeder =
+[
+    [ "FeederStatus", "struct_managers_1_1_food_feeder_1_1_feeder_status.html", "struct_managers_1_1_food_feeder_1_1_feeder_status" ],
+    [ "FoodFeeder", "class_managers_1_1_food_feeder.html#ae076a4be87f585ee81c8942838c6d27a", null ],
+    [ "~FoodFeeder", "class_managers_1_1_food_feeder.html#a452a4aa6f2ac59b63ac48bcf8d9a2d5f", null ],
+    [ "FoodFeeder", "class_managers_1_1_food_feeder.html#a2cb45f3d16a984858cd51fb569e14afa", null ],
+    [ "AddFeedingScheduleEntry", "class_managers_1_1_food_feeder.html#a3ea07fd4a21b6599a2eb8adce48b6c9c", null ],
+    [ "DeleteFeedingScheduleEntry", "class_managers_1_1_food_feeder.html#a44219699ff0cc679569ec8ea377188ef", null ],
+    [ "Feed", "class_managers_1_1_food_feeder.html#a765bc18844e32e6e971814c0f768c5ae", null ],
+    [ "GetFeederStatus", "class_managers_1_1_food_feeder.html#a14ab540737a81032f779ea6c3ce294b8", null ],
+    [ "GetModuleName", "class_managers_1_1_food_feeder.html#a92f38273310d7fac63f4ccdea39faf5a", null ],
+    [ "OnInit", "class_managers_1_1_food_feeder.html#a20f59807e520a6f7bf20f99b9645a44e", null ],
+    [ "OnUpdate", "class_managers_1_1_food_feeder.html#a9d9f2b341997898e15176b3b07440b29", null ],
+    [ "operator=", "class_managers_1_1_food_feeder.html#a72753d094e24b1edb44a8a403947b25a", null ],
+    [ "PerformAsyncFeedingSequence", "class_managers_1_1_food_feeder.html#a22d1b22f76bec48a2b7899d14b6d8130", null ],
+    [ "Base::Singleton< FoodFeeder >", "class_managers_1_1_food_feeder.html#a604f21a6fa48189c2abe0a747c3323d1", null ],
+    [ "_feedingTask", "class_managers_1_1_food_feeder.html#a1843584c24879d6feeb2b98e1e15bed7", null ],
+    [ "_lastFeedTime", "class_managers_1_1_food_feeder.html#a2ef5ac738639ceb6197e31eb5cfedadf", null ],
+    [ "_servo", "class_managers_1_1_food_feeder.html#a6318c8272db4a3c999d892eee18dc3f5", null ],
+    [ "FEEDER_CLOSED_ANGLE", "class_managers_1_1_food_feeder.html#a7f205b88b619e96ba1c857ead775452f", null ],
+    [ "FEEDER_MOVE_TIME_MS", "class_managers_1_1_food_feeder.html#a41caf1fa7abae1bab6ce88a040c5de7d", null ],
+    [ "FEEDER_OPEN_ANGLE", "class_managers_1_1_food_feeder.html#a09ed5fa92306147d7da8e004b29cadd9", null ],
+    [ "FEEDER_WAIT_TIME_MS", "class_managers_1_1_food_feeder.html#a918356e17dc88ed8fd6480e371184bf6", null ],
+    [ "MAX_FEED_DOSE", "class_managers_1_1_food_feeder.html#aa13ab815da82ae0eec247c9c757ad788", null ],
+    [ "MAX_FEEDING_SCHECULES", "class_managers_1_1_food_feeder.html#afdd58a285530fa52a68cef42cd817454", null ],
+    [ "MIN_FEED_DOSE", "class_managers_1_1_food_feeder.html#a233c05326414136edf37f5aa784a36d5", null ],
+    [ "MINUTES_IN_A_DAY", "class_managers_1_1_food_feeder.html#a61cfacbb3e7db83aa9eb1fd158e09699", null ]
+];
