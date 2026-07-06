@@ -36,11 +36,7 @@ void TemperatureSensor::OnUpdate()
     _lastReading = (rawReadingAvg / 16.0f);
     _lastReading = std::clamp(_lastReading, MIN_TEMP_VALUE, MAX_TEMP_VALUE);
 
-    CORE_INFO("Raw Reading = %d | Average: %.2f | Temp = %.2f °C"
-        , rawReading
-        , rawReadingAvg
-        , _lastReading
-    );
+    CORE_INFO("Temperature avg reading - Celsius = %.2f", _lastReading);
 }
 
 //-----------------------------------------------------------------------------

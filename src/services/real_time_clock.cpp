@@ -84,6 +84,7 @@ Result RealTimeClock::InitTimeSync(const char* timezone) const
         }
     }
 
+    CORE_INFO("Starting time synchronization with timezone: %s", timezone);
     setenv("TZ", timezone, 1);
     tzset();
 

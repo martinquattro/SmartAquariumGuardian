@@ -267,6 +267,7 @@ void WiFiCom::EventHandler(
 
             if (instance) 
             {
+                CORE_INFO("WiFiCom connected to SSID: %s", instance->_ssid.c_str());
                 instance->_got_ip = true;
                 instance->_connected = true;
                 instance->_state = State::CONNECTED;

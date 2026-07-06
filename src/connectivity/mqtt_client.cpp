@@ -124,6 +124,8 @@ bool MqttClient::Publish(const std::string &topic, const std::string &payload, i
         0
     );
 
+    CORE_INFO("Published message to topic '%s' \n with payload \n'%s'", topic.c_str(), payload.c_str());
+
     return (msg_id >= 0);
 }
 

@@ -38,11 +38,7 @@ void TdsSensor::OnUpdate()
 
     _lastReading = std::clamp(_lastReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
 
-    CORE_INFO("Analog Reading = %.4f V | Average: %.4f V | PPM = %d"
-        , analogReading
-        , avgAnalogReading
-        , _lastReading
-    );
+    CORE_INFO("Tds avg reading - PPM = %d", _lastReading);
 }
 
 //-----------------------------------------------------------------------------

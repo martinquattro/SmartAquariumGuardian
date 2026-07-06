@@ -185,94 +185,95 @@ $(function(){initNavTree('real__time__clock_8cpp_source.html','',''); });
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        }</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    setenv(<span class="stringliteral">&quot;TZ&quot;</span>, timezone, 1);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    tzset();</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    esp_sntp_setservername(0, <span class="stringliteral">&quot;pool.ntp.org&quot;</span>);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    sntp_set_time_sync_notification_cb(&amp;<a class="code hl_function" href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">RealTimeClock::TimeSyncCallback</a>);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    esp_sntp_init();</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="struct_result.html#a2c18b8e08c5fedbe7ba8eb0d9acd11c8">Result::Success</a>(<span class="stringliteral">&quot;Timezone set and sync initialized&quot;</span>);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <a class="code hl_define" href="debug__defs_8h.html#aa25bf7147ac87fcb0eeac1b34b57be74">CORE_INFO</a>(<span class="stringliteral">&quot;Starting time synchronization with timezone: %s&quot;</span>, timezone);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    setenv(<span class="stringliteral">&quot;TZ&quot;</span>, timezone, 1);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    tzset();</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    esp_sntp_setservername(0, <span class="stringliteral">&quot;pool.ntp.org&quot;</span>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    sntp_set_time_sync_notification_cb(&amp;<a class="code hl_function" href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">RealTimeClock::TimeSyncCallback</a>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    esp_sntp_init();</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="struct_result.html#a2c18b8e08c5fedbe7ba8eb0d9acd11c8">Result::Success</a>(<span class="stringliteral">&quot;Timezone set and sync initialized&quot;</span>);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
 </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">//----static-------------------------------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">  101</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">RealTimeClock::TimeSyncCallback</a>(struct ::timeval *tv)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>{</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <a class="code hl_define" href="debug__defs_8h.html#aa25bf7147ac87fcb0eeac1b34b57be74">CORE_INFO</a>(<span class="stringliteral">&quot;Time synchronized from NTP server&quot;</span>);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    time_t now;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">struct </span>tm timeinfo;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    time(&amp;now);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    localtime_r(&amp;now, &amp;timeinfo);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <a class="code hl_define" href="debug__defs_8h.html#aa25bf7147ac87fcb0eeac1b34b57be74">CORE_INFO</a>(<span class="stringliteral">&quot;NTP Time: %02d:%02d:%02d&quot;</span>,</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                timeinfo.tm_hour</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>              , timeinfo.tm_min</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>              , timeinfo.tm_sec</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    );</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">auto</span> instance = <a class="code hl_function" href="class_base_1_1_singleton.html#a4e5f0aaf965406eebd491dbb27452708">RealTimeClock::GetInstance</a>();</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">if</span> (instance)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    {</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        instance-&gt;SetTime(</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            <a class="code hl_class" href="class_utils_1_1_date_time.html">Utils::DateTime</a>(</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                  <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(timeinfo.tm_hour)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                , <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(timeinfo.tm_min)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                , <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(timeinfo.tm_sec)</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            )</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        );</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        instance-&gt;_isTimeSynced = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    }</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    {</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <a class="code hl_define" href="debug__defs_8h.html#a5ce0843fdacb485f1ef90456519f7f56">CORE_ERROR</a>(<span class="stringliteral">&quot;RTC instance not initialized; cannot set time&quot;</span>);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    esp_sntp_stop();</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">//----static-------------------------------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">  102</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">RealTimeClock::TimeSyncCallback</a>(struct ::timeval *tv)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <a class="code hl_define" href="debug__defs_8h.html#aa25bf7147ac87fcb0eeac1b34b57be74">CORE_INFO</a>(<span class="stringliteral">&quot;Time synchronized from NTP server&quot;</span>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    time_t now;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">struct </span>tm timeinfo;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    time(&amp;now);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    localtime_r(&amp;now, &amp;timeinfo);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <a class="code hl_define" href="debug__defs_8h.html#aa25bf7147ac87fcb0eeac1b34b57be74">CORE_INFO</a>(<span class="stringliteral">&quot;NTP Time: %02d:%02d:%02d&quot;</span>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                timeinfo.tm_hour</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>              , timeinfo.tm_min</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>              , timeinfo.tm_sec</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    );</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keyword">auto</span> instance = <a class="code hl_function" href="class_base_1_1_singleton.html#a4e5f0aaf965406eebd491dbb27452708">RealTimeClock::GetInstance</a>();</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">if</span> (instance)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        instance-&gt;SetTime(</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            <a class="code hl_class" href="class_utils_1_1_date_time.html">Utils::DateTime</a>(</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                  <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(timeinfo.tm_hour)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                , <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(timeinfo.tm_min)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                , <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(timeinfo.tm_sec)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            )</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        );</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        instance-&gt;_isTimeSynced = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <a class="code hl_define" href="debug__defs_8h.html#a5ce0843fdacb485f1ef90456519f7f56">CORE_ERROR</a>(<span class="stringliteral">&quot;RTC instance not initialized; cannot set time&quot;</span>);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    esp_sntp_stop();</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
 </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">//----private------------------------------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#a72441ce93b331cd67b3b9ff97e9ca081">  138</a></span>uint8_t <a class="code hl_function" href="class_services_1_1_real_time_clock.html#a72441ce93b331cd67b3b9ff97e9ca081">RealTimeClock::DecToBcd</a>(uint8_t val)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>{</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">return</span> ((val / 10 * 16) + (val % 10));</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">//----private------------------------------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#a72441ce93b331cd67b3b9ff97e9ca081">  139</a></span>uint8_t <a class="code hl_function" href="class_services_1_1_real_time_clock.html#a72441ce93b331cd67b3b9ff97e9ca081">RealTimeClock::DecToBcd</a>(uint8_t val)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>{</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keywordflow">return</span> ((val / 10 * 16) + (val % 10));</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>}</div>
 </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">//----private------------------------------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00144" data-start="{" data-end="}">
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#a1c1a9d3023e6fede8f806b7ce410105e">  144</a></span>uint8_t <a class="code hl_function" href="class_services_1_1_real_time_clock.html#a1c1a9d3023e6fede8f806b7ce410105e">RealTimeClock::BcdToDec</a>(uint8_t val)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>{</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">return</span> ((val / 16 * 10) + (val % 16));</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>}</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">//----private------------------------------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00145" data-start="{" data-end="}">
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#a1c1a9d3023e6fede8f806b7ce410105e">  145</a></span>uint8_t <a class="code hl_function" href="class_services_1_1_real_time_clock.html#a1c1a9d3023e6fede8f806b7ce410105e">RealTimeClock::BcdToDec</a>(uint8_t val)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>{</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">return</span> ((val / 16 * 10) + (val % 16));</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}</div>
 </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">//----private------------------------------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad">  150</a></span><a class="code hl_function" href="class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad">RealTimeClock::RealTimeClock</a>()</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    : <a class="code hl_variable" href="class_services_1_1_real_time_clock.html#a67b16550da25981e7d488618ef647423">_i2c</a>(<a class="code hl_namespace" href="namespace_config.html">Config</a>::I2C_SDA_PIN, <a class="code hl_namespace" href="namespace_config.html">Config</a>::I2C_SCL_PIN, <a class="code hl_namespace" href="namespace_config.html">Config</a>::RTC_I2C_ADDRESS)</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>{</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>}</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">//----private------------------------------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00151" data-start="{" data-end="}">
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad">  151</a></span><a class="code hl_function" href="class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad">RealTimeClock::RealTimeClock</a>()</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    : <a class="code hl_variable" href="class_services_1_1_real_time_clock.html#a67b16550da25981e7d488618ef647423">_i2c</a>(<a class="code hl_namespace" href="namespace_config.html">Config</a>::I2C_SDA_PIN, <a class="code hl_namespace" href="namespace_config.html">Config</a>::I2C_SCL_PIN, <a class="code hl_namespace" href="namespace_config.html">Config</a>::RTC_I2C_ADDRESS)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>{</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}</div>
 </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>} <span class="comment">// namespace Services</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>} <span class="comment">// namespace Services</span></div>
 <div class="ttc" id="aclass_base_1_1_singleton_html_a4e5f0aaf965406eebd491dbb27452708"><div class="ttname"><a href="class_base_1_1_singleton.html#a4e5f0aaf965406eebd491dbb27452708">Base::Singleton&lt; GuardianProxy &gt;::GetInstance</a></div><div class="ttdeci">static GuardianProxy * GetInstance()</div><div class="ttdef"><b>Definition</b> <a href="singleton_8h_source.html#l00032">singleton.h:32</a></div></div>
-<div class="ttc" id="aclass_services_1_1_real_time_clock_html_a1c1a9d3023e6fede8f806b7ce410105e"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a1c1a9d3023e6fede8f806b7ce410105e">Services::RealTimeClock::BcdToDec</a></div><div class="ttdeci">uint8_t BcdToDec(uint8_t val)</div><div class="ttdoc">Convert BCD to decimal format.</div><div class="ttdef"><b>Definition</b> <a href="#l00144">real_time_clock.cpp:144</a></div></div>
+<div class="ttc" id="aclass_services_1_1_real_time_clock_html_a1c1a9d3023e6fede8f806b7ce410105e"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a1c1a9d3023e6fede8f806b7ce410105e">Services::RealTimeClock::BcdToDec</a></div><div class="ttdeci">uint8_t BcdToDec(uint8_t val)</div><div class="ttdoc">Convert BCD to decimal format.</div><div class="ttdef"><b>Definition</b> <a href="#l00145">real_time_clock.cpp:145</a></div></div>
 <div class="ttc" id="aclass_services_1_1_real_time_clock_html_a22ffd9c4750d0511457f42ba5ddb7a58"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a22ffd9c4750d0511457f42ba5ddb7a58">Services::RealTimeClock::OnInit</a></div><div class="ttdeci">bool OnInit() override</div><div class="ttdoc">Initializes the Module. This method should be called once at the start of the application.</div><div class="ttdef"><b>Definition</b> <a href="#l00018">real_time_clock.cpp:18</a></div></div>
 <div class="ttc" id="aclass_services_1_1_real_time_clock_html_a2d171db360a38b296ee38a77e3d2e1a6"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a2d171db360a38b296ee38a77e3d2e1a6">Services::RealTimeClock::InitTimeSync</a></div><div class="ttdeci">Result InitTimeSync(const char *timezone=nullptr) const</div><div class="ttdoc">Initializes the time synchronization process. Reads timezone from storage.</div><div class="ttdef"><b>Definition</b> <a href="#l00071">real_time_clock.cpp:71</a></div></div>
-<div class="ttc" id="aclass_services_1_1_real_time_clock_html_a49bdf5f6798dcca31c43418d7ea27697"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">Services::RealTimeClock::TimeSyncCallback</a></div><div class="ttdeci">static void TimeSyncCallback(struct ::timeval *tv)</div><div class="ttdoc">Callback function for time synchronization.</div><div class="ttdef"><b>Definition</b> <a href="#l00101">real_time_clock.cpp:101</a></div></div>
+<div class="ttc" id="aclass_services_1_1_real_time_clock_html_a49bdf5f6798dcca31c43418d7ea27697"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a49bdf5f6798dcca31c43418d7ea27697">Services::RealTimeClock::TimeSyncCallback</a></div><div class="ttdeci">static void TimeSyncCallback(struct ::timeval *tv)</div><div class="ttdoc">Callback function for time synchronization.</div><div class="ttdef"><b>Definition</b> <a href="#l00102">real_time_clock.cpp:102</a></div></div>
 <div class="ttc" id="aclass_services_1_1_real_time_clock_html_a67b16550da25981e7d488618ef647423"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a67b16550da25981e7d488618ef647423">Services::RealTimeClock::_i2c</a></div><div class="ttdeci">I2C _i2c</div><div class="ttdef"><b>Definition</b> <a href="real__time__clock_8h_source.html#l00098">real_time_clock.h:98</a></div></div>
-<div class="ttc" id="aclass_services_1_1_real_time_clock_html_a72441ce93b331cd67b3b9ff97e9ca081"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a72441ce93b331cd67b3b9ff97e9ca081">Services::RealTimeClock::DecToBcd</a></div><div class="ttdeci">uint8_t DecToBcd(uint8_t val)</div><div class="ttdoc">Convert decimal to BCD format.</div><div class="ttdef"><b>Definition</b> <a href="#l00138">real_time_clock.cpp:138</a></div></div>
+<div class="ttc" id="aclass_services_1_1_real_time_clock_html_a72441ce93b331cd67b3b9ff97e9ca081"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#a72441ce93b331cd67b3b9ff97e9ca081">Services::RealTimeClock::DecToBcd</a></div><div class="ttdeci">uint8_t DecToBcd(uint8_t val)</div><div class="ttdoc">Convert decimal to BCD format.</div><div class="ttdef"><b>Definition</b> <a href="#l00139">real_time_clock.cpp:139</a></div></div>
 <div class="ttc" id="aclass_services_1_1_real_time_clock_html_aa6068d9fb1865e980b19d96702da6388"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#aa6068d9fb1865e980b19d96702da6388">Services::RealTimeClock::SetTime</a></div><div class="ttdeci">bool SetTime(const Utils::DateTime &amp;dateTime)</div><div class="ttdoc">Set the current time on the RTC.</div><div class="ttdef"><b>Definition</b> <a href="#l00047">real_time_clock.cpp:47</a></div></div>
 <div class="ttc" id="aclass_services_1_1_real_time_clock_html_ab1585a566c7150af947ad630f1844857"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#ab1585a566c7150af947ad630f1844857">Services::RealTimeClock::GetTime</a></div><div class="ttdeci">auto GetTime(Utils::DateTime &amp;time) -&gt; bool</div><div class="ttdoc">Get the current time from the RTC.</div><div class="ttdef"><b>Definition</b> <a href="#l00026">real_time_clock.cpp:26</a></div></div>
-<div class="ttc" id="aclass_services_1_1_real_time_clock_html_abe687d75d0b81b53ffe658c09da418ad"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad">Services::RealTimeClock::RealTimeClock</a></div><div class="ttdeci">RealTimeClock()</div><div class="ttdef"><b>Definition</b> <a href="#l00150">real_time_clock.cpp:150</a></div></div>
+<div class="ttc" id="aclass_services_1_1_real_time_clock_html_abe687d75d0b81b53ffe658c09da418ad"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad">Services::RealTimeClock::RealTimeClock</a></div><div class="ttdeci">RealTimeClock()</div><div class="ttdef"><b>Definition</b> <a href="#l00151">real_time_clock.cpp:151</a></div></div>
 <div class="ttc" id="aclass_services_1_1_real_time_clock_html_ae93900e1d43cc6882227c25376150d44"><div class="ttname"><a href="class_services_1_1_real_time_clock.html#ae93900e1d43cc6882227c25376150d44">Services::RealTimeClock::_isTimeSynced</a></div><div class="ttdeci">bool _isTimeSynced</div><div class="ttdef"><b>Definition</b> <a href="real__time__clock_8h_source.html#l00099">real_time_clock.h:99</a></div></div>
 <div class="ttc" id="aclass_utils_1_1_date_time_html"><div class="ttname"><a href="class_utils_1_1_date_time.html">Utils::DateTime</a></div><div class="ttdef"><b>Definition</b> <a href="date__time_8h_source.html#l00016">date_time.h:17</a></div></div>
 <div class="ttc" id="aclass_utils_1_1_date_time_html_a0374fa5388f44beaadc516bfa91098f3"><div class="ttname"><a href="class_utils_1_1_date_time.html#a0374fa5388f44beaadc516bfa91098f3">Utils::DateTime::GetMinute</a></div><div class="ttdeci">uint8_t GetMinute() const</div><div class="ttdef"><b>Definition</b> <a href="date__time_8h_source.html#l00032">date_time.h:32</a></div></div>
