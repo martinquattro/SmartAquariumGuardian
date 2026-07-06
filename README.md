@@ -44,7 +44,7 @@ The system is designed for users who want to:
 
 The overall system consists of sensors, a control unit, a local display, and cloud connectivity.
 
-![System block diagram](docs/diagrams/system_block_diagram.pdf)
+![System block diagram](docs/diagrams/block_diagram.png)
 
 ### Main building blocks
 - Sensors: temperature, TDS, and power monitoring
@@ -57,7 +57,7 @@ The overall system consists of sensors, a control unit, a local display, and clo
 
 The firmware is organized into logical layers for clarity and maintainability.
 
-![Firmware architecture diagram](docs/diagrams/firmware_block_diagram.pdf)
+![Firmware architecture diagram](docs/diagrams/firmware_diagram.png)
 
 ### Layered structure
 - Core: shared abstractions, lifecycle patterns, and platform interfaces
