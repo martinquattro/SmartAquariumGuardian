@@ -24,21 +24,25 @@ bool TdsSensor::OnInit()
 //-----------------------------------------------------------------------------
 void TdsSensor::OnUpdate()
 {
+    const float K_CAL = 0.745f;
+
     const float analogReading = _analogInPin.ReadVoltage(64);
-    const float avgAnalogReading = StoreAnalogReading(analogReading);
+    float avgAnalogReading = StoreAnalogReading(analogReading);
 
     // Logic to transform reading to ppm units
     // ppm = (133.42 * V³ - 255.86 * V² + 857.39 * V) / factorTemp * 0.5
     // factorTemp ≈ 1.0 + 0.02 * (temp - 25)
     float factorTemp = (1.0 + 0.02 * (_temperature - 25.0));
+    avgAnalogReading /= factorTemp; // Adjust for temperature compensation
 
-    _lastReading = (133.42 * pow(avgAnalogReading, 3) 
+    // CORE_INFO("TdsSensor: Analog reading = %.4f, Avg reading = %.4f, Temp = %.2f°C, FactorTemp = %.4f", analogReading, avgAnalogReading, _temperature, factorTemp);
+
+    _lastReading = K_CAL *(133.42 * pow(avgAnalogReading, 3) 
                      - 255.86 * pow(avgAnalogReading, 2) 
-                     + 857.39 * avgAnalogReading) / factorTemp * 0.5;
+                     + 857.39 * avgAnalogReading) * 0.5;
 
-    _lastReading = std::clamp(_lastReading, MIN_TDS_VALUE, MAX_TDS_VALUE);
 
-    CORE_INFO("Tds avg reading - PPM = %d", _lastReading);
+    CORE_INFO("Tds avg reading - PPM = %d at %.2f°C", _lastReading, _temperature);
 }
 
 //-----------------------------------------------------------------------------
