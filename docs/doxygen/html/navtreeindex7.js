@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"power__controller_8cpp.html":[2,0,2,4,1],
+"power__controller_8cpp_source.html":[2,0,2,4,1],
 "power__controller_8h.html":[2,0,2,4,2],
 "power__controller_8h_source.html":[2,0,2,4,2],
 "pwm__out_8cpp.html":[2,0,0,0,8],

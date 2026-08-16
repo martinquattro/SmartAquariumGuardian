@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172abb1ca97ec761fc37101737ba0aa2e7c5":[0,0,7,1,1,16],
+"class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172abb1ca97ec761fc37101737ba0aa2e7c5":[1,0,6,1,1,16],
 "class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172abd4b33d9b8c9f3a8681694128f5575f2":[0,0,7,1,1,2],
 "class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172abd4b33d9b8c9f3a8681694128f5575f2":[1,0,6,1,1,2],
 "class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172ac3d6e5f2850b377474f21a14b7e29c5f":[0,0,7,1,1,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "class_services_1_1_power_controller.html#a45a4cc993583f50dd3b438c3aa8015b7":[1,0,7,3,13],
 "class_services_1_1_power_controller.html#a50315cc671107123ae85fc0767cf8ac3":[0,0,9,3,7],
 "class_services_1_1_power_controller.html#a50315cc671107123ae85fc0767cf8ac3":[1,0,7,3,7],
-"class_services_1_1_power_controller.html#a60b2588d51b4d1d46b991f7ce7bd737e":[0,0,9,3,9],
-"class_services_1_1_power_controller.html#a60b2588d51b4d1d46b991f7ce7bd737e":[1,0,7,3,9],
-"class_services_1_1_power_controller.html#a79476486f2e4b82faa9b00987555eb03":[0,0,9,3,1]
+"class_services_1_1_power_controller.html#a60b2588d51b4d1d46b991f7ce7bd737e":[0,0,9,3,9]
 };

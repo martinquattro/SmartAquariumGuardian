@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"class_core_1_1_i_network_controller.html#a262cbe91bc76f2049ca2ceb037c553f2":[0,0,4,2,0],
+"class_core_1_1_i_network_controller.html#a262cbe91bc76f2049ca2ceb037c553f2":[1,0,3,2,0],
 "class_core_1_1_i_network_controller.html#a501cde58973e48df2daf1d32292120a2":[0,0,4,2,6],
 "class_core_1_1_i_network_controller.html#a501cde58973e48df2daf1d32292120a2":[1,0,3,2,6],
 "class_core_1_1_i_network_controller.html#a86800941c2bd328e5ca6d0af78903461":[0,0,4,2,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "class_drivers_1_1_tds_sensor.html#a8a2c2bc2facab30f888cd83277248ac7":[0,0,5,2,17],
 "class_drivers_1_1_tds_sensor.html#a8a2c2bc2facab30f888cd83277248ac7":[1,0,4,2,17],
 "class_drivers_1_1_tds_sensor.html#a8ea563587a832ed71aafdaf7102fa7d2":[0,0,5,2,7],
-"class_drivers_1_1_tds_sensor.html#a8ea563587a832ed71aafdaf7102fa7d2":[1,0,4,2,7],
-"class_drivers_1_1_tds_sensor.html#aa25734642c93f8ea17e8cf35b7009740":[0,0,5,2,16],
-"class_drivers_1_1_tds_sensor.html#aa25734642c93f8ea17e8cf35b7009740":[1,0,4,2,16]
+"class_drivers_1_1_tds_sensor.html#a8ea563587a832ed71aafdaf7102fa7d2":[1,0,4,2,7]
 };

@@ -885,11 +885,18 @@
       <arglist>(PinName pin, float vref=1.1f, adc_atten_t atten=ADC_ATTEN_DB_12)</arglist>
     </member>
     <member kind="function">
+      <type></type>
+      <name>~AnalogIn</name>
+      <anchorfile>class_analog_in.html</anchorfile>
+      <anchor>ac4c866a21fd20675cce3cd82072c6c02</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <type>float</type>
       <name>ReadVoltage</name>
       <anchorfile>class_analog_in.html</anchorfile>
-      <anchor>a07ab91335b5f2d64cb5326261c920e59</anchor>
-      <arglist>(const int samples=1) const</arglist>
+      <anchor>a0d99c83ba796d5de6cafe4ebd53525da</anchor>
+      <arglist>(const int samples=64) const</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -935,9 +942,16 @@
     </member>
     <member kind="variable" protection="private">
       <type>adc_cali_handle_t</type>
-      <name>_cali</name>
+      <name>_cali_handle</name>
       <anchorfile>class_analog_in.html</anchorfile>
-      <anchor>ade9ae5ddc295fc71ef1bafadd641c7a3</anchor>
+      <anchor>a9412679e6121e4f60847bd51141f16e6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="private">
+      <type>bool</type>
+      <name>_cali_enabled</name>
+      <anchorfile>class_analog_in.html</anchorfile>
+      <anchor>ac9ec7aeae295b73b50b6be5d438ad49c</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private" static="yes">

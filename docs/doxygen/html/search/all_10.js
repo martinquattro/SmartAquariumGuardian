@@ -4,7 +4,7 @@ var searchData=
   ['readbit_1',['ReadBit',['../class_one_wire.html#acda710e612874994a8bd35384a6ad8c3',1,'OneWire']]],
   ['readbyte_2',['ReadByte',['../class_one_wire.html#aea78dbe466cffdec2faf2bbc7f448c98',1,'OneWire']]],
   ['readbytes_3',['ReadBytes',['../class_services_1_1_eeprom_memory.html#a1122771c3fb98bdbba3ff018cc078f29',1,'Services::EepromMemory']]],
-  ['readvoltage_4',['ReadVoltage',['../class_analog_in.html#a07ab91335b5f2d64cb5326261c920e59',1,'AnalogIn']]],
+  ['readvoltage_4',['ReadVoltage',['../class_analog_in.html#a0d99c83ba796d5de6cafe4ebd53525da',1,'AnalogIn']]],
   ['real_5ftime_5fclock_2ecpp_5',['real_time_clock.cpp',['../real__time__clock_8cpp.html',1,'']]],
   ['real_5ftime_5fclock_2eh_6',['real_time_clock.h',['../real__time__clock_8h.html',1,'']]],
   ['realtimeclock_7',['RealTimeClock',['../class_services_1_1_real_time_clock.html',1,'Services::RealTimeClock'],['../class_services_1_1_real_time_clock.html#abe687d75d0b81b53ffe658c09da418ad',1,'Services::RealTimeClock::RealTimeClock()'],['../class_services_1_1_real_time_clock.html#ac74d3ac9df9e9067311006cd3b5ed6b1',1,'Services::RealTimeClock::RealTimeClock(const RealTimeClock &amp;)=delete']]],
