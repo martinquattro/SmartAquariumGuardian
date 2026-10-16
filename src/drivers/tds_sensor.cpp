@@ -5,7 +5,7 @@
  * @date    Aug 2025
  ******************************************************************************/
 
-#include "src/drivers/tds_sensor.h"
+#include "tds_sensor.h"
 
 #include "include/config.h"
 #include <algorithm>
@@ -26,7 +26,13 @@ void TdsSensor::OnUpdate()
 {
     const float K_CAL = 0.745f;
 
-    const float analogReading = _analogInPin.ReadVoltage(64);
+    const float analogReading = GetAnalogReading();
+    if (!std::isfinite(analogReading) || analogReading < 0.0f || analogReading > 3.3f)
+    {
+        CORE_ERROR("Invalid analog reading: %.4f", analogReading);
+        return;
+    }
+
     float avgAnalogReading = StoreAnalogReading(analogReading);
 
     // Logic to transform reading to ppm units
@@ -52,20 +58,20 @@ int TdsSensor::GetLastReading()
     return _lastReading;
 }
 
+//----protected----------------------------------------------------------------
+float TdsSensor::GetAnalogReading()
+{
+    return _analogInPin.ReadVoltage(64);
+}
+
 //----private------------------------------------------------------------------
 float TdsSensor::StoreAnalogReading(const float reading)
 {
-    if (reading < 0.0f || reading > 3.3f)
-    {
-        CORE_ERROR("Invalid analog reading: %.4f", reading);
-        return 0.0f;
-    }
-
     // Add reading to vector
     (*_analogReadingsVecIter) = reading;
 
     // Check if we were at last element of the readings vector
-    if (_analogReadingsVecIter++ >= _analogReadingsVec.end())
+    if (++_analogReadingsVecIter >= _analogReadingsVec.end())
     {
         _analogReadingsVecIter = _analogReadingsVec.begin();
     }

@@ -35,6 +35,9 @@ class TdsSensor : public Base::Singleton<TdsSensor>,
 
         friend class Base::Singleton<TdsSensor>;
 
+        TdsSensor();
+        ~TdsSensor() = default;
+
         /*!
         * @brief Get the module name.
         * @return const char* Module name.
@@ -54,6 +57,12 @@ class TdsSensor : public Base::Singleton<TdsSensor>,
         */
         void OnUpdate() override;
 
+        /*!
+        * @brief Read the analog voltage used for the TDS calculation.
+        * @return ADC voltage in volts.
+        */
+        virtual float GetAnalogReading();
+
     private:
     
         /*!
@@ -67,8 +76,6 @@ class TdsSensor : public Base::Singleton<TdsSensor>,
     
         //---------------------------------------------
 
-        TdsSensor();
-        ~TdsSensor() = default;
         TdsSensor(const TdsSensor&) = delete;
         TdsSensor& operator=(const TdsSensor&) = delete;
 

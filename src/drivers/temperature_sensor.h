@@ -19,8 +19,8 @@ class TemperatureSensor : public Base::Singleton<TemperatureSensor>,
 {
     public:
 
-        /**
-         * @brief Get last averaged temperature.
+        /*!
+         * @brief Get the last averaged temperature.
          * @return Temperature in Celsius.
          */
         float GetLastReading() const;
@@ -29,75 +29,52 @@ class TemperatureSensor : public Base::Singleton<TemperatureSensor>,
 
         friend class Base::Singleton<TemperatureSensor>;
 
+        TemperatureSensor();
+        ~TemperatureSensor() = default;
+
         /*!
-        * @brief Get the module name.
-        * @return const char* Module name.
-        */
+         * @brief Get the module name.
+         * @return Module name.
+         */
         const char* GetModuleName() const override { return "TemperatureSensor"; }
 
         /*!
-        * @brief Initializes the Module.
-        *        This method should be called once at the start of the application.
-        *       * @return bool True if initialization successful, false otherwise.
-        */
+         * @brief Initialize the module.
+         * @return true when initialization succeeds.
+         */
         bool OnInit() override;
 
         /*!
-        * @brief Updates the Module state.
-        *        This method should be called periodically to update the system state.
-        */
+         * @brief Update the averaged sensor reading.
+         */
         void OnUpdate() override;
 
+        /*!
+         * @brief Read a raw temperature value from the sensor.
+         * @return Raw temperature in DS18B20 units.
+         */
+        virtual int16_t GetRawReading();
+
     private:
-    
-        /**
-         * @brief Get raw temperature reading from the sensor.
-         * @return int16_t Raw temperature value.
-         */
-        int16_t GetRawReading();
-        
-        /**
-         * @brief Store a temperature reading and return the average of the stored readings.
-         * @param reading The new temperature reading to store.
-         * @return float The average of the stored temperature readings.
-         */
+
+        uint8_t CalculateCRC8(const uint8_t* addr, uint8_t len);
         float StoreReading(float reading);
 
-        /**
-         * @brief Calculate CRC8 for data validation.
-         * @param addr Pointer to the data array.
-         * @param len Length of the data array.
-         * @return uint8_t Calculated CRC8 value.
-         */
-        uint8_t CalculateCRC8(const uint8_t *addr, uint8_t len);
-
-        using TempReadingsVec = std::vector<float>;
-
-        //---------------------------------------------
-
-        TemperatureSensor();
-        ~TemperatureSensor() = default;
         TemperatureSensor(const TemperatureSensor&) = delete;
         TemperatureSensor& operator=(const TemperatureSensor&) = delete;
 
-        //---------------------------------------------
-
-        static constexpr uint8_t CMD_SKIP_ROM     = 0xCC;
-        static constexpr uint8_t CMD_CONVERT_T    = 0x44;
+        static constexpr uint8_t CMD_SKIP_ROM = 0xCC;
+        static constexpr uint8_t CMD_CONVERT_T = 0x44;
         static constexpr uint8_t CMD_READ_SCRATCH = 0xBE;
 
-        static constexpr int NUM_AVG_SAMPLES      = 12;
-
-        static constexpr float MIN_TEMP_VALUE   = 0.0f;
-        static constexpr float MAX_TEMP_VALUE   = 85.0f;
-
-        //---------------------------------------------
+        static constexpr int NUM_AVG_SAMPLES = 12;
+        static constexpr int16_t MIN_VALID_RAW_READING = 160;
+        static constexpr float MIN_TEMP_VALUE = 10.0f;
+        static constexpr float MAX_TEMP_VALUE = 85.0f;
 
         OneWire _oneWirePin;
-
-        TempReadingsVec _rawReadingsVec;
-        TempReadingsVec::iterator _rawReadingsVecIter;
-
+        std::vector<float> _rawReadingsVec;
+        std::vector<float>::iterator _rawReadingsVecIter;
         float _lastReading;
 };
 
