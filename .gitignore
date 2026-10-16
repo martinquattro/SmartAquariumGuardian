@@ -7,6 +7,10 @@
 *.d
 *.ini
 
+.agents
+skills-lock.json
+settings.json
+
 managed_components/
 
 # SDK config (si lo generás automáticamente)
