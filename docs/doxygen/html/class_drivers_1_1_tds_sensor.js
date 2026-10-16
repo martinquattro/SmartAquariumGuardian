@@ -4,6 +4,7 @@ var class_drivers_1_1_tds_sensor =
     [ "TdsSensor", "class_drivers_1_1_tds_sensor.html#ac71813eb23e2b59ac3f3504958574ef5", null ],
     [ "~TdsSensor", "class_drivers_1_1_tds_sensor.html#aeabd5fc9b150f2882a6482f586f49029", null ],
     [ "TdsSensor", "class_drivers_1_1_tds_sensor.html#a60284b884d4f9648ac5e5e9a64c74f48", null ],
+    [ "GetAnalogReading", "class_drivers_1_1_tds_sensor.html#a5f09fc1799e9791b6d2b5600c6cf9e5c", null ],
     [ "GetLastReading", "class_drivers_1_1_tds_sensor.html#af92116c76aa6faac5f61ca7791490eac", null ],
     [ "GetModuleName", "class_drivers_1_1_tds_sensor.html#a0eabd5fc2e225acb7efe5174121650f2", null ],
     [ "OnInit", "class_drivers_1_1_tds_sensor.html#ab3c029d6381d154a73f2a744fb39d82a", null ],

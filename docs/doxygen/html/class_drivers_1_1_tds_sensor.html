@@ -128,12 +128,16 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac71813eb23e2b59ac3f3504958574ef5" id="r_ac71813eb23e2b59ac3f3504958574ef5"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac71813eb23e2b59ac3f3504958574ef5">TdsSensor</a> ()</td></tr>
+<tr class="memitem:aeabd5fc9b150f2882a6482f586f49029" id="r_aeabd5fc9b150f2882a6482f586f49029"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aeabd5fc9b150f2882a6482f586f49029">~TdsSensor</a> ()=default</td></tr>
 <tr class="memitem:a0eabd5fc2e225acb7efe5174121650f2" id="r_a0eabd5fc2e225acb7efe5174121650f2"><td class="memItemLeft">const char *&#160;</td><td class="memItemRight"><a class="el" href="#a0eabd5fc2e225acb7efe5174121650f2">GetModuleName</a> () const override</td></tr>
 <tr class="memdesc:a0eabd5fc2e225acb7efe5174121650f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the module name.  <br /></td></tr>
 <tr class="memitem:ab3c029d6381d154a73f2a744fb39d82a" id="r_ab3c029d6381d154a73f2a744fb39d82a"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ab3c029d6381d154a73f2a744fb39d82a">OnInit</a> () override</td></tr>
 <tr class="memdesc:ab3c029d6381d154a73f2a744fb39d82a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the Module. This method should be called once at the start of the application.  <br /></td></tr>
 <tr class="memitem:a8ea563587a832ed71aafdaf7102fa7d2" id="r_a8ea563587a832ed71aafdaf7102fa7d2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8ea563587a832ed71aafdaf7102fa7d2">OnUpdate</a> () override</td></tr>
 <tr class="memdesc:a8ea563587a832ed71aafdaf7102fa7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the Module state. This method should be called periodically to update the system state.  <br /></td></tr>
+<tr class="memitem:a5f09fc1799e9791b6d2b5600c6cf9e5c" id="r_a5f09fc1799e9791b6d2b5600c6cf9e5c"><td class="memItemLeft">virtual float&#160;</td><td class="memItemRight"><a class="el" href="#a5f09fc1799e9791b6d2b5600c6cf9e5c">GetAnalogReading</a> ()</td></tr>
+<tr class="memdesc:a5f09fc1799e9791b6d2b5600c6cf9e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the analog voltage used for the TDS calculation.  <br /></td></tr>
 <tr class="inherit_header pro_methods_class_base_1_1_singleton"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_class_base_1_1_singleton')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="class_base_1_1_singleton.html">Base::Singleton&lt; TdsSensor &gt;</a></td></tr>
 <tr class="memitem:a95b0ecccab2f3875f5b2f036ce49a0d5 inherit pro_methods_class_base_1_1_singleton" id="r_a95b0ecccab2f3875f5b2f036ce49a0d5"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="class_base_1_1_singleton.html#a95b0ecccab2f3875f5b2f036ce49a0d5">Singleton</a> ()=default</td></tr>
 <tr class="memdesc:a95b0ecccab2f3875f5b2f036ce49a0d5 inherit pro_methods_class_base_1_1_singleton"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected constructor to prevent direct instantiation.  <br /></td></tr>
@@ -152,8 +156,6 @@ Private Types</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ad6a4e46880a406baa624fb930899edc3" id="r_ad6a4e46880a406baa624fb930899edc3"><td class="memItemLeft">float&#160;</td><td class="memItemRight"><a class="el" href="#ad6a4e46880a406baa624fb930899edc3">StoreAnalogReading</a> (const float reading)</td></tr>
 <tr class="memdesc:ad6a4e46880a406baa624fb930899edc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an analog reading and returns the average of the stored readings.  <br /></td></tr>
-<tr class="memitem:ac71813eb23e2b59ac3f3504958574ef5" id="r_ac71813eb23e2b59ac3f3504958574ef5"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac71813eb23e2b59ac3f3504958574ef5">TdsSensor</a> ()</td></tr>
-<tr class="memitem:aeabd5fc9b150f2882a6482f586f49029" id="r_aeabd5fc9b150f2882a6482f586f49029"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aeabd5fc9b150f2882a6482f586f49029">~TdsSensor</a> ()=default</td></tr>
 <tr class="memitem:a60284b884d4f9648ac5e5e9a64c74f48" id="r_a60284b884d4f9648ac5e5e9a64c74f48"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a60284b884d4f9648ac5e5e9a64c74f48">TdsSensor</a> (const TdsSensor &amp;)=delete</td></tr>
 <tr class="memitem:ab57650840cc5f433564dcee9f38e6aa1" id="r_ab57650840cc5f433564dcee9f38e6aa1"><td class="memItemLeft"><a class="el" href="#ac71813eb23e2b59ac3f3504958574ef5">TdsSensor</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ab57650840cc5f433564dcee9f38e6aa1">operator=</a> (const <a class="el" href="#ac71813eb23e2b59ac3f3504958574ef5">TdsSensor</a> &amp;)=delete</td></tr>
 </table><table class="memberdecls">
@@ -205,7 +207,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00066">66</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00075">75</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -228,12 +230,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00090">90</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00096">96</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
 
 </div>
 </div>
@@ -255,7 +257,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span><span class="mlabel default">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel default">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -288,6 +290,36 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a5f09fc1799e9791b6d2b5600c6cf9e5c" name="a5f09fc1799e9791b6d2b5600c6cf9e5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f09fc1799e9791b6d2b5600c6cf9e5c">&#9670;&#160;</a></span>GetAnalogReading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Drivers::TdsSensor::GetAnalogReading </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read the analog voltage used for the TDS calculation. </p>
+<dl class="section return"><dt>Returns</dt><dd>ADC voltage in volts. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00062">62</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
+
+</div>
+</div>
 <a id="af92116c76aa6faac5f61ca7791490eac" name="af92116c76aa6faac5f61ca7791490eac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af92116c76aa6faac5f61ca7791490eac">&#9670;&#160;</a></span>GetLastReading()</h2>
 
@@ -306,7 +338,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Gets the last TDS reading. </p>
 <dl class="section return"><dt>Returns</dt><dd>int Last TDS reading. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00049">49</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00055">55</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
 
 </div>
 </div>
@@ -338,7 +370,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="class_base_1_1_module.html#a15056609a354d6c3c02c5aa19e858ca7">Base::Module</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00042">42</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00045">45</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -500,7 +532,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>float The average of the stored analog readings. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00056">56</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8cpp_source.html#l00068">68</a> of file <a class="el" href="tds__sensor_8cpp_source.html">tds_sensor.cpp</a>.</p>
 
 </div>
 </div>
@@ -550,7 +582,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00084">84</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00091">91</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -574,7 +606,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00086">86</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00093">93</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -598,7 +630,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00087">87</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00094">94</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -622,7 +654,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00090">90</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00097">97</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -646,7 +678,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00089">89</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00096">96</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -670,7 +702,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00080">80</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00087">87</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -694,7 +726,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00079">79</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00086">86</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -718,7 +750,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00077">77</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tds__sensor_8h_source.html#l00084">84</a> of file <a class="el" href="tds__sensor_8h_source.html">tds_sensor.h</a>.</p>
 
 </div>
 </div>

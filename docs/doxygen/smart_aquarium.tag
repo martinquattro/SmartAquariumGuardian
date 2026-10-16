@@ -519,7 +519,7 @@
     <name>tds_sensor.cpp</name>
     <path>src/drivers/</path>
     <filename>tds__sensor_8cpp.html</filename>
-    <includes id="tds__sensor_8h" name="tds_sensor.h" local="yes" import="no" module="no" objc="no">src/drivers/tds_sensor.h</includes>
+    <includes id="tds__sensor_8h" name="tds_sensor.h" local="yes" import="no" module="no" objc="no">tds_sensor.h</includes>
     <includes id="config_8h" name="config.h" local="yes" import="no" module="no" objc="no">include/config.h</includes>
     <namespace>Drivers</namespace>
   </compound>
@@ -536,7 +536,7 @@
     <name>temperature_sensor.cpp</name>
     <path>src/drivers/</path>
     <filename>temperature__sensor_8cpp.html</filename>
-    <includes id="temperature__sensor_8h" name="temperature_sensor.h" local="yes" import="no" module="no" objc="no">src/drivers/temperature_sensor.h</includes>
+    <includes id="temperature__sensor_8h" name="temperature_sensor.h" local="yes" import="no" module="no" objc="no">temperature_sensor.h</includes>
     <includes id="config_8h" name="config.h" local="yes" import="no" module="no" objc="no">include/config.h</includes>
     <namespace>Drivers</namespace>
   </compound>
@@ -845,7 +845,7 @@
     <name>date_time.cpp</name>
     <path>src/utils/</path>
     <filename>date__time_8cpp.html</filename>
-    <includes id="date__time_8h" name="date_time.h" local="yes" import="no" module="no" objc="no">src/utils/date_time.h</includes>
+    <includes id="date__time_8h" name="date_time.h" local="yes" import="no" module="no" objc="no">date_time.h</includes>
     <namespace>Utils</namespace>
   </compound>
   <compound kind="file">
@@ -4836,6 +4836,20 @@
       <arglist>(float temperature)</arglist>
     </member>
     <member kind="function" protection="protected">
+      <type></type>
+      <name>TdsSensor</name>
+      <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
+      <anchor>ac71813eb23e2b59ac3f3504958574ef5</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type></type>
+      <name>~TdsSensor</name>
+      <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
+      <anchor>aeabd5fc9b150f2882a6482f586f49029</anchor>
+      <arglist>()=default</arglist>
+    </member>
+    <member kind="function" protection="protected">
       <type>const char *</type>
       <name>GetModuleName</name>
       <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
@@ -4856,6 +4870,13 @@
       <anchor>a8ea563587a832ed71aafdaf7102fa7d2</anchor>
       <arglist>() override</arglist>
     </member>
+    <member kind="function" protection="protected" virtualness="virtual">
+      <type>virtual float</type>
+      <name>GetAnalogReading</name>
+      <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
+      <anchor>a5f09fc1799e9791b6d2b5600c6cf9e5c</anchor>
+      <arglist>()</arglist>
+    </member>
     <member kind="typedef" protection="private">
       <type>std::vector&lt; float &gt;</type>
       <name>TdsReadingsVec</name>
@@ -4869,20 +4890,6 @@
       <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
       <anchor>ad6a4e46880a406baa624fb930899edc3</anchor>
       <arglist>(const float reading)</arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type></type>
-      <name>TdsSensor</name>
-      <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
-      <anchor>ac71813eb23e2b59ac3f3504958574ef5</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type></type>
-      <name>~TdsSensor</name>
-      <anchorfile>class_drivers_1_1_tds_sensor.html</anchorfile>
-      <anchor>aeabd5fc9b150f2882a6482f586f49029</anchor>
-      <arglist>()=default</arglist>
     </member>
     <member kind="function" protection="private">
       <type></type>
@@ -5007,6 +5014,20 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function" protection="protected">
+      <type></type>
+      <name>TemperatureSensor</name>
+      <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
+      <anchor>a2c358a87e10de530566a901fdd61fe84</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type></type>
+      <name>~TemperatureSensor</name>
+      <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
+      <anchor>a32ef47df2a593caad5803e95387d9605</anchor>
+      <arglist>()=default</arglist>
+    </member>
+    <member kind="function" protection="protected">
       <type>const char *</type>
       <name>GetModuleName</name>
       <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
@@ -5027,26 +5048,12 @@
       <anchor>ad8487691127b9ba3cc190bcded81e4c3</anchor>
       <arglist>() override</arglist>
     </member>
-    <member kind="typedef" protection="private">
-      <type>std::vector&lt; float &gt;</type>
-      <name>TempReadingsVec</name>
-      <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
-      <anchor>a319a1467d5c3ebf5398d0b57f6433c5a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type>int16_t</type>
+    <member kind="function" protection="protected" virtualness="virtual">
+      <type>virtual int16_t</type>
       <name>GetRawReading</name>
       <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
       <anchor>aff166a8910693a3a8fe3b78112879f6b</anchor>
       <arglist>()</arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type>float</type>
-      <name>StoreReading</name>
-      <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
-      <anchor>afcc8eca406e81aec2e0f23dfa5482459</anchor>
-      <arglist>(float reading)</arglist>
     </member>
     <member kind="function" protection="private">
       <type>uint8_t</type>
@@ -5056,18 +5063,11 @@
       <arglist>(const uint8_t *addr, uint8_t len)</arglist>
     </member>
     <member kind="function" protection="private">
-      <type></type>
-      <name>TemperatureSensor</name>
+      <type>float</type>
+      <name>StoreReading</name>
       <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
-      <anchor>a2c358a87e10de530566a901fdd61fe84</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type></type>
-      <name>~TemperatureSensor</name>
-      <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
-      <anchor>a32ef47df2a593caad5803e95387d9605</anchor>
-      <arglist>()=default</arglist>
+      <anchor>afcc8eca406e81aec2e0f23dfa5482459</anchor>
+      <arglist>(float reading)</arglist>
     </member>
     <member kind="function" protection="private">
       <type></type>
@@ -5091,17 +5091,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>TempReadingsVec</type>
+      <type>std::vector&lt; float &gt;</type>
       <name>_rawReadingsVec</name>
       <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
-      <anchor>a5773f23cf7a9a8aabea0cda7b5ec0e41</anchor>
+      <anchor>acd5b434a494c5895a0274f3711fa3468</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>TempReadingsVec::iterator</type>
+      <type>std::vector&lt; float &gt;::iterator</type>
       <name>_rawReadingsVecIter</name>
       <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
-      <anchor>abf1463f4f555e894e52fd38efdf5187f</anchor>
+      <anchor>a41086385db50f8d30a2d88ca43e90c47</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
@@ -5137,6 +5137,13 @@
       <name>NUM_AVG_SAMPLES</name>
       <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
       <anchor>a16e0371d1b8646d16ab483c3eff4d044</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="private" static="yes">
+      <type>static constexpr int16_t</type>
+      <name>MIN_VALID_RAW_READING</name>
+      <anchorfile>class_drivers_1_1_temperature_sensor.html</anchorfile>
+      <anchor>a63e693522f901453f09ab35f6f38858d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private" static="yes">

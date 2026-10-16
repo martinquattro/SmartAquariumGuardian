@@ -67,11 +67,11 @@ var NAVTREEINDEX =
 "analog__in_8cpp.html",
 "class_connectivity_1_1_a_p_portal.html#ad0cfb8ea5b1b86473651df9dabc5c932afaee4ca3c30ee18148ce3ada37466498",
 "class_core_1_1_i_network_controller.html#a262cbe91bc76f2049ca2ceb037c553f2",
-"class_drivers_1_1_tds_sensor.html#aa25734642c93f8ea17e8cf35b7009740",
-"class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172abb1ca97ec761fc37101737ba0aa2e7c5",
-"class_services_1_1_power_controller.html#a60b2588d51b4d1d46b991f7ce7bd737e",
-"functions_func_h.html",
-"power__controller_8cpp.html"
+"class_drivers_1_1_tds_sensor.html#a8ea563587a832ed71aafdaf7102fa7d2",
+"class_managers_1_1_network_controller.html#a684f7c3e5e8f2e862e78ff8ab8681172aae7fdcc5cd7b11e059ed00fcc609fa0b",
+"class_services_1_1_power_controller.html#a50315cc671107123ae85fc0767cf8ac3",
+"functions_func_f.html",
+"pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af4ebc728df05346e7d2f785b1ff8fc5b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

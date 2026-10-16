@@ -1,6 +1,5 @@
 var class_drivers_1_1_temperature_sensor =
 [
-    [ "TempReadingsVec", "class_drivers_1_1_temperature_sensor.html#a319a1467d5c3ebf5398d0b57f6433c5a", null ],
     [ "TemperatureSensor", "class_drivers_1_1_temperature_sensor.html#a2c358a87e10de530566a901fdd61fe84", null ],
     [ "~TemperatureSensor", "class_drivers_1_1_temperature_sensor.html#a32ef47df2a593caad5803e95387d9605", null ],
     [ "TemperatureSensor", "class_drivers_1_1_temperature_sensor.html#aee671966c07bbacde22b46aaeb1a0dfb", null ],
@@ -15,12 +14,13 @@ var class_drivers_1_1_temperature_sensor =
     [ "Base::Singleton< TemperatureSensor >", "class_drivers_1_1_temperature_sensor.html#aed7eeada6c80f2fa3d5b56543cab5394", null ],
     [ "_lastReading", "class_drivers_1_1_temperature_sensor.html#a8381bdff1718c2733dcabc3cff39743d", null ],
     [ "_oneWirePin", "class_drivers_1_1_temperature_sensor.html#af443071bbc57ba30a706366dc3557913", null ],
-    [ "_rawReadingsVec", "class_drivers_1_1_temperature_sensor.html#a5773f23cf7a9a8aabea0cda7b5ec0e41", null ],
-    [ "_rawReadingsVecIter", "class_drivers_1_1_temperature_sensor.html#abf1463f4f555e894e52fd38efdf5187f", null ],
+    [ "_rawReadingsVec", "class_drivers_1_1_temperature_sensor.html#acd5b434a494c5895a0274f3711fa3468", null ],
+    [ "_rawReadingsVecIter", "class_drivers_1_1_temperature_sensor.html#a41086385db50f8d30a2d88ca43e90c47", null ],
     [ "CMD_CONVERT_T", "class_drivers_1_1_temperature_sensor.html#a702bc3d8454ed13ca91b156cf17e1fef", null ],
     [ "CMD_READ_SCRATCH", "class_drivers_1_1_temperature_sensor.html#a89fc8e3294c08e8c4b9012b7484906fd", null ],
     [ "CMD_SKIP_ROM", "class_drivers_1_1_temperature_sensor.html#a25cbef3c5902743f9b39a69b19c5ad48", null ],
     [ "MAX_TEMP_VALUE", "class_drivers_1_1_temperature_sensor.html#a9146161a40defbb1bc5b15d733fcb280", null ],
     [ "MIN_TEMP_VALUE", "class_drivers_1_1_temperature_sensor.html#a30302573fae8a63cd482cd0328d46755", null ],
+    [ "MIN_VALID_RAW_READING", "class_drivers_1_1_temperature_sensor.html#a63e693522f901453f09ab35f6f38858d", null ],
     [ "NUM_AVG_SAMPLES", "class_drivers_1_1_temperature_sensor.html#a16e0371d1b8646d16ab483c3eff4d044", null ]
 ];

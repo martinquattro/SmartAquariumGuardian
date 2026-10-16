@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"class_services_1_1_power_controller.html#a50315cc671107123ae85fc0767cf8ac3":[1,0,7,3,7],
+"class_services_1_1_power_controller.html#a60b2588d51b4d1d46b991f7ce7bd737e":[0,0,9,3,9],
 "class_services_1_1_power_controller.html#a60b2588d51b4d1d46b991f7ce7bd737e":[1,0,7,3,9],
 "class_services_1_1_power_controller.html#a79476486f2e4b82faa9b00987555eb03":[0,0,9,3,1],
 "class_services_1_1_power_controller.html#a79476486f2e4b82faa9b00987555eb03":[1,0,7,3,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "functions_func_b.html":[1,3,1,2],
 "functions_func_c.html":[1,3,1,3],
 "functions_func_d.html":[1,3,1,4],
-"functions_func_e.html":[1,3,1,5],
-"functions_func_f.html":[1,3,1,6],
-"functions_func_g.html":[1,3,1,7]
+"functions_func_e.html":[1,3,1,5]
 };

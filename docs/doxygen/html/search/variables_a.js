@@ -15,8 +15,9 @@ var searchData=
   ['min_5ftds_5fvalue_12',['MIN_TDS_VALUE',['../class_drivers_1_1_tds_sensor.html#a68a7af64343ad3756655790095806db6',1,'Drivers::TdsSensor']]],
   ['min_5ftemp_5fvalid_5fvalue_13',['MIN_TEMP_VALID_VALUE',['../class_managers_1_1_water_monitor.html#a21454d80572c80c1a6da75219e3da04f',1,'Managers::WaterMonitor']]],
   ['min_5ftemp_5fvalue_14',['MIN_TEMP_VALUE',['../class_drivers_1_1_temperature_sensor.html#a30302573fae8a63cd482cd0328d46755',1,'Drivers::TemperatureSensor']]],
-  ['minutes_5fin_5fa_5fday_15',['MINUTES_IN_A_DAY',['../class_managers_1_1_food_feeder.html#a61cfacbb3e7db83aa9eb1fd158e09699',1,'Managers::FoodFeeder']]],
-  ['mqtt_5fclient_5fbroker_5furi_16',['MQTT_CLIENT_BROKER_URI',['../namespace_config.html#a1e7d345a739bdb41a76d12033baa65f1',1,'Config']]],
-  ['mqtt_5fclient_5ftimeout_5fms_17',['MQTT_CLIENT_TIMEOUT_MS',['../class_managers_1_1_network_controller.html#a159933140604509ddacdfcb4d4ffcd15',1,'Managers::NetworkController']]],
-  ['mqtt_5fclient_5fuser_5fname_18',['MQTT_CLIENT_USER_NAME',['../namespace_config.html#a907f4b61bcd042819cb82b4976e9cdfa',1,'Config']]]
+  ['min_5fvalid_5fraw_5freading_15',['MIN_VALID_RAW_READING',['../class_drivers_1_1_temperature_sensor.html#a63e693522f901453f09ab35f6f38858d',1,'Drivers::TemperatureSensor']]],
+  ['minutes_5fin_5fa_5fday_16',['MINUTES_IN_A_DAY',['../class_managers_1_1_food_feeder.html#a61cfacbb3e7db83aa9eb1fd158e09699',1,'Managers::FoodFeeder']]],
+  ['mqtt_5fclient_5fbroker_5furi_17',['MQTT_CLIENT_BROKER_URI',['../namespace_config.html#a1e7d345a739bdb41a76d12033baa65f1',1,'Config']]],
+  ['mqtt_5fclient_5ftimeout_5fms_18',['MQTT_CLIENT_TIMEOUT_MS',['../class_managers_1_1_network_controller.html#a159933140604509ddacdfcb4d4ffcd15',1,'Managers::NetworkController']]],
+  ['mqtt_5fclient_5fuser_5fname_19',['MQTT_CLIENT_USER_NAME',['../namespace_config.html#a907f4b61bcd042819cb82b4976e9cdfa',1,'Config']]]
 ];

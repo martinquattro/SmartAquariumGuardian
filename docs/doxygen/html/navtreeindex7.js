@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af4ebc728df05346e7d2f785b1ff8fc5b":[2,0,0,5,0,33],
+"pin__names_8h_source.html":[2,0,0,5],
 "power__controller_8cpp.html":[2,0,2,4,1],
 "power__controller_8cpp_source.html":[2,0,2,4,1],
 "power__controller_8h.html":[2,0,2,4,2],

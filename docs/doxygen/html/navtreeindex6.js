@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"functions_func_f.html":[1,3,1,6],
+"functions_func_g.html":[1,3,1,7],
 "functions_func_h.html":[1,3,1,8],
 "functions_func_i.html":[1,3,1,9],
 "functions_func_j.html":[1,3,1,10],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1ae92c142c0618e235635c86ae0d73ab56":[2,0,0,5,0,6],
 "pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af35b705e8c57ae59e369ebc9145a9dbc":[2,0,0,5,0,35],
 "pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af44f8f3058a58f0b67af7248b72bb833":[2,0,0,5,0,51],
-"pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af47fb721aa553aad2d0f389c93c2d533":[2,0,0,5,0,48],
-"pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af4ebc728df05346e7d2f785b1ff8fc5b":[2,0,0,5,0,33],
-"pin__names_8h_source.html":[2,0,0,5]
+"pin__names_8h.html#a5ceb873075d76667eb54dc6a7d2734d1af47fb721aa553aad2d0f389c93c2d533":[2,0,0,5,0,48]
 };
